@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group4.artatawe.controllers.SelectAccountController">
+   <top>
+      <StackPane style="-fx-background-color: #4286f4;" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="108.0" fitWidth="303.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_CENTER">
+               <image>
+                  <Image url="@../images/logo.png" />
+               </image>
+               <StackPane.margin>
+                  <Insets />
+               </StackPane.margin>
+            </ImageView>
+            <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button layoutX="616.0" layoutY="99.0" mnemonicParsing="false" style="-fx-background-color: transparent;;" text="Select an account">
+                     <font>
+                        <Font name="Calibri" size="18.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </StackPane>
+   </top>
+   <center>
+      <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="1280.0" BorderPane.alignment="CENTER_RIGHT">
+         <children>
+            <ScrollPane hbarPolicy="ALWAYS" prefHeight="286.0" prefWidth="1280.0" style="-fx-background-color: transparent;" vbarPolicy="NEVER">
+               <content>
+                  <HBox fx:id="accountbox" alignment="CENTER" prefHeight="270.0" prefWidth="1278.0" spacing="15.0" />
+               </content>
+            </ScrollPane>
+            <Button fx:id="createaccount" mnemonicParsing="false" prefHeight="45.0" prefWidth="165.0" style="-fx-background-color: transparent;" text="Create Account" textOverrun="CLIP">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets top="100.0" />
+         </padding>
+      </VBox>
+   </center>
+</BorderPane>
