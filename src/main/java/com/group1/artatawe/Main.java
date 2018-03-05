@@ -34,7 +34,7 @@ public class Main extends Application {
 			Scene scene = new Scene(root);
 
 			//Stop the window being scaled down smaller than we can handle
-			stage.setMinHeight(820);
+			stage.setMinHeight(1000);
 			stage.setMinWidth(1280);
 
 			stage.setScene(scene);
