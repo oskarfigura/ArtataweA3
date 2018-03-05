@@ -40,7 +40,7 @@ public class Account {
 	/**
 	 * Construct a new Account
 	 * 
-	 * @param userName  - The unique username of the account
+	 * @param userName	- The unique username of the account
 	 * @param firstName - The first name of the user
 	 * @param lastName  - The last name of the user
 	 * @param mobileNum - The mobile number of the person
