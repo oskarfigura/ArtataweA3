@@ -8,9 +8,9 @@ import java.util.stream.Collectors;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.group1.artatawe.Main;
 import com.group1.artatawe.listings.Listing;
 import com.group1.artatawe.listings.ListingState;
+import com.group1.artatawe.Main;
 
 /*
  * Represents the history of the account, such as Listings bid on, 

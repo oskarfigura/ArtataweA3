@@ -34,7 +34,7 @@ public class Sculpture extends Artwork {
 	 * @param weight   - The weight of the sculpture.
 	 * @param material - The material of the sculpture.
 	 * @param extraImages - Extra images.
-	 * @see {@link com.group1.artatawe.artwork.Artwork#Artwork Artwork}'s constructor for more parameter descriptions.
+	 * @see {@link Artwork#Artwork Artwork}'s constructor for more parameter descriptions.
 	 */
 	public Sculpture(String title, String desc, Image img, String artist, int year,
 			double height, double width, double depth, double weight, String material, List<Image> extraImages) {
@@ -56,7 +56,7 @@ public class Sculpture extends Artwork {
 	 * @param depth    - The depth of the sculpture.
 	 * @param weight   - The weight of the sculpture.
 	 * @param material - The material of the sculpture.
-	 * @see {@link com.group1.artatawe.artwork.Artwork#Artwork Artwork}'s constructor for more parameter descriptions.
+	 * @see {@link Artwork#Artwork Artwork}'s constructor for more parameter descriptions.
 	 */
 	public Sculpture(String title, String desc, Image img, String artist, int year,
 			double height, double width, double depth, double weight, String material) {
