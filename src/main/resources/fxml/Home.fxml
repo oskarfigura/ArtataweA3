@@ -135,7 +135,7 @@
                   </Label>
                   <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" layoutY="42.0" prefHeight="160.0" prefWidth="1280.0" vbarPolicy="NEVER">
                      <content>
-                        <HBox fx:id="favuserbox1" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" />
+                        <HBox fx:id="customGalleryHbox" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" />
                      </content>
                   </ScrollPane>
                </children>
