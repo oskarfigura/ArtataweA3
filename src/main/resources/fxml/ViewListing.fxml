@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -20,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="800" minWidth="1280" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group1.artatawe.controllers.ViewListingController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="800" minWidth="1280" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group1.artatawe.controllers.ViewListingController">
    <top>
       <StackPane fx:id="topstack" style="-fx-background-color: #4286f4;" BorderPane.alignment="CENTER">
          <children>
@@ -91,24 +86,24 @@
                      </font>
                   </Label>
                   <VBox fx:id="infobox" layoutX="81.0" layoutY="89.0" prefHeight="375.0" prefWidth="554.0" spacing="4.0" />
-                  <TextField fx:id="amount" layoutX="261.0" layoutY="545.0" prefHeight="25.0" prefWidth="143.0" />
-                  <Button fx:id="placebid" layoutX="414.0" layoutY="545.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="79.0" style="-fx-background-color: lightgrey;" text="Place Bid" />
-                  <Label layoutX="291.0" layoutY="513.0" text="Current bid:">
+                  <TextField fx:id="amount" layoutX="81.0" layoutY="547.0" prefHeight="25.0" prefWidth="143.0" />
+                  <Button fx:id="placebid" layoutX="234.0" layoutY="547.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="79.0" style="-fx-background-color: lightgrey;" text="Place Bid" />
+                  <Label layoutX="111.0" layoutY="515.0" text="Current bid:">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="currentbid" layoutX="413.0" layoutY="513.0" prefHeight="26.0" prefWidth="205.0" text="£5 (lew_)">
+                  <Label fx:id="currentbid" layoutX="233.0" layoutY="515.0" prefHeight="26.0" prefWidth="205.0" text="£5 (lew_)">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label layoutX="313.0" layoutY="481.0" prefHeight="33.0" prefWidth="91.0" text="Bids Left:">
+                  <Label layoutX="133.0" layoutY="483.0" prefHeight="33.0" prefWidth="91.0" text="Bids Left:">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="bidsleft" layoutX="414.0" layoutY="484.0" prefHeight="26.0" prefWidth="205.0" text="5">
+                  <Label fx:id="bidsleft" layoutX="234.0" layoutY="486.0" prefHeight="26.0" prefWidth="205.0" text="5">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -132,6 +127,8 @@
                         </VBox>
                      </children>
                   </AnchorPane>
+                  <MenuButton layoutX="551.0" layoutY="547.0" mnemonicParsing="false" style="-fx-background-color: lightgrey;" text="MenuButton" />
+                  <Button layoutX="404.0" layoutY="547.0" mnemonicParsing="false" style="-fx-background-color: lightgrey;" text="Add to custom gallery" />
                </children>
             </AnchorPane>
          </center>
