@@ -1,4 +1,4 @@
-package com.group4.artatawe.accounts;
+package com.group1.artatawe.accounts;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.group4.artatawe.utils.ImageUtil;
+import com.group1.artatawe.utils.ImageUtil;
 
 import javafx.scene.image.Image;
 
@@ -40,7 +40,7 @@ public class Account {
 	/**
 	 * Construct a new Account
 	 * 
-	 * @param userName  - The unique username of the account
+	 * @param userName	- The unique username of the account
 	 * @param firstName - The first name of the user
 	 * @param lastName  - The last name of the user
 	 * @param mobileNum - The mobile number of the person
