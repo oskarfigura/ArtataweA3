@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="800" minWidth="1280" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group1.artatawe.controllers.ViewListingController">
    <top>
@@ -86,29 +87,29 @@
                      </font>
                   </Label>
                   <VBox fx:id="infobox" layoutX="81.0" layoutY="89.0" prefHeight="375.0" prefWidth="554.0" spacing="4.0" />
-                  <TextField fx:id="amount" layoutX="81.0" layoutY="547.0" prefHeight="25.0" prefWidth="143.0" />
-                  <Button fx:id="placebid" layoutX="234.0" layoutY="547.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="79.0" style="-fx-background-color: lightgrey;" text="Place Bid" />
-                  <Label layoutX="111.0" layoutY="515.0" text="Current bid:">
+                  <TextField fx:id="amount" layoutX="81.0" layoutY="505.0" prefHeight="25.0" prefWidth="143.0" />
+                  <Button fx:id="placebid" layoutX="234.0" layoutY="505.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" style="-fx-background-color: lightgrey;" text="Place Bid" />
+                  <Label layoutX="111.0" layoutY="473.0" text="Current bid:">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="currentbid" layoutX="233.0" layoutY="515.0" prefHeight="26.0" prefWidth="205.0" text="£5 (lew_)">
+                  <Label fx:id="currentbid" layoutX="233.0" layoutY="473.0" prefHeight="26.0" prefWidth="205.0" text="£5 (lew_)">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label layoutX="133.0" layoutY="483.0" prefHeight="33.0" prefWidth="91.0" text="Bids Left:">
+                  <Label layoutX="133.0" layoutY="441.0" prefHeight="33.0" prefWidth="91.0" text="Bids Left:">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="bidsleft" layoutX="234.0" layoutY="486.0" prefHeight="26.0" prefWidth="205.0" text="5">
+                  <Label fx:id="bidsleft" layoutX="234.0" layoutY="444.0" prefHeight="26.0" prefWidth="205.0" text="5">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <AnchorPane layoutX="638.0" layoutY="91.0" prefHeight="445.0" prefWidth="171.0">
+                  <AnchorPane layoutX="638.0" layoutY="91.0" prefHeight="300.0" prefWidth="183.0">
                      <children>
                         <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="183.0">
                            <children>
@@ -127,8 +128,15 @@
                         </VBox>
                      </children>
                   </AnchorPane>
-                  <MenuButton layoutX="551.0" layoutY="547.0" mnemonicParsing="false" style="-fx-background-color: lightgrey;" text="MenuButton" />
-                  <Button layoutX="404.0" layoutY="547.0" mnemonicParsing="false" style="-fx-background-color: lightgrey;" text="Add to custom gallery" />
+                  <MenuButton fx:id="menuGalleries" layoutX="224.0" layoutY="543.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="96.0" style="-fx-background-color: lightgrey;" text="My galleries" />
+                  <Button fx:id="buttonAddCustomGallery" layoutX="81.0" layoutY="543.0" mnemonicParsing="false" onAction="#addCustomGallery" style="-fx-background-color: lightgrey;" text="Add to custom gallery" />
+                  <Button fx:id="buttonCreateGallery" layoutX="661.0" layoutY="518.0" mnemonicParsing="false" onAction="#createGallery" style="-fx-background-color: lightgray;" text="Create gallery" />
+                  <TextField fx:id="textFieldGalleryName" layoutX="637.0" layoutY="556.0" prefHeight="25.0" prefWidth="138.0" />
+                  <Text layoutX="607.0" layoutY="451.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If you don not have a custom gallery, you can create one by typing a name and pressing the create gallery button." textAlignment="JUSTIFY" wrappingWidth="213.484375">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Text>
                </children>
             </AnchorPane>
          </center>
