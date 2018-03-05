@@ -34,7 +34,7 @@ public class Main extends Application {
 			Scene scene = new Scene(root);
 
 			//Stop the window being scaled down smaller than we can handle
-			stage.setMinHeight(1000);
+			stage.setMinHeight(820);
 			stage.setMinWidth(1280);
 
 			stage.setScene(scene);
@@ -55,6 +55,7 @@ public class Main extends Application {
 		try {
 			Parent parent = FXMLLoader.load(Main.class.getResource("/fxml/" + fxmlFileName + ".fxml"));
 			Scene newScene = new Scene(parent, mainStage.getScene().getWidth(), mainStage.getScene().getHeight());
+			
 			mainStage.setScene(newScene);
 		} catch (IOException e) {
 			e.printStackTrace();
