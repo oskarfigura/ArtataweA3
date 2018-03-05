@@ -1,10 +1,13 @@
 package com.group1.artatawe.utils;
 
+import com.group1.artatawe.managers.ListingManager;
+
 public class Search {
     public static void main(String[] args) {
-        String tmp = "Hello-123";
-        Boolean tmp2 = tmp.contains("-") || tmp.contains("123");
 
+        String search = "Jesus Sculpture";  //users search keyword example for testing
+        ListingManager listingManager = new ListingManager();
+        listingManager.getAllActiveListings();
     }
 
 }
