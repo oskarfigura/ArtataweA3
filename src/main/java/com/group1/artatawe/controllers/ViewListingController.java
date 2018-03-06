@@ -15,10 +15,7 @@ import com.group1.artatawe.utils.NumUtil;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.Image;
@@ -65,6 +62,15 @@ public class ViewListingController {
 	//Seller Attributes
 	@FXML ImageView selleravatar;
 	@FXML Label sellername;
+
+	/** By Kristiyan
+	 *
+	 */
+	@FXML Button buttonAddCustomGallery;
+	@FXML MenuButton menuGallery;
+	@FXML Button buttonCreateGallery;
+
+
 
 	public void initialize() {
 		this.initializeHeader();
@@ -387,5 +393,18 @@ public class ViewListingController {
 		popup.setAutoHide(true);
 
 		popup.show(this.image.getScene().getWindow());
+	}
+
+	/** By Kristiyan
+	 *
+	 */
+
+	@FXML
+	public void createGallery() {
+        //TODO -> create a gallery for the current user
+	}
+	@FXML
+	public void addToCustomGallery() {
+        //TODO -> add to a custom gallery
 	}
 }
