@@ -1,5 +1,6 @@
 package com.group1.artatawe.artwork;
 
+import com.google.gson.JsonObject;
 import com.group1.artatawe.accounts.Account;
 
 import java.util.ArrayList;
@@ -23,6 +24,14 @@ public class Gallery {
     public Gallery(Account user, String name) {
         this.user = user;
         this.name = name;
+    }
+
+    /**
+     * Read up and construct a gallery
+     * @param jo
+     */
+    public Gallery(JsonObject jo) {
+        //TODO -> sort out the JSON
     }
 
     /**
