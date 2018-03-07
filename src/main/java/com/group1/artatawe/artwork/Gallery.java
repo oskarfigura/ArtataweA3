@@ -2,17 +2,18 @@ package com.group1.artatawe.artwork;
 
 import com.google.gson.JsonObject;
 import com.group1.artatawe.accounts.Account;
+import com.group1.artatawe.listings.Listing;
 
 import java.util.ArrayList;
 
 /**
  * Represents a gallery of artworks curated by a user
  * @author Adam Payne
- * @version 1.0
+ * @version 1.0.1
  */
 public class Gallery {
     //Properties
-    private ArrayList<Artwork> artworks = new ArrayList<>();
+    private ArrayList<Listing> listings = new ArrayList<>();
     private Account user;
     private String name;
 
@@ -51,22 +52,26 @@ public class Gallery {
     }
 
     /**
-     * Get the artworks contained in the gallery
-     * @return The artworks in the gallery, in an ArrayList
+     * Get the listings contained in the gallery
+     * @return The listings in the gallery, in an ArrayList
      */
-    public ArrayList<Artwork> getArtworks() {
-        return artworks;
+    public ArrayList<Listing> getListings() {
+        return listings;
     }
 
     /**
-     * Add an artwork to the gallery
-     * @param artwork The artwork to be added to the gallery
+     * Add a listing to the gallery
+     * @param listing The listing to be added to the gallery
      */
-    public void addArtwork(Artwork artwork) {
-        artworks.add(artwork);
+    public void addListing(Listing listing) {
+        listings.add(listing);
     }
 
-    public void removeArtwork(Artwork artwork) {
-        artworks.remove(artwork);
+    /**
+     * Remove a listing from the gallery
+     * @param listing The listing to be removed from the gallery
+     */
+    public void removeListing(Listing listing) {
+        listings.remove(listing);
     }
 }
