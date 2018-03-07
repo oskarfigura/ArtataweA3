@@ -1,6 +1,7 @@
 package com.group1.artatawe.controllers;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import com.group1.artatawe.Main;
 import com.group1.artatawe.accounts.Account;
@@ -177,30 +178,31 @@ public class HomePageController {
 	 * @param gallery - The gallery to turn into a node
 	 * @return The node created
 	 */
-	private Node getGalleryNode(Gallery gallery) {
-		VBox vbox = new VBox();
-		vbox.setAlignment(Pos.CENTER);
+	private LinkedList<Node> getGalleryNode(Gallery gallery) {
 
-		//Add the title of the gallery
-		Label label = new Label(gallery.getName());
-		vbox.getChildren().add(label);
+		LinkedList<Node> nodes = new LinkedList<Node>();
 
-		//Add the image if the gallery is not empty
-		if (gallery.getListings().size() > 0) {
-			Image image = gallery.getListings().get(0).getArtwork().getImage();
+		gallery.getListings().stream().forEach(listing -> {
+			VBox vbox = new VBox();
+			vbox.setAlignment(Pos.CENTER);
+
+			//Add the title of the gallery
+			Label label = new Label(gallery.getName());
+			vbox.getChildren().add(label);
+
+			Image image = listing.getArtwork().getImage(); // Image of the listing
 			ImageView iv = new ImageView(image);
 			iv.setPreserveRatio(true);
 			iv.setFitHeight(120);
 			iv.setFitWidth(120);
 
+			vbox.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
+
 			vbox.getChildren().add(iv);
-		}
+			nodes.add(vbox);
+		});
 
-		//todo: Display the gallery screen
-		//vbox.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
-
-
-		return vbox;
+		return nodes;
 	}
 	
 	/**
@@ -251,12 +253,11 @@ public class HomePageController {
 	 */
 	private void renderGalleries() {
 		LinkedList<Gallery> galleries = Main.accountManager.getLoggedIn().getUserGalleries();
-		LinkedList<Node> nodes = new LinkedList<>();
 
-		for(Gallery gallery : galleries) {
-			nodes.add(this.getGalleryNode(gallery));
-		}
+		galleries.stream().forEach(x -> {
+			LinkedList<Node> n = this.getGalleryNode(x);
+			this.customGalleryHbox.getChildren().addAll(n);
+		});
 
-		this.customGalleryHbox.getChildren().addAll(nodes);
 	}
 }
