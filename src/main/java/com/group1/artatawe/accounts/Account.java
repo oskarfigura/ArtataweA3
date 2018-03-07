@@ -319,13 +319,6 @@ public class Account {
 
 		jo.add("favaccounts", favArray);
 
-		/*
-		 * Hardcoded data for testing
-		 */
-		//Gallery g = new Gallery(Main.accountManager.getLoggedIn(), "MyGallery");
-		//g.addArtwork(Main.listingManager.getListing(1).getArtwork());
-		//userGalleries.add(g);
-
 		JsonArray galleriesArray = new JsonArray();
 		userGalleries.stream().forEach(x -> {
 			JsonObject j = x.toJsonObject();

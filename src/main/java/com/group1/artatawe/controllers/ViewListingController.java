@@ -458,6 +458,10 @@ public class ViewListingController {
 		} else {
 			createNewGalPopup();
 		}
+		/*
+			Updates the file after a new item is added to a gallery
+		 */
+		Main.accountManager.saveAccountFile();
 	}
 
 	/**
