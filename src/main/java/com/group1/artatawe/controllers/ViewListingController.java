@@ -121,6 +121,7 @@ public class ViewListingController {
 			menuGallery.setText("New");
 			currentGallery = null;
 		});
+        menuGallery.getItems().add(newGalleryOpt);
 		menuGallery.setText("New");
 
 		//Add the user's galleries to the menu
