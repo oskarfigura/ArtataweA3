@@ -196,7 +196,7 @@ public class Account {
 	 * @param g
 	 */
 	public void addGallery(Gallery g) {
-		this.userGalleries.add(g);
+	    this.userGalleries.add(g);
 	}
 
 	/**

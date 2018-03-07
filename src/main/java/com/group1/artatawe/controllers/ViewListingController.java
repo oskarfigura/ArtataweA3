@@ -2,6 +2,9 @@ package com.group1.artatawe.controllers;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.group1.artatawe.Main;
 import com.group1.artatawe.accounts.Account;
@@ -130,6 +133,9 @@ public class ViewListingController {
 
 			//Update when a menuItem is selected
 			menuItem.setOnAction(event -> {
+				/*
+					Sets the text to the general menu button to the picked gallery
+				 */
 				menuGallery.setText(menuItem.getText());
 				currentGallery = gallery;
 
@@ -148,6 +154,10 @@ public class ViewListingController {
 		this.displayCurrentBid();
 		this.displayBidHistory();
 		this.renderInfo();
+	}
+
+	public void updateGalleryMenu(String name) {
+
 	}
 
 	/**
@@ -485,9 +495,19 @@ public class ViewListingController {
 		//Create the gallery when button is clicked
 		button.setOnMouseClicked(e -> {
 			Account user = Main.accountManager.getLoggedIn();
-			Gallery newGallery = new Gallery(user, input.getText());
-			newGallery.addListing(viewing);
-			user.addGallery(newGallery);
+			if (!user.checkGallery(input.getText())) {
+				Gallery newGallery = new Gallery(user, input.getText());
+				newGallery.addListing(viewing);
+				user.addGallery(newGallery);
+			} else {
+				AlertUtil.sendAlert(AlertType.ERROR, "Existing gallery", "This gallery already exists," +
+						" please try with another name");
+				createNewGalPopup();
+			}
+			/*
+				Update the file after a new gallery is added to a user's account
+		 	*/
+			Main.accountManager.saveAccountFile();
 
 			popup.close();
 		});
