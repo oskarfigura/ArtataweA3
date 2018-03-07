@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.group1.artatawe.artwork.Gallery;
 import com.group1.artatawe.utils.ImageUtil;
 
 import javafx.scene.image.Image;
@@ -31,6 +32,7 @@ public class Account {
 	
 	private final AccountHistory history = new AccountHistory(this);
 	private final LinkedList<String> favAccounts = new LinkedList<>();
+	private final LinkedList<Gallery> userGalleries = new LinkedList<>();
 	
 	static {
 		//Create the avatar folder (if it doesn't exist)
@@ -131,7 +133,15 @@ public class Account {
 	public LinkedList<String> getFavAccounts() {
 		return this.favAccounts;
 	}
-	
+
+	/**
+	 * Get all the galleries of the user
+	 * @return A list containing all the galleries of the user
+	 */
+	public LinkedList<Gallery> getUserGalleries() {
+		return userGalleries;
+	}
+
 	/**
 	 * Get the last time this user logged in
 	 * @return Last login time, in milliseconds
@@ -161,7 +171,7 @@ public class Account {
 	/**
 	 * Check if an account is to be flagged as favourite
 	 * 
-	 * @param userName - The username of the account to check
+	 * @param account - The username of the account to check
 	 * @return True if account if favourite, else False
 	 */
 	public boolean isFavAccount(Account account) {
@@ -265,7 +275,23 @@ public class Account {
 		}
 
 		jo.add("favaccounts", favArray);
-		
+
+		/*
+		 * Hardcoded data for testing
+		 */
+		//Gallery g = new Gallery(Main.accountManager.getLoggedIn(), "MyGallery");
+		//g.addArtwork(Main.listingManager.getListing(1).getArtwork());
+		//userGalleries.add(g);
+
+		JsonArray galleriesArray = new JsonArray();
+		userGalleries.stream().forEach(x -> {
+			JsonObject j = x.toJsonObject();
+			galleriesArray.add(j); // Adding a json object into an array
+		});
+
+		//TODO -> Needs some testing
+		jo.add("galleries", galleriesArray);
+
 		return jo;
 	}
 	
@@ -303,5 +329,24 @@ public class Account {
 		//Load fav accounts
 		Iterator<JsonElement> favAccountIt = jo.get("favaccounts").getAsJsonArray().iterator();
 		favAccountIt.forEachRemaining(nextUser -> this.favAccounts.add(nextUser.getAsString()));
+
 	}
+
+    /**
+     * Loads all the galleries of a particular user
+     * @param jo
+     */
+	public void loadGalleries(JsonObject jo, Account acc) {
+	    /*
+	        From the Json object passed, the array with the galleries is read in
+	        From then on, since it also contains JsonObject, we get all of them
+	        and read in the data they contain making into a gallery.
+	     */
+        JsonArray galleryArray = jo.getAsJsonArray("galleries");
+        for (int i = 0; i < galleryArray.size(); i++) {
+            JsonObject object = galleryArray.get(i).getAsJsonObject();
+            Gallery g = new Gallery(object, acc);
+            this.userGalleries.add(g);
+        }
+    }
 }
