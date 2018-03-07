@@ -5,12 +5,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map.Entry;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.group1.artatawe.artwork.Gallery;
+import com.group1.artatawe.listings.Listing;
 import com.group1.artatawe.utils.ImageUtil;
 
 import javafx.scene.image.Image;
@@ -177,6 +179,47 @@ public class Account {
 	public boolean isFavAccount(Account account) {
 		return this.favAccounts.stream()
 				.anyMatch(favUser -> favUser.equals(account.getUserName()));
+	}
+
+	/**
+	 *
+	 * @param galleryName
+	 * @return
+	 */
+	public boolean checkGallery(String galleryName) {
+		return this.userGalleries.stream()
+				.anyMatch(x -> x.getName().equalsIgnoreCase(galleryName));
+	}
+
+	/**
+	 * Adds a new gallery to the users profie
+	 * @param g
+	 */
+	public void addGallery(Gallery g) {
+		this.userGalleries.add(g);
+	}
+
+	/**
+	 * Finds the gallery the user has picked and then assignes a new listing to it
+	 * @param galleryName
+	 * @param l
+	 */
+	public void addToGallery(String galleryName, Listing l) {
+		this.userGalleries.stream()
+				.filter(x -> x.getName().equalsIgnoreCase(galleryName))
+				.findFirst()
+				.get()
+				.addListing(l);
+	}
+
+	/**
+	 * permanently removes a gallery from the users profile
+	 * @param galleryName
+	 */
+	public void removeGallery(String galleryName) {
+		Gallery g = this.userGalleries.stream().filter(x -> x.getName().equalsIgnoreCase(galleryName))
+				.findFirst().get();
+		this.userGalleries.remove(g);
 	}
 
 	/**
