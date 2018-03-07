@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import com.group1.artatawe.Main;
 import com.group1.artatawe.accounts.Account;
+import com.group1.artatawe.artwork.Gallery;
 import com.group1.artatawe.listings.Listing;
 import com.group1.artatawe.utils.GridUtil;
 
@@ -32,6 +33,7 @@ public class HomePageController {
 	@FXML GridPane sellingbox;
 	@FXML GridPane mybidbox;
 	@FXML HBox favuserbox;
+	@FXML HBox customGalleryHbox;
 
 	public void initialize() {
 		this.initializeHeader();
@@ -39,6 +41,7 @@ public class HomePageController {
 		this.renderMySelling();
 		this.renderMyBids();
 		this.renderFavUsers();
+		this.renderGalleries();
 	}
 	
 	/**
@@ -100,10 +103,10 @@ public class HomePageController {
 
 		return hbox;
 	}
-	
+
 	/**
 	 * Turns a Listing that has been bid on, into a node
-	 * 
+	 *
 	 * @param listing - The listing to turn into a node
 	 * @return The node created
 	 */
@@ -118,21 +121,21 @@ public class HomePageController {
 
 		double myBid = listing.getBidHistory().getBid(Main.accountManager.getLoggedIn()).getPrice();
 		double currentBid = listing.getCurrentBid().getPrice();
-		
+
 		ListView<String> info = new ListView<>();
 		info.getItems().addAll(listing.getArtwork().getTitle(),
 				"£" + myBid,
 				"£" + currentBid);
 		info.getItems().add(listing.getBidsLeft() + " bids remaining");
-		
+
 		if(! listing.getCurrentBid().getBidder().equals(Main.accountManager.getLoggedIn().getUserName())) {
 			info.getItems().add("You are not winning!");
 		} else {
 			info.getItems().add("You are winning");
 		}
-		
+
 		info.setMaxHeight(125);
-		
+
 		hbox.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
 
 		hbox.getChildren().add(iv);
@@ -143,7 +146,7 @@ public class HomePageController {
 	
 	/**
 	 * Turns a favourite Account into a node
-	 * 
+	 *
 	 * @param account - The account to turn into a node
 	 * @return The node created
 	 */
@@ -159,11 +162,43 @@ public class HomePageController {
 		Label label = new Label(account.getUserName());
 
 		vbox.setAlignment(Pos.CENTER);
-		
+
 		vbox.setOnMouseClicked(e -> ProfileController.viewProfile(account));
-		
+
 		vbox.getChildren().add(iv);
 		vbox.getChildren().add(label);
+
+		return vbox;
+	}
+
+	/**
+	 * Turns a gallery into a node
+	 *
+	 * @param gallery - The gallery to turn into a node
+	 * @return The node created
+	 */
+	private Node getGalleryNode(Gallery gallery) {
+		VBox vbox = new VBox();
+		vbox.setAlignment(Pos.CENTER);
+
+		//Add the title of the gallery
+		Label label = new Label(gallery.getName());
+		vbox.getChildren().add(label);
+
+		//Add the image if the gallery is not empty
+		if (gallery.getListings().size() > 0) {
+			Image image = gallery.getListings().get(0).getArtwork().getImage();
+			ImageView iv = new ImageView(image);
+			iv.setPreserveRatio(true);
+			iv.setFitHeight(120);
+			iv.setFitWidth(120);
+
+			vbox.getChildren().add(iv);
+		}
+
+		//todo: Display the gallery screen
+		//vbox.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
+
 
 		return vbox;
 	}
@@ -191,23 +226,37 @@ public class HomePageController {
 		
 		GridUtil.insertList(this.sellingbox, nodes);
 	}
-	
+
 	/**
 	 * Render the favourite users in the box
 	 */
 	private void renderFavUsers() {
 		LinkedList<String> favAccs = Main.accountManager.getLoggedIn().getFavAccounts();
 		LinkedList<Node> nodes = new LinkedList<>();
-		
+
 		for(String favAcct : favAccs) {
 			Account account = Main.accountManager.getAccount(favAcct);
 			Node node = this.getFavUserNode(account);
-			
+
 			node.setOnMouseClicked(e -> ProfileController.viewProfile(account));
-			
+
 			nodes.add(node);
 		}
-		
+
 		this.favuserbox.getChildren().addAll(nodes);
+	}
+
+	/**
+	 * Render the custom galleries in the box
+	 */
+	private void renderGalleries() {
+		LinkedList<Gallery> galleries = Main.accountManager.getLoggedIn().getUserGalleries();
+		LinkedList<Node> nodes = new LinkedList<>();
+
+		for(Gallery gallery : galleries) {
+			nodes.add(this.getGalleryNode(gallery));
+		}
+
+		this.customGalleryHbox.getChildren().addAll(nodes);
 	}
 }

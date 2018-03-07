@@ -32,7 +32,7 @@ public class Account {
 	
 	private final AccountHistory history = new AccountHistory(this);
 	private final LinkedList<String> favAccounts = new LinkedList<>();
-	private final LinkedList<Gallery> userGalleries = new LinkedList<Gallery>();
+	private final LinkedList<Gallery> userGalleries = new LinkedList<>();
 	
 	static {
 		//Create the avatar folder (if it doesn't exist)
@@ -133,7 +133,15 @@ public class Account {
 	public LinkedList<String> getFavAccounts() {
 		return this.favAccounts;
 	}
-	
+
+	/**
+	 * Get all the galleries of the user
+	 * @return A list containing all the galleries of the user
+	 */
+	public LinkedList<Gallery> getUserGalleries() {
+		return userGalleries;
+	}
+
 	/**
 	 * Get the last time this user logged in
 	 * @return Last login time, in milliseconds
