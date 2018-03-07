@@ -14,7 +14,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="800" minWidth="1280" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.group1.artatawe.controllers.ViewListingController">
    <top>
@@ -130,13 +129,6 @@
                   </AnchorPane>
                   <MenuButton fx:id="menuGallery" layoutX="224.0" layoutY="572.0" mnemonicParsing="false" style="-fx-background-color: lightgrey;" text="My galleries" />
                   <Button fx:id="buttonAddCustomGallery" layoutX="81.0" layoutY="572.0" mnemonicParsing="false" onAction="#addToCustomGallery" style="-fx-background-color: lightgrey;" text="Add to custom gallery" />
-                  <Button fx:id="buttonCreateGallery" layoutX="670.0" layoutY="604.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: lightgrey;" text="Create gallery" />
-                  <Text layoutX="631.0" layoutY="482.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If you do not have a custom gallery, you can create one by typing in a name in the text filed below and clicking on the create gallery." textAlignment="JUSTIFY" wrappingWidth="177.599609375">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Text>
-                  <TextField layoutX="645.0" layoutY="566.0" />
                </children>
             </AnchorPane>
          </center>

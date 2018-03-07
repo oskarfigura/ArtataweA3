@@ -76,7 +76,6 @@ public class ViewListingController {
 	 */
 	@FXML Button buttonAddCustomGallery;
 	@FXML MenuButton menuGallery;
-	@FXML Button buttonCreateGallery;
 
 	//Gallery variables
 	private static final String ADD_BTN_MSG = "Add to gallery";
