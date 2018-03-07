@@ -121,25 +121,37 @@ public class Gallery {
 
     /**
      * Get the listings contained in the gallery
-     * @return The artworks in the gallery, in an ArrayList
+     * @return The listings in the gallery, in an ArrayList
      */
     public ArrayList<Listing> getListings() {
         return listings;
     }
 
     /**
-     * Add a listing to the gallery
-     * @param listing The artwork to be added to the gallery
+     * Add a listing to the gallery. Duplicate entries will be ignored
+     * @param listing The listing to be added to the gallery
      */
     public void addListing(Listing listing) {
-        listings.add(listing);
+        //Don't add the listing if it's already in the gallery
+        if (!listings.contains(listing)) {
+            listings.add(listing);
+        }
     }
 
     /**
      * Remove a listing from the gallery
-     * @param listing
+     * @param listing The listing to remove from the gallery
      */
     public void removeListing(Listing listing) {
         listings.remove(listing);
+    }
+
+    /**
+     * Check whether the gallery contains a specific listing
+     * @param listing the listing to check for
+     * @return True if the gallery contains the given listing
+     */
+    public boolean containsListing(Listing listing) {
+        return listings.contains(listing);
     }
 }
