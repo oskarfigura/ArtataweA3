@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.group1.artatawe.Main;
 import com.group1.artatawe.accounts.Account;
+import com.group1.artatawe.artwork.Gallery;
 import com.group1.artatawe.artwork.Painting;
 import com.group1.artatawe.artwork.Sculpture;
 import com.group1.artatawe.listings.Bid;
@@ -14,7 +15,9 @@ import com.group1.artatawe.utils.AlertUtil;
 import com.group1.artatawe.utils.NumUtil;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
@@ -24,7 +27,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
 import javafx.stage.Popup;
+import javafx.stage.Stage;
 
 /**
  * Controller for "ViewListing.fxml"
@@ -70,6 +75,12 @@ public class ViewListingController {
 	@FXML MenuButton menuGallery;
 	@FXML Button buttonCreateGallery;
 
+	//Gallery variables
+	private static final String ADD_BTN_MSG = "Add to gallery";
+	private static final String RMV_BTN_MSG = "Remove from gallery";
+
+	private Gallery currentGallery = null;
+
 
 
 	public void initialize() {
@@ -103,6 +114,34 @@ public class ViewListingController {
 
 		this.selleravatar.setOnMouseClicked(e -> ProfileController.viewProfile(seller));
 		this.sellername.setOnMouseClicked(e -> ProfileController.viewProfile(seller));
+
+		//Create a new gallery button
+		MenuItem newGalleryOpt = new MenuItem("New");
+		newGalleryOpt.setOnAction(event -> {
+			menuGallery.setText("New");
+			currentGallery = null;
+		});
+		menuGallery.setText("New");
+
+		//Add the user's galleries to the menu
+		for (Gallery gallery : Main.accountManager.getLoggedIn().getUserGalleries()) {
+			MenuItem menuItem = new MenuItem(gallery.getName());
+
+			//Update when a menuItem is selected
+			menuItem.setOnAction(event -> {
+				menuGallery.setText(menuItem.getText());
+				currentGallery = gallery;
+
+				//Change the button text to reflect whether this will add to or remove from the gallery
+				if (gallery.containsListing(viewing)) {
+					buttonAddCustomGallery.setText(RMV_BTN_MSG);
+				} else {
+					buttonAddCustomGallery.setText(ADD_BTN_MSG);
+				}
+			});
+
+			menuGallery.getItems().add(menuItem);
+		}
 
 		//Render the different parts of the Listing view
 		this.displayCurrentBid();
@@ -400,11 +439,56 @@ public class ViewListingController {
 	 */
 
 	@FXML
-	public void createGallery() {
-        //TODO -> create a gallery for the current user
-	}
-	@FXML
 	public void addToCustomGallery() {
-        //TODO -> add to a custom gallery
+        if (currentGallery != null) {
+        	//A gallery has been selected
+        	if (currentGallery.containsListing(viewing)) {
+        		//Remove the listing from the gallery
+				currentGallery.removeListing(viewing);
+				buttonAddCustomGallery.setText(ADD_BTN_MSG);
+
+			} else {
+        		//Add the listing to the gallery
+        		currentGallery.addListing(viewing);
+				buttonAddCustomGallery.setText(RMV_BTN_MSG);
+
+			}
+
+		} else {
+			createNewGalPopup();
+		}
+	}
+
+	/**
+	 * Displays a modal popup allowing the user to create a new gallery
+	 */
+	private void createNewGalPopup() {
+		Stage popup = new Stage();
+		popup.initModality(Modality.APPLICATION_MODAL);
+
+		VBox popBack = new VBox(10);
+		popBack.setAlignment(Pos.CENTER);
+
+		Label label = new Label("Name your new gallery");
+		TextField input = new TextField();
+		Button button = new Button("Create");
+
+		popBack.getChildren().add(label);
+		popBack.getChildren().add(input);
+		popBack.getChildren().add(button);
+
+		//Create the gallery when button is clicked
+		button.setOnMouseClicked(e -> {
+			Account user = Main.accountManager.getLoggedIn();
+			Gallery newGallery = new Gallery(user, input.getText());
+			newGallery.addListing(viewing);
+			user.addGallery(newGallery);
+
+			popup.close();
+		});
+
+		Scene popupScene = new Scene(popBack, 300, 100);
+		popup.setScene(popupScene);
+		popup.show();
 	}
 }
