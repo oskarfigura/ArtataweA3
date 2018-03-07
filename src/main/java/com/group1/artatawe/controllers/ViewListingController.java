@@ -156,8 +156,23 @@ public class ViewListingController {
 		this.renderInfo();
 	}
 
-	public void updateGalleryMenu(String name) {
+	public void updateGalleryMenu(String name, Gallery g) {
+		MenuItem item = new MenuItem(name);
+		item.setOnAction(event -> {
+			/*
+					Sets the text to the general menu button to the picked gallery
+				 */
+			menuGallery.setText(item.getText());
+			currentGallery = g;
 
+			//Change the button text to reflect whether this will add to or remove from the gallery
+			if (g.containsListing(viewing)) {
+				buttonAddCustomGallery.setText(RMV_BTN_MSG);
+			} else {
+				buttonAddCustomGallery.setText(ADD_BTN_MSG);
+			}
+		});
+		menuGallery.getItems().add(item);
 	}
 
 	/**
@@ -499,9 +514,11 @@ public class ViewListingController {
 				Gallery newGallery = new Gallery(user, input.getText());
 				newGallery.addListing(viewing);
 				user.addGallery(newGallery);
+				updateGalleryMenu(newGallery.getName(), newGallery);
 			} else {
 				AlertUtil.sendAlert(AlertType.ERROR, "Existing gallery", "This gallery already exists," +
 						" please try with another name");
+				popup.close();
 				createNewGalPopup();
 			}
 			/*
