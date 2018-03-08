@@ -171,6 +171,7 @@
                      </content>
                   </ScrollPane>
                   <Button fx:id="editaccount" layoutX="1144.0" layoutY="14.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="101.0" style="-fx-background-color: lightgrey;" text="Edit Account" />
+                  <ListView fx:id="notificationsList" layoutX="14.0" layoutY="9.0" prefHeight="173.0" prefWidth="426.0" />
                </children>
             </AnchorPane>
          </content>
