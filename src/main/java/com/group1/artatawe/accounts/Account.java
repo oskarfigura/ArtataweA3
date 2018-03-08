@@ -33,7 +33,7 @@ public class Account {
 
     private List<Listing> newListings;
     private List<Listing> newBids;
-//	private List<Listing> lostListings;
+	private List<Listing> lostListings;
     private List<Listing> endingListings;
 
     private final AccountHistory history = new AccountHistory(this);
