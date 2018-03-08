@@ -77,9 +77,13 @@ public class Account {
     }
 
     public void updateNotifications() {
-        this.newListings = Main.notifications.getNewListings();
-        this.endingListings = Main.notifications.getEndingListings();
-        if(Main.accountManager.getLoggedIn().getEndingListings().size() > 0) {
+        if(Main.notifications.getNewListings() != null) {
+            this.newListings = Main.notifications.getNewListings();
+        }
+        if(Main.notifications.getEndingListings() != null) {
+            this.endingListings = Main.notifications.getEndingListings();
+        }
+        if(Main.notifications.getNewBids() != null) {
             this.newBids = Main.notifications.getNewBids();
         }
     }

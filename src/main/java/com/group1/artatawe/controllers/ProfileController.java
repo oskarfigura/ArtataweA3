@@ -100,6 +100,7 @@ public class ProfileController {
 			this.notificationsList.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
 		}
 
+		//TODO FIX BUG (IT DOESN'T SHOW)
 		for (Listing listing : Main.accountManager.getLoggedIn().getNewBids()) {
 			this.notificationsList.getItems().add("New Bid: " + listing.getArtwork().getTitle());
 			this.notificationsList.setOnMouseClicked(e -> ViewListingController.viewListing(listing));

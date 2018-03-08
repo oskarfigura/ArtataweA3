@@ -28,27 +28,6 @@ public class Notification {
 
     }
 
-    /*
-    public Notification(String username, long lastLoginDate) {
-        this.lastLoginDate = lastLoginDate;
-        this.currentUser = Main.accountManager.getAccount(username);
-
-
-
-        this.listingManager = Main.listingManager;
-        this.accountManager = Main.accountManager;
-        this.currentUser = Main.accountManager.getLoggedIn();
-        this.lastLoginDate = Main.accountManager.getLoggedIn().getLastLogin();
-
-
-
-        this.newListings = getNewListings();    //Working??
-        //this.newBids = getNewBids(); //Needs more work
-        //this.lostListings = getLostListings(); //Need more data from lecturer Won/Lost????
-        this.endingListings = getEndingListings();  //Working??
-    }
-    */
-
     /**
      * Get a List of new artworks that are now on auction since last login
      * @return List of new artworks since last login
@@ -66,9 +45,13 @@ public class Notification {
      */
     public List<Listing> getNewBids() {
         Account currentUser = Main.accountManager.getLoggedIn();
-        long lastLoginDate = currentUser.getLastLogin();
+        long lastLoginDate = Main.accountManager.getLoggedIn().getLastLogin();
+
         return Main.listingManager.getAllActiveListings()
-                .stream().filter(x -> x.getCurrentBid().getDate() > lastLoginDate).filter(a -> a.getSeller().equals(currentUser))
+                .stream()
+                .filter(n -> n.getNumOfBids() > 0)
+                .filter(x -> x.getCurrentBid().getDate() > lastLoginDate)
+                .filter(a -> a.getSeller().equals(currentUser))
                 .collect(Collectors.toList());
     }
 
