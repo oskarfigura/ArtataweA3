@@ -1,5 +1,6 @@
 package com.group1.artatawe.controllers;
 
+import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
@@ -91,11 +92,19 @@ public class ProfileController {
 
 		for (Listing listing : Main.accountManager.getLoggedIn().getNewListings()) {
 			this.notificationsList.getItems().add("New Auction: " + listing.getArtwork().getTitle());
+			this.notificationsList.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
 		}
 
 		for (Listing listing : Main.accountManager.getLoggedIn().getEndingListings()) {
 			this.notificationsList.getItems().add("Auction Ending: " + listing.getArtwork().getTitle());
+			this.notificationsList.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
 		}
+
+		for (Listing listing : Main.accountManager.getLoggedIn().getNewBids()) {
+			this.notificationsList.getItems().add("New Bid: " + listing.getArtwork().getTitle());
+			this.notificationsList.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
+		}
+
 	}
 
 	/**

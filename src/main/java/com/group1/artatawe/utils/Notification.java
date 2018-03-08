@@ -60,20 +60,18 @@ public class Notification {
                 .collect(Collectors.toList());
     }
 
-//    /**
-//     * Get a list of new bids on sellers auctions since last login
-//     * @return List of new bids on sellers auctions
-//     */
-//    public List<Listing> getNewBids() {
-//        List<Listing> sellersListings = listingManager.getAllActiveListings()
-//                .stream().filter(x -> x.getCurrentBid().getDate() < lastLoginDate).filter(a -> a.getSeller().equals(currentUser))
-//                .collect(Collectors.toList());
-//
-//        return null;
-//        //Main.accountManager.getLoggedIn().getUserName().equals(listing.getSeller());
-//        //return null;
-//    }
-//
+    /**
+     * Get a list of new bids on sellers auctions since last login
+     * @return List of new bids on sellers auctions
+     */
+    public List<Listing> getNewBids() {
+        Account currentUser = Main.accountManager.getLoggedIn();
+        long lastLoginDate = currentUser.getLastLogin();
+        return Main.listingManager.getAllActiveListings()
+                .stream().filter(x -> x.getCurrentBid().getDate() > lastLoginDate).filter(a -> a.getSeller().equals(currentUser))
+                .collect(Collectors.toList());
+    }
+
 //    /**
 //     * Get a list of lost auctions since last login
 //     * @return List of lost auctions

@@ -32,7 +32,7 @@ public class Account {
     private long lastLogin;
 
     private List<Listing> newListings;
-    //	private List<Bid> newBids;
+    private List<Listing> newBids;
 //	private List<Listing> lostListings;
     private List<Listing> endingListings;
 
@@ -79,6 +79,9 @@ public class Account {
     public void updateNotifications() {
         this.newListings = Main.notifications.getNewListings();
         this.endingListings = Main.notifications.getEndingListings();
+        if(Main.accountManager.getLoggedIn().getEndingListings().size() > 0) {
+            this.newBids = Main.notifications.getNewBids();
+        }
     }
 
     public List<Listing> getNewListings() {
@@ -87,6 +90,10 @@ public class Account {
 
     public List<Listing> getEndingListings() {
         return endingListings;
+    }
+
+    public List<Listing> getNewBids() {
+        return newBids;
     }
 
     /**
