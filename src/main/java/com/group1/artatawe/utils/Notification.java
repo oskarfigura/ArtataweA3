@@ -62,6 +62,7 @@ public class Notification {
         List<Listing> sellersListings = listingManager.getAllActiveListings()
                 .stream().filter(x -> x.getCurrentBid().getDate() < lastLoginDate).filter(a -> a.getSeller().equals(currentUser))
                 .collect(Collectors.toList());
+
         return null;
         //Main.accountManager.getLoggedIn().getUserName().equals(listing.getSeller());
         //return null;
@@ -85,7 +86,7 @@ public class Notification {
      */
     private List<Listing> getEndingListings() {
         return listingManager.getAllActiveListings()
-                .stream().filter(x -> x.getBidsLeft() < 2)
+                .stream().filter(x -> x.getBidsLeft() < 3)
                 .filter(a -> a.getBidHistory().getBid(currentUser) != null)
                 .collect(Collectors.toList());
     }
