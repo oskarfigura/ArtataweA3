@@ -24,69 +24,76 @@ TODO:
 4. Auctions user bid on, which are approaching their bid limit.
  */
 public class Notification {
-    private List<Listing> newListings;
-    private List<Bid> newBids;
-    private List<Listing> lostListings;
-    private List<Listing> endingListings;
-    private ListingManager listingManager;
-    private AccountManager accountManager;
-    private Account currentUser;
-    private long lastLoginDate; //Time since 1/1/1970 in milliseconds
-
     public Notification() {
+
+    }
+
+    /*
+    public Notification(String username, long lastLoginDate) {
+        this.lastLoginDate = lastLoginDate;
+        this.currentUser = Main.accountManager.getAccount(username);
+
+
+
         this.listingManager = Main.listingManager;
         this.accountManager = Main.accountManager;
-        this.currentUser = accountManager.getLoggedIn();
-        this.lastLoginDate = currentUser.getLastLogin();
+        this.currentUser = Main.accountManager.getLoggedIn();
+        this.lastLoginDate = Main.accountManager.getLoggedIn().getLastLogin();
+
+
+
         this.newListings = getNewListings();    //Working??
         //this.newBids = getNewBids(); //Needs more work
         //this.lostListings = getLostListings(); //Need more data from lecturer Won/Lost????
         this.endingListings = getEndingListings();  //Working??
     }
+    */
 
     /**
      * Get a List of new artworks that are now on auction since last login
      * @return List of new artworks since last login
      */
-    private List<Listing> getNewListings() {
-        return listingManager.getAllActiveListings()
-                .stream().filter(x -> x.getCurrentBid().getDate() < lastLoginDate)
+    public List<Listing> getNewListings() {
+        long lastLoginDate = Main.accountManager.getLoggedIn().getLastLogin();
+        return Main.listingManager.getAllActiveListings()
+                .stream().filter(x -> x.getDateCreated() > lastLoginDate)
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Get a list of new bids on sellers auctions since last login
-     * @return List of new bids on sellers auctions
-     */
-    private List<Listing> getNewBids() {
-        List<Listing> sellersListings = listingManager.getAllActiveListings()
-                .stream().filter(x -> x.getCurrentBid().getDate() < lastLoginDate).filter(a -> a.getSeller().equals(currentUser))
-                .collect(Collectors.toList());
-
-        return null;
-        //Main.accountManager.getLoggedIn().getUserName().equals(listing.getSeller());
-        //return null;
-    }
-
-    /**
-     * Get a list of lost auctions since last login
-     * @return List of lost auctions
-     */
-    private List<Listing> getLostListings() {
-        //TODO - In other words get a list of auctions that have ended on which user has bid
-        return listingManager.getAllActiveListings()
-                .stream().filter(x -> x.getCurrentBid().getDate() < lastLoginDate).filter(a -> a.getSeller().equals(currentUser))
-                .collect(Collectors.toList());
-    }
+//    /**
+//     * Get a list of new bids on sellers auctions since last login
+//     * @return List of new bids on sellers auctions
+//     */
+//    public List<Listing> getNewBids() {
+//        List<Listing> sellersListings = listingManager.getAllActiveListings()
+//                .stream().filter(x -> x.getCurrentBid().getDate() < lastLoginDate).filter(a -> a.getSeller().equals(currentUser))
+//                .collect(Collectors.toList());
+//
+//        return null;
+//        //Main.accountManager.getLoggedIn().getUserName().equals(listing.getSeller());
+//        //return null;
+//    }
+//
+//    /**
+//     * Get a list of lost auctions since last login
+//     * @return List of lost auctions
+//     */
+//    public List<Listing> getLostListings() {
+//        //TODO - In other words get a list of auctions that have ended on which user has bid
+//        return listingManager.getAllActiveListings()
+//                .stream().filter(x -> x.getCurrentBid().getDate() < lastLoginDate).filter(a -> a.getSeller().equals(currentUser))
+//                .collect(Collectors.toList());
+//    }
 
     /**
      * List of auctions a user bid on that are coming to a close
      * so they have less than 2 bids left
      * @return List of auctions close to their bid limit
      */
-    private List<Listing> getEndingListings() {
-        return listingManager.getAllActiveListings()
-                .stream().filter(x -> x.getBidsLeft() < 3)
+    public List<Listing> getEndingListings() {
+        Account currentUser = Main.accountManager.getLoggedIn();
+        return Main.listingManager.getAllActiveListings()
+                .stream().filter(x -> x.getBidsLeft() < 5)
                 .filter(a -> a.getBidHistory().getBid(currentUser) != null)
                 .collect(Collectors.toList());
     }

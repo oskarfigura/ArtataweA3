@@ -49,8 +49,9 @@ public class AccountManager {
 	 */
 	public void login(Account account) {
 		this.loggedInAccount = account;
+		this.loggedInAccount.updateNotifications();
 		account.login();
-		
+
 		this.saveAccountFile();
 	}
 

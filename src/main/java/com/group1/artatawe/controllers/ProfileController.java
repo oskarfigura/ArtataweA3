@@ -20,6 +20,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 
+import javax.management.Notification;
+
 /**
  * Controller for "Profile.fxml"
  */
@@ -50,6 +52,8 @@ public class ProfileController {
 	@FXML GridPane selling;
 	@FXML GridPane sold;
 	@FXML GridPane wonauctions;
+
+	@FXML ListView<String> notificationsList;
 
 	public void initialize() {
 		Account loggedIn = Main.accountManager.getLoggedIn();
@@ -84,6 +88,14 @@ public class ProfileController {
 				this.initializeFavButton();
 			}
 		});
+
+		for (Listing listing : Main.accountManager.getLoggedIn().getNewListings()) {
+			this.notificationsList.getItems().add("New Auction: " + listing.getArtwork().getTitle());
+		}
+
+		for (Listing listing : Main.accountManager.getLoggedIn().getEndingListings()) {
+			this.notificationsList.getItems().add("Auction Ending: " + listing.getArtwork().getTitle());
+		}
 	}
 
 	/**
