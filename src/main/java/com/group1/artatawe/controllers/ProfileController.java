@@ -1,15 +1,10 @@
 package com.group1.artatawe.controllers;
 
-import java.awt.event.MouseListener;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.LinkedList;
-
 import com.group1.artatawe.Main;
 import com.group1.artatawe.accounts.Account;
 import com.group1.artatawe.listings.Listing;
 import com.group1.artatawe.utils.GridUtil;
-
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -17,288 +12,318 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 
-import javax.management.Notification;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedList;
 
 /**
  * Controller for "Profile.fxml"
  */
 public class ProfileController {
 
-	private static Account viewing = null;
-	private boolean viewingOwnProfile = false;
+    private static Account viewing = null;
+    private boolean viewingOwnProfile = false;
 
-	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
 
-	//Header Attributes
-	@FXML StackPane topstack;
-	@FXML ImageView profileimage;
-	@FXML Button home;
-	@FXML Button currentlistings;
-	@FXML Button createlisting;
-	@FXML Button logout;
+    //Header Attributes
+    @FXML
+    StackPane topstack;
+    @FXML
+    ImageView profileimage;
+    @FXML
+    Button home;
+    @FXML
+    Button currentlistings;
+    @FXML
+    Button createlisting;
+    @FXML
+    Button logout;
 
-	//Profile Specific Attributes
-	@FXML ImageView avatar;
-	@FXML Button favbutton;
-	@FXML Label firstname;
-	@FXML Label lastname;
-	@FXML Label username;
-	@FXML Label lastseen;
-	@FXML Button editaccount;
+    //Profile Specific Attributes
+    @FXML
+    ImageView avatar;
+    @FXML
+    Button favbutton;
+    @FXML
+    Label firstname;
+    @FXML
+    Label lastname;
+    @FXML
+    Label username;
+    @FXML
+    Label lastseen;
+    @FXML
+    Button editaccount;
 
-	@FXML GridPane selling;
-	@FXML GridPane sold;
-	@FXML GridPane wonauctions;
+    @FXML
+    GridPane selling;
+    @FXML
+    GridPane sold;
+    @FXML
+    GridPane wonauctions;
 
-	@FXML ListView<String> notificationsList;
+    @FXML
+    ListView<String> notificationsList;
 
-	public void initialize() {
-		Account loggedIn = Main.accountManager.getLoggedIn();
-		viewingOwnProfile = loggedIn.getUserName().equals(viewing.getUserName());
-		
-		this.initializeHeader();
-		this.initializeFavButton();
+    public void initialize() {
+        Account loggedIn = Main.accountManager.getLoggedIn();
+        viewingOwnProfile = loggedIn.getUserName().equals(viewing.getUserName());
 
-		this.renderSellingListings();
-		this.renderSoldListings();
-		this.renderWonListings();
+        this.initializeHeader();
+        this.initializeFavButton();
 
-		this.avatar.setImage(viewing.getAvatar());
-		this.firstname.setText(viewing.getFirstName());
-		this.lastname.setText(viewing.getLastName());
-		this.username.setText(viewing.getUserName());
-		this.lastseen.setText(DATE_FORMAT.format(new Date(viewing.getLastLogin())));
+        this.renderSellingListings();
+        this.renderSoldListings();
+        this.renderWonListings();
 
-		if(! viewingOwnProfile) {
-			this.editaccount.setVisible(false);
-		}
+        this.avatar.setImage(viewing.getAvatar());
+        this.firstname.setText(viewing.getFirstName());
+        this.lastname.setText(viewing.getLastName());
+        this.username.setText(viewing.getUserName());
+        this.lastseen.setText(DATE_FORMAT.format(new Date(viewing.getLastLogin())));
 
-		this.editaccount.setOnMouseClicked(e -> EditAccountController.editAccount());
+        if (!viewingOwnProfile) {
+            this.editaccount.setVisible(false);
+        }
 
-		this.favbutton.setOnMouseClicked(e -> {
-			if(! viewingOwnProfile) {
-				if(loggedIn.isFavAccount(viewing)) {
-					loggedIn.removeFavAccounts(viewing);
-				} else {
-					loggedIn.addFavAccount(viewing);
-				}
-				this.initializeFavButton();
-			}
-		});
+        this.editaccount.setOnMouseClicked(e -> EditAccountController.editAccount());
 
-		for (Listing listing : Main.accountManager.getLoggedIn().getNewListings()) {
-			this.notificationsList.getItems().add("New Auction: " + listing.getArtwork().getTitle());
-			this.notificationsList.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
-		}
+        this.favbutton.setOnMouseClicked(e -> {
+            if (!viewingOwnProfile) {
+                if (loggedIn.isFavAccount(viewing)) {
+                    loggedIn.removeFavAccounts(viewing);
+                } else {
+                    loggedIn.addFavAccount(viewing);
+                }
+                this.initializeFavButton();
+            }
+        });
 
-		for (Listing listing : Main.accountManager.getLoggedIn().getEndingListings()) {
-			this.notificationsList.getItems().add("Auction Ending: " + listing.getArtwork().getTitle());
-			this.notificationsList.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
-		}
+        this.notificationsList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println(notificationsList.getSelectionModel().getSelectedItems().);
+                //System.out.println(notificationsList.);
+            }
+        });
 
-		//TODO FIX BUG (IT DOESN'T SHOW)
-		for (Listing listing : Main.accountManager.getLoggedIn().getNewBids()) {
-			this.notificationsList.getItems().add("New Bid: " + listing.getArtwork().getTitle());
-			this.notificationsList.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
-		}
+        for (Listing listing : Main.accountManager.getLoggedIn().getNewListings()) {
+            this.notificationsList.getItems().add("New Auction: " + listing.getArtwork().getTitle());
 
-	}
+            //this.notificationsList.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
+        }
 
-	/**
-	 * Open the profile GUI on a specific account
-	 * @param account - The account to show the GUI of
-	 */
-	public static void viewProfile(Account account) {
-		viewing = account;
-		Main.switchScene("Profile");
-	}
+        for (Listing listing : Main.accountManager.getLoggedIn().getEndingListings()) {
+            this.notificationsList.getItems().add("Auction Ending: " + listing.getArtwork().getTitle());
+            //this.notificationsList.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
+        }
 
-	/**
-	 * Initialize the header
-	 */
-	private void initializeHeader() {
-		this.currentlistings.setOnMouseClicked(e -> Main.switchScene("CurrentListings"));
-		this.profileimage.setImage(Main.accountManager.getLoggedIn().getAvatar());
-		this.profileimage.setOnMouseClicked(e -> viewProfile(Main.accountManager.getLoggedIn()));
-		this.createlisting.setOnMouseClicked(e -> Main.switchScene("CreateListing"));
-		this.home.setOnMouseClicked(e -> Main.switchScene("Home"));
-		this.logout.setOnMouseClicked(e -> Main.accountManager.logoutCurrentAccount());
+        //TODO FIX BUG (IT DOESN'T SHOW)
+        for (Listing listing : Main.accountManager.getLoggedIn().getNewBids()) {
+            this.notificationsList.getItems().add("New Bid: " + listing.getArtwork().getTitle());
+            //this.notificationsList.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
+        }
 
-		//I could not get topstack to ignore the mouse event and let the child nodes handle it, so instead
-		//we check where the click happened and what should actually of been clicked.
-		this.topstack.setOnMouseClicked(e -> {
-			if(this.profileimage.intersects(e.getX(), e.getY(), 0, 0)) {
-				ProfileController.viewProfile(Main.accountManager.getLoggedIn());
-			}
-		});
-	}
+    }
 
-	/**
-	 * Initialize the fav account button. Will set the formatting of the favourite button (gold or grey) 
-	 * depending on if the viewing account is favourite.
-	 */
-	private void initializeFavButton() {
-		if(! viewingOwnProfile) {
-			if(Main.accountManager.getLoggedIn().isFavAccount(viewing)) {
-				this.favbutton.setStyle("-fx-background-color: #ffb938;");
-			} else {
-				this.favbutton.setStyle("-fx-background-color: lightgrey;");
-			}
-		} else {
-			this.favbutton.setVisible(false);
-		}
-	}
+    /**
+     * Open the profile GUI on a specific account
+     *
+     * @param account - The account to show the GUI of
+     */
+    public static void viewProfile(Account account) {
+        viewing = account;
+        Main.switchScene("Profile");
+    }
 
-	/**
-	 * Turns a Listing that is currently being sold, into a node
-	 * 
-	 * @param listing - The listing to turn into a node
-	 * @return The node created
-	 */
-	private Node getSellingListingNode(Listing listing) {
-		HBox hbox = new HBox();
+    /**
+     * Initialize the header
+     */
+    private void initializeHeader() {
+        this.currentlistings.setOnMouseClicked(e -> Main.switchScene("CurrentListings"));
+        this.profileimage.setImage(Main.accountManager.getLoggedIn().getAvatar());
+        this.profileimage.setOnMouseClicked(e -> viewProfile(Main.accountManager.getLoggedIn()));
+        this.createlisting.setOnMouseClicked(e -> Main.switchScene("CreateListing"));
+        this.home.setOnMouseClicked(e -> Main.switchScene("Home"));
+        this.logout.setOnMouseClicked(e -> Main.accountManager.logoutCurrentAccount());
 
-		Image image = listing.getArtwork().getImage();
-		ImageView iv = new ImageView(image);
-		iv.setPreserveRatio(true);
-		iv.setFitHeight(120);
-		iv.setFitWidth(120);
+        //I could not get topstack to ignore the mouse event and let the child nodes handle it, so instead
+        //we check where the click happened and what should actually of been clicked.
+        this.topstack.setOnMouseClicked(e -> {
+            if (this.profileimage.intersects(e.getX(), e.getY(), 0, 0)) {
+                ProfileController.viewProfile(Main.accountManager.getLoggedIn());
+            }
+        });
+    }
 
-		ListView<String> info = new ListView<>();
-		info.getItems().addAll(listing.getArtwork().getTitle(), 
-				listing.getArtwork().getArtist());
+    /**
+     * Initialize the fav account button. Will set the formatting of the favourite button (gold or grey)
+     * depending on if the viewing account is favourite.
+     */
+    private void initializeFavButton() {
+        if (!viewingOwnProfile) {
+            if (Main.accountManager.getLoggedIn().isFavAccount(viewing)) {
+                this.favbutton.setStyle("-fx-background-color: #ffb938;");
+            } else {
+                this.favbutton.setStyle("-fx-background-color: lightgrey;");
+            }
+        } else {
+            this.favbutton.setVisible(false);
+        }
+    }
 
-		if(listing.hasDescription()) {
-			info.getItems().add(listing.getArtwork().getDescription());
-		}
+    /**
+     * Turns a Listing that is currently being sold, into a node
+     *
+     * @param listing - The listing to turn into a node
+     * @return The node created
+     */
+    private Node getSellingListingNode(Listing listing) {
+        HBox hbox = new HBox();
 
-		info.setMaxHeight(125);
+        Image image = listing.getArtwork().getImage();
+        ImageView iv = new ImageView(image);
+        iv.setPreserveRatio(true);
+        iv.setFitHeight(120);
+        iv.setFitWidth(120);
 
-		if(listing.getCurrentBid() == null) {
-			info.getItems().add("£" + listing.getReserve());
-		} else {
-			info.getItems().add("£" + listing.getCurrentBid().getPrice());
-		}
+        ListView<String> info = new ListView<>();
+        info.getItems().addAll(listing.getArtwork().getTitle(),
+                listing.getArtwork().getArtist());
 
-		info.getItems().add(listing.getBidsLeft() + " bids remaining");
+        if (listing.hasDescription()) {
+            info.getItems().add(listing.getArtwork().getDescription());
+        }
 
-		hbox.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
-		hbox.getChildren().add(iv);
-		hbox.getChildren().add(info);
+        info.setMaxHeight(125);
 
-		return hbox;
-	}
+        if (listing.getCurrentBid() == null) {
+            info.getItems().add("£" + listing.getReserve());
+        } else {
+            info.getItems().add("£" + listing.getCurrentBid().getPrice());
+        }
 
-	/**
-	 * Turns a Listing that has been sold, into a node
-	 * 
-	 * @param listing - The listing to turn into a node
-	 * @return The node created
-	 */
-	private Node getSoldListingNode(Listing listing) {
-		HBox hbox = new HBox();
+        info.getItems().add(listing.getBidsLeft() + " bids remaining");
 
-		Image image = listing.getArtwork().getImage();
-		ImageView iv = new ImageView(image);
-		iv.setPreserveRatio(true);
-		iv.setFitHeight(120);
-		iv.setFitWidth(120);
+        hbox.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
+        hbox.getChildren().add(iv);
+        hbox.getChildren().add(info);
 
-		ListView<String> info = new ListView<>();
-		info.getItems().addAll(listing.getArtwork().getTitle(), 
-				listing.getArtwork().getArtist());
+        return hbox;
+    }
 
-		if(listing.hasDescription()) {
-			info.getItems().add(listing.getArtwork().getDescription());
-		}
+    /**
+     * Turns a Listing that has been sold, into a node
+     *
+     * @param listing - The listing to turn into a node
+     * @return The node created
+     */
+    private Node getSoldListingNode(Listing listing) {
+        HBox hbox = new HBox();
 
-		info.setMaxHeight(125);
+        Image image = listing.getArtwork().getImage();
+        ImageView iv = new ImageView(image);
+        iv.setPreserveRatio(true);
+        iv.setFitHeight(120);
+        iv.setFitWidth(120);
 
-		if(listing.getCurrentBid() != null) {
-			info.getItems().add("Sold for: £" + listing.getCurrentBid().getPrice());
-			info.getItems().add("Winner: " + listing.getCurrentBid().getBidder());
-		}
+        ListView<String> info = new ListView<>();
+        info.getItems().addAll(listing.getArtwork().getTitle(),
+                listing.getArtwork().getArtist());
 
-		hbox.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
-		hbox.getChildren().add(iv);
-		hbox.getChildren().add(info);
+        if (listing.hasDescription()) {
+            info.getItems().add(listing.getArtwork().getDescription());
+        }
 
-		return hbox;
-	}
+        info.setMaxHeight(125);
 
-	/**
-	 * Turns a Listing that has been won, into a node
-	 * 
-	 * @param listing - The listing to turn into a node
-	 * @return The node created
-	 */
-	private Node getWonListingNode(Listing listing) {
-		HBox hbox = new HBox();
+        if (listing.getCurrentBid() != null) {
+            info.getItems().add("Sold for: £" + listing.getCurrentBid().getPrice());
+            info.getItems().add("Winner: " + listing.getCurrentBid().getBidder());
+        }
 
-		Image image = listing.getArtwork().getImage();
-		ImageView iv = new ImageView(image);
-		iv.setPreserveRatio(true);
-		iv.setFitHeight(120);
-		iv.setFitWidth(120);
+        hbox.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
+        hbox.getChildren().add(iv);
+        hbox.getChildren().add(info);
 
-		ListView<String> info = new ListView<>();
-		info.getItems().addAll(listing.getArtwork().getTitle(), 
-				listing.getArtwork().getArtist());
+        return hbox;
+    }
 
-		if(listing.hasDescription()) {
-			info.getItems().add(listing.getArtwork().getDescription());
-		}
+    /**
+     * Turns a Listing that has been won, into a node
+     *
+     * @param listing - The listing to turn into a node
+     * @return The node created
+     */
+    private Node getWonListingNode(Listing listing) {
+        HBox hbox = new HBox();
 
-		info.setMaxHeight(125);
+        Image image = listing.getArtwork().getImage();
+        ImageView iv = new ImageView(image);
+        iv.setPreserveRatio(true);
+        iv.setFitHeight(120);
+        iv.setFitWidth(120);
 
-		if(listing.getCurrentBid() != null) {
-			info.getItems().add("Purchased for: £" + listing.getCurrentBid().getPrice());
-		}
+        ListView<String> info = new ListView<>();
+        info.getItems().addAll(listing.getArtwork().getTitle(),
+                listing.getArtwork().getArtist());
 
-		hbox.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
-		hbox.getChildren().add(iv);
-		hbox.getChildren().add(info);
+        if (listing.hasDescription()) {
+            info.getItems().add(listing.getArtwork().getDescription());
+        }
 
-		return hbox;
-	}
+        info.setMaxHeight(125);
 
-	/**
-	 * Get all the listings the viewing account is selling and add it to the box
-	 */
-	private void renderSellingListings() {
-		LinkedList<Node> nodes = new LinkedList<>();
+        if (listing.getCurrentBid() != null) {
+            info.getItems().add("Purchased for: £" + listing.getCurrentBid().getPrice());
+        }
 
-		viewing.getHistory().getSellingListings().stream()
-			.forEach(listing -> nodes.add(this.getSellingListingNode(listing)));
+        hbox.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
+        hbox.getChildren().add(iv);
+        hbox.getChildren().add(info);
 
-		GridUtil.insertList(this.selling, nodes);
-	}
+        return hbox;
+    }
 
-	/**
-	 * Get all the listings the viewing account has sold and add it to the box
-	 */
-	private void renderSoldListings() {
-		LinkedList<Node> nodes = new LinkedList<>();
+    /**
+     * Get all the listings the viewing account is selling and add it to the box
+     */
+    private void renderSellingListings() {
+        LinkedList<Node> nodes = new LinkedList<>();
 
-		viewing.getHistory().getSoldListings().stream()
-		.forEach(listing -> nodes.add(this.getSoldListingNode(listing)));
+        viewing.getHistory().getSellingListings().stream()
+                .forEach(listing -> nodes.add(this.getSellingListingNode(listing)));
 
-		GridUtil.insertList(this.sold, nodes);
-	}
+        GridUtil.insertList(this.selling, nodes);
+    }
 
-	/**
-	 * Get all the listings the viewing account has one and add it to the box
-	 */
-	private void renderWonListings() {
-		LinkedList<Node> nodes = new LinkedList<>();
+    /**
+     * Get all the listings the viewing account has sold and add it to the box
+     */
+    private void renderSoldListings() {
+        LinkedList<Node> nodes = new LinkedList<>();
 
-		viewing.getHistory().getWonListings().stream()
-		.forEach(listing -> nodes.add(this.getWonListingNode(listing)));
+        viewing.getHistory().getSoldListings().stream()
+                .forEach(listing -> nodes.add(this.getSoldListingNode(listing)));
 
-		GridUtil.insertList(this.wonauctions, nodes);
-	}
+        GridUtil.insertList(this.sold, nodes);
+    }
+
+    /**
+     * Get all the listings the viewing account has one and add it to the box
+     */
+    private void renderWonListings() {
+        LinkedList<Node> nodes = new LinkedList<>();
+
+        viewing.getHistory().getWonListings().stream()
+                .forEach(listing -> nodes.add(this.getWonListingNode(listing)));
+
+        GridUtil.insertList(this.wonauctions, nodes);
+    }
 }

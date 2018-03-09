@@ -77,15 +77,19 @@ public class Account {
     }
 
     public void updateNotifications() {
-        if(Main.notifications.getNewListings() != null) {
-            this.newListings = Main.notifications.getNewListings();
-        }
-        if(Main.notifications.getEndingListings() != null) {
-            this.endingListings = Main.notifications.getEndingListings();
-        }
-        if(Main.notifications.getNewBids() != null) {
-            this.newBids = Main.notifications.getNewBids();
-        }
+//        if(Main.notifications.getNewListings() != null) {
+//            this.newListings = Main.notifications.getNewListings();
+//        }
+//        if(Main.notifications.getEndingListings() != null) {
+//            this.endingListings = Main.notifications.getEndingListings();
+//        }
+//        if(Main.notifications.getNewBids() != null) {
+//            this.newBids = Main.notifications.getNewBids();
+//        }
+        this.newListings = Main.notifications.getNewListings();
+        this.endingListings = Main.notifications.getEndingListings();
+        this.newBids = Main.notifications.getNewBids();
+
     }
 
     public List<Listing> getNewListings() {

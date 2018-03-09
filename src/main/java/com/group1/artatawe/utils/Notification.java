@@ -2,17 +2,14 @@ package com.group1.artatawe.utils;
 
 import com.group1.artatawe.Main;
 import com.group1.artatawe.accounts.Account;
-import com.group1.artatawe.listings.Bid;
 import com.group1.artatawe.listings.Listing;
-import com.group1.artatawe.managers.AccountManager;
-import com.group1.artatawe.managers.ListingManager;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * Class used to control the creation of notifications.
+ *
  * @author Oskar Figura and Nikolina Antoniou
  * @version 1.0
  * created on: 05/03/2018.
@@ -31,6 +28,7 @@ public class Notification {
 
     /**
      * Get a List of new artworks that are now on auction since last login
+     *
      * @return List of new artworks since last login
      */
     public List<Listing> getNewListings() {
@@ -42,18 +40,28 @@ public class Notification {
 
     /**
      * Get a list of new bids on sellers auctions since last login
+     *
      * @return List of new bids on sellers auctions
      */
     public List<Listing> getNewBids() {
         Account currentUser = Main.accountManager.getLoggedIn();
         long lastLoginDate = Main.accountManager.getLoggedIn().getLastLogin();
 
-        return Main.listingManager.getAllActiveListings()
-                .stream()
-                .filter(n -> n.getNumOfBids() > 0)
-                .filter(x -> x.getCurrentBid().getDate() > lastLoginDate)
-                .filter(a -> a.getSeller().equals(currentUser))
-                .collect(Collectors.toList());
+        if (Main.listingManager.getAllActiveListings().size() > 0) {
+            return Main.listingManager.getAllActiveListings().stream()
+                    .filter(n -> n.getNumOfBids() > 0)
+                    .filter(x -> x.getCurrentBid().getDate() > lastLoginDate)
+                    .filter(a -> a.getSeller().equals(currentUser))
+                    .collect(Collectors.toList());
+        } else {
+            return null;
+        }
+//        return Main.listingManager.getAllActiveListings()
+//                .stream()
+//                .filter(n -> n.getNumOfBids() > 0)
+//                .filter(x -> x.getCurrentBid().getDate() > lastLoginDate)
+//                .filter(a -> a.getSeller().equals(currentUser))
+//                .collect(Collectors.toList());
     }
 
 //    /**
@@ -70,6 +78,7 @@ public class Notification {
     /**
      * List of auctions a user bid on that are coming to a close
      * so they have less than 2 bids left
+     *
      * @return List of auctions close to their bid limit
      */
     public List<Listing> getEndingListings() {
