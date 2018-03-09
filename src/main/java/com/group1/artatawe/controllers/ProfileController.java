@@ -108,7 +108,7 @@ public class ProfileController {
         this.notificationsList.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                System.out.println(notificationsList.getSelectionModel().getSelectedItems().);
+                System.out.println(notificationsList.getSelectionModel().getSelectedItems());
                 //System.out.println(notificationsList.);
             }
         });
