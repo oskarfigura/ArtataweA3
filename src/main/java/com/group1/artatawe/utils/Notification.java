@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * Class used to control the creation of notifications.
  * @author Oskar Figura and Nikolina Antoniou
  * @version 1.0
  * created on: 05/03/2018.
