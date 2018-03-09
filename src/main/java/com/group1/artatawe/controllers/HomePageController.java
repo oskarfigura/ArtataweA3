@@ -29,6 +29,7 @@ public class HomePageController {
 	@FXML Button currentlistings;
 	@FXML Button createlisting;
 	@FXML Button logout;
+	@FXML Button buttonMyGallery;
 
 	//Home Page Specific Attributes
 	@FXML GridPane sellingbox;
@@ -51,9 +52,10 @@ public class HomePageController {
 	private void initializeHeader() {
 		this.currentlistings.setOnMouseClicked(e -> Main.switchScene("CurrentListings"));
 		this.profileimage.setImage(Main.accountManager.getLoggedIn().getAvatar());
+		System.out.println(topstack.getWidth() + " " + topstack.getHeight());
 		this.createlisting.setOnMouseClicked(e -> Main.switchScene("CreateListing"));
-		//this.home.setOnMouseClicked(e -> Main.switchScene("Home"));
 		this.logout.setOnMouseClicked(e -> Main.accountManager.logoutCurrentAccount());
+		this.buttonMyGallery.setOnMouseClicked(e -> Main.switchScene("UserGallery"));
 
 		//I could not get topstack to ignore the mouse event and let the child nodes handle it, so instead
 		//we check where the click happened and what should actually of been clicked.
