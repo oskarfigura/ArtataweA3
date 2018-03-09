@@ -67,7 +67,7 @@
    <center>
       <ScrollPane prefHeight="877.0" prefWidth="1083.0">
          <content>
-            <TilePane fx:id="tilePaneGalleries" prefHeight="874.0" prefWidth="975.0" />
+            <TilePane fx:id="tilePaneGalleries" prefHeight="858.0" prefWidth="958.0" />
          </content>
       </ScrollPane>
    </center>
