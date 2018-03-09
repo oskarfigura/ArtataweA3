@@ -32,12 +32,16 @@ public class CustomGalleryController {
     private List<RadioButton> buttons = new LinkedList<RadioButton>();
 
     public void initialize() {
-            this.initializeHeader();
-            this.includeOptions();
-            this.fixTile();
-            this.renderGalleries();
+
+        this.initializeHeader();
+        this.fixTile();
+        this.anyGalleries();
+
         }
 
+    /**
+     * Initializes all of the header elements such as linking buttons
+     */
     private void initializeHeader() {
         this.currentlistings.setOnMouseClicked(e -> Main.switchScene("CurrentListings"));
         this.profileimage.setImage((Main.accountManager.getLoggedIn().getAvatar()));
@@ -51,30 +55,35 @@ public class CustomGalleryController {
             }
         });
     }
-    private void includeOptions() {
+
+    /**
+     * Checks if the user has any galleries, if not a notification is sent
+     */
+    private void anyGalleries() {
 
         int size = Main.accountManager.getLoggedIn().getUserGalleries().size(); // all galleries
 
         if (size == 0) {
             noGalleries();
         } else {
-
+            this.renderGalleries();
         }
-
         //TODO -> check the size of the user galleries, if there are 0 display a message saying the user has to create a gallery
-
-        //TODO -> get the names of all galleries
         //TODO -> make a radio button for each + a default one selecting all galleries
-
-
     }
 
+    /**
+     *
+     * @param size
+     */
     private void makeRadioButton(int size) {
 
     }
 
+    /**
+     * Renders all artworks/listings from all galleries a user has
+     */
     private void renderGalleries() {
-
         Main.accountManager.getLoggedIn().getUserGalleries().stream().forEach(gallery -> {
             gallery.getListings().stream().forEach(listing -> {
                 String title = gallery.getName();
@@ -88,6 +97,12 @@ public class CustomGalleryController {
 
     }
 
+    /**
+     * Creates a VBox container
+     * @param iv
+     * @param title
+     * @return
+     */
     private VBox galleryNode(ImageView iv, String title) {
 
         VBox vbox = new VBox();
@@ -114,6 +129,20 @@ public class CustomGalleryController {
         //TODO -> add a button to add a new gallery
     }
 
+    /**
+     * A method to notify the user that currently he does not have any artworks/listings in his galleries
+     */
+    private void NoListings() {
+
+        Label l = new Label("You do not have any listings ");
+
+    }
+
+    /**
+     * Makes an image view which would be added to a VBox container holding a listing from a particular gallery
+     * @param image
+     * @return
+     */
     private ImageView makeImgView(Image image) {
 
         ImageView im = new ImageView();
@@ -128,7 +157,7 @@ public class CustomGalleryController {
     }
 
     /**
-     *
+     * Fixes the HGap and padding of the elements inside the TilePane making it a lot easier for the eye
      */
     private void fixTile() {
 
