@@ -7,9 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 
 import java.util.LinkedList;
@@ -61,23 +59,54 @@ public class CustomGalleryController {
      */
     private void anyGalleries() {
 
+        boolean noListings = Main.accountManager.getLoggedIn().getUserGalleries()
+                .stream()
+                .allMatch(x -> x.getListings().isEmpty());
+
         int size = Main.accountManager.getLoggedIn().getUserGalleries().size(); // all galleries
 
         if (size == 0) {
+            
             noGalleries();
+
+        } else if (noListings) {
+
+            noListings();
+
         } else {
+
             this.renderGalleries();
+            this.renderButtons(size, Main.accountManager.getLoggedIn().getGalleryNames());
+
         }
-        //TODO -> check the size of the user galleries, if there are 0 display a message saying the user has to create a gallery
-        //TODO -> make a radio button for each + a default one selecting all galleries
     }
 
     /**
      *
      * @param size
      */
-    private void makeRadioButton(int size) {
+    private void renderButtons(int size, List<String> names) {
 
+        Label l = new Label("Select from the display options");
+        l.setFont(new Font("Calibri", 18));
+        l.setPadding(new Insets(15.0, 15.0, 0.0, 15.0));
+
+        RadioButton rb = new RadioButton("All galleries");
+        rb.setPadding(new Insets(15.0, 15.0, 0.0, 15.0));
+
+        buttons.add(rb);
+        vboxOptions.getChildren().addAll(l, rb);
+
+        while (size > 0) {
+
+            String name = names.get((names.size() - 1) - (size - 1));
+            RadioButton r = new RadioButton(name);
+            r.setPadding(new Insets(15.0, 15.0, 0.0, 15.0));
+
+            buttons.add(r);
+            vboxOptions.getChildren().add(r);
+            size--;
+        }
     }
 
     /**
@@ -126,15 +155,15 @@ public class CustomGalleryController {
         tilePaneGalleries.setAlignment(Pos.CENTER);
         tilePaneGalleries.getChildren().add(l);
 
-        //TODO -> add a button to add a new gallery
     }
 
-    /**
-     * A method to notify the user that currently he does not have any artworks/listings in his galleries
-     */
-    private void NoListings() {
+    private void noListings() {
+        Label l = new Label("You do not have any listings in your galleries, click to add.");
+        l.setFont(new Font("Calibri", 24));
+        l.setOnMouseClicked(e -> Main.switchScene("CurrentListings"));
 
-        Label l = new Label("You do not have any listings ");
+        tilePaneGalleries.setAlignment(Pos.CENTER);
+        tilePaneGalleries.getChildren().add(l);
 
     }
 

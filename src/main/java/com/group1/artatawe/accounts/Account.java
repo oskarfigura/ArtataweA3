@@ -3,10 +3,13 @@ package com.group1.artatawe.accounts;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -197,6 +200,16 @@ public class Account {
 	 */
 	public void addGallery(Gallery g) {
 	    this.userGalleries.add(g);
+	}
+
+	public List<String> getGalleryNames() {
+		List<String> list = new ArrayList<>();
+
+		for (Gallery userGallery : userGalleries) {
+			list.add(userGallery.getName());
+		}
+
+		return list;
 	}
 
 	/**

@@ -511,7 +511,12 @@ public class ViewListingController {
 		//Create the gallery when button is clicked
 		button.setOnMouseClicked(e -> {
 			Account user = Main.accountManager.getLoggedIn();
-			if (!user.checkGallery(input.getText())) {
+
+			if (input.getText() == null || input.getText().trim().isEmpty()) {
+				AlertUtil.sendAlert(AlertType.ERROR, "No gallery name", "Please provide a gallery name");
+				popup.close();
+				createNewGalPopup();
+			} else if (!user.checkGallery(input.getText())) {
 				Gallery newGallery = new Gallery(user, input.getText());
 				newGallery.addListing(viewing);
 				user.addGallery(newGallery);
@@ -522,6 +527,7 @@ public class ViewListingController {
 				popup.close();
 				createNewGalPopup();
 			}
+
 			/*
 				Update the file after a new gallery is added to a user's account
 		 	*/
