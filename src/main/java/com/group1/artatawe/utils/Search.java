@@ -1,6 +1,8 @@
 package com.group1.artatawe.utils;
 import java.util.regex.*;
 import java.util.List;
+
+import com.group1.artatawe.Main;
 import com.group1.artatawe.artwork.Artwork;
 import com.group1.artatawe.listings.Listing;
 import java.util.ArrayList;
@@ -10,10 +12,11 @@ public class Search {
 
     public static ArrayList<Artwork> searchForDetails(String s){
 
-        ListingManager listingManager = new ListingManager();
+        //ListingManager listingManager = new ListingManager();
+
        // listingManager.getAllActiveListings().stream().filter(x-> x.getArtwork().getDescription().contains("jesus"));
         //listingManager.getAllActiveListings().stream().filter(x-> x.getArtwork().getTitle().contains("jesus"));
-        List<Listing> lists = listingManager.getAllActiveListings();
+        List<Listing> lists = Main.listingManager.getAllActiveListings();
 
         String pattern = "(.*)(.*" +s +".*)(.*)";
         ArrayList<Artwork> found = new ArrayList<>();
@@ -40,6 +43,8 @@ public class Search {
 
     }
     public static void main(String[] args) {
+
+
         String line = "jesus sculpture";
         ArrayList<Artwork> art1 = searchForDetails("adam");
         ArrayList<Artwork> art2 =  searchForDetails("jESus");
