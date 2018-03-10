@@ -115,7 +115,6 @@ public class ProfileController {
 
         for (Listing listing : Main.accountManager.getLoggedIn().getNewListings()) {
             this.notificationsList.getItems().add("New Auction: " + listing.getArtwork().getTitle());
-
             //this.notificationsList.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
         }
 
@@ -124,9 +123,13 @@ public class ProfileController {
             //this.notificationsList.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
         }
 
-        //TODO FIX BUG (IT DOESN'T SHOW)
         for (Listing listing : Main.accountManager.getLoggedIn().getNewBids()) {
             this.notificationsList.getItems().add("New Bid: " + listing.getArtwork().getTitle());
+            //this.notificationsList.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
+        }
+
+        for (Listing listing : Main.accountManager.getLoggedIn().getLostListings()) {
+            this.notificationsList.getItems().add("Lost Auction: " + listing.getArtwork().getTitle());
             //this.notificationsList.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
         }
 

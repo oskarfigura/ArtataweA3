@@ -76,32 +76,46 @@ public class Account {
 
     }
 
+    /**
+     * Updated notification data for user that logged in
+     */
     public void updateNotifications() {
-//        if(Main.notifications.getNewListings() != null) {
-//            this.newListings = Main.notifications.getNewListings();
-//        }
-//        if(Main.notifications.getEndingListings() != null) {
-//            this.endingListings = Main.notifications.getEndingListings();
-//        }
-//        if(Main.notifications.getNewBids() != null) {
-//            this.newBids = Main.notifications.getNewBids();
-//        }
         this.newListings = Main.notifications.getNewListings();
         this.endingListings = Main.notifications.getEndingListings();
         this.newBids = Main.notifications.getNewBids();
-
+        this.lostListings = Main.notifications.getLostListings();
     }
 
+    /**
+     * Get a List of new listings
+     * @return List of new listings since last login
+     */
     public List<Listing> getNewListings() {
         return newListings;
     }
 
+    /**
+     * List of auctions a user bid on that are coming to a close
+     * @return List of listings close to their bid limit
+     */
     public List<Listing> getEndingListings() {
         return endingListings;
     }
 
+    /**
+     * Get a list of new bids on sellers auctions
+     * @return List of listings with new bids on sellers auctions
+     */
     public List<Listing> getNewBids() {
         return newBids;
+    }
+
+    /**
+     * Get a list of lost auctions
+     * @return List of lost auctions since last login
+     */
+    public List<Listing> getLostListings() {
+        return lostListings;
     }
 
     /**
