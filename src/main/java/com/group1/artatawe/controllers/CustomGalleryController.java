@@ -1,6 +1,7 @@
 package com.group1.artatawe.controllers;
 
 import com.group1.artatawe.Main;
+import com.group1.artatawe.artwork.Gallery;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -66,7 +67,7 @@ public class CustomGalleryController {
         int size = Main.accountManager.getLoggedIn().getUserGalleries().size(); // all galleries
 
         if (size == 0) {
-            
+
             noGalleries();
 
         } else if (noListings) {
@@ -78,34 +79,6 @@ public class CustomGalleryController {
             this.renderGalleries();
             this.renderButtons(size, Main.accountManager.getLoggedIn().getGalleryNames());
 
-        }
-    }
-
-    /**
-     *
-     * @param size
-     */
-    private void renderButtons(int size, List<String> names) {
-
-        Label l = new Label("Select from the display options");
-        l.setFont(new Font("Calibri", 18));
-        l.setPadding(new Insets(15.0, 15.0, 0.0, 15.0));
-
-        RadioButton rb = new RadioButton("All galleries");
-        rb.setPadding(new Insets(15.0, 15.0, 0.0, 15.0));
-
-        buttons.add(rb);
-        vboxOptions.getChildren().addAll(l, rb);
-
-        while (size > 0) {
-
-            String name = names.get((names.size() - 1) - (size - 1));
-            RadioButton r = new RadioButton(name);
-            r.setPadding(new Insets(15.0, 15.0, 0.0, 15.0));
-
-            buttons.add(r);
-            vboxOptions.getChildren().add(r);
-            size--;
         }
     }
 
@@ -125,6 +98,65 @@ public class CustomGalleryController {
         });
 
     }
+
+    private void renderSpecificGallery(String galleryName) {
+        Gallery g = Main.accountManager.getLoggedIn().getSpecificGallery(galleryName);
+        g.getListings().stream().forEach(listing -> {
+            String title = g.getName();
+            Image image = listing.getArtwork().getImage();
+            ImageView iv = makeImgView(image);
+            VBox v = galleryNode(iv, title);
+            v.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
+            this.tilePaneGalleries.getChildren().add(v);
+        });
+    }
+
+    /**
+     *
+     * @param size
+     */
+    private void renderButtons(int size, List<String> names) {
+
+        ToggleGroup group = new ToggleGroup();
+
+        Label l = new Label("Select from the display options");
+        l.setFont(new Font("Calibri", 18));
+        l.setPadding(new Insets(15.0, 15.0, 0.0, 15.0));
+
+        RadioButton rb = new RadioButton("All galleries");
+        rb.setToggleGroup(group);
+        rb.setSelected(true);
+        rb.setPadding(new Insets(15.0, 15.0, 0.0, 15.0));
+        rb.selectedProperty().addListener((observable -> {
+            /*
+                Renders all galleries and listings associated with a gallery
+             */
+            this.clearTilePane();
+            renderGalleries();
+        }));
+
+
+        buttons.add(rb);
+        vboxOptions.getChildren().addAll(l, rb);
+
+        while (size > 0) {
+
+            String name = names.get((names.size() - 1) - (size - 1));
+            RadioButton r = new RadioButton(name);
+            r.setToggleGroup(group);
+            r.setPadding(new Insets(15.0, 15.0, 0.0, 15.0));
+            r.selectedProperty().addListener(observable -> {
+                this.clearTilePane();
+                this.renderSpecificGallery(name);
+            });
+
+            buttons.add(r);
+            vboxOptions.getChildren().add(r);
+            size--;
+        }
+    }
+
+
 
     /**
      * Creates a VBox container
@@ -192,6 +224,15 @@ public class CustomGalleryController {
 
         tilePaneGalleries.setHgap(10.0);
         tilePaneGalleries.setPadding(new Insets(10.0, 10.0, 10.0, 10.0));
+
+    }
+
+    /**
+     * Whenever a new gallery will be loaded the tile pane is cleared.
+     */
+    private void clearTilePane() {
+
+        tilePaneGalleries.getChildren().clear();
 
     }
 }

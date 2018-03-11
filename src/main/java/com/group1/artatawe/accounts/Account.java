@@ -202,6 +202,16 @@ public class Account {
 	    this.userGalleries.add(g);
 	}
 
+	public Gallery getSpecificGallery(String galleryName) {
+		return this.userGalleries.stream()
+									.filter(x -> x.getName().equals(galleryName))
+									.findFirst()
+									.get();
+	}
+	/**
+	 *
+	 * @return
+	 */
 	public List<String> getGalleryNames() {
 		List<String> list = new ArrayList<>();
 
