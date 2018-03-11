@@ -1,10 +1,11 @@
-package com.group4.artatawe;
+package com.group1.artatawe;
 
 import java.io.IOException;
 
-import com.group4.artatawe.managers.AccountManager;
-import com.group4.artatawe.managers.ListingManager;
+import com.group1.artatawe.managers.AccountManager;
+import com.group1.artatawe.managers.ListingManager;
 
+import com.group1.artatawe.utils.Notification;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,7 +19,8 @@ public class Main extends Application {
 
 	public static final ListingManager listingManager = new ListingManager();
 	public static final AccountManager accountManager = new AccountManager();
-	
+	public static final Notification notifications = new Notification();
+
 	private static Stage mainStage = null;
 	
 	public static void main(String[] args) {
