@@ -1,10 +1,10 @@
 package com.group1.artatawe.controllers;
 
 import com.group1.artatawe.Main;
-import com.group1.artatawe.utils.AlertUtil;
 import com.group1.artatawe.accounts.Account;
 import com.group1.artatawe.accounts.Address;
 import com.group1.artatawe.drawing.DrawingController;
+import com.group1.artatawe.utils.AlertUtil;
 import com.group1.artatawe.utils.ValidationUtil;
 
 import javafx.fxml.FXML;
@@ -24,6 +24,7 @@ public class EditAccountController {
 	@FXML Button currentlistings;
 	@FXML Button createlisting;
 	@FXML Button logout;
+	@FXML Button buttonMyGallery;
 
 	//Edit Account Attributes
 	@FXML TextField firstname;
@@ -81,6 +82,7 @@ public class EditAccountController {
 		this.createlisting.setOnMouseClicked(e -> Main.switchScene("CreateListing"));
 		this.home.setOnMouseClicked(e -> Main.switchScene("Home"));
 		this.logout.setOnMouseClicked(e -> Main.accountManager.logoutCurrentAccount());
+		this.buttonMyGallery.setOnMouseClicked(e -> Main.switchScene("UserGallery"));
 
 		//I could not get topstack to ignore the mouse event and let the child nodes handle it, so instead
 		//we check where the click happened and what should actually of been clicked.

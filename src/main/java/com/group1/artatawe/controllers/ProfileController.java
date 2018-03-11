@@ -1,5 +1,9 @@
 package com.group1.artatawe.controllers;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedList;
+
 import com.group1.artatawe.Main;
 import com.group1.artatawe.accounts.Account;
 import com.group1.artatawe.listings.Listing;
@@ -37,19 +41,14 @@ public class ProfileController {
     //Stores index of listings in list view notificationsList
     private List<Listing> notificationsListings;
 
-    //Header Attributes
-    @FXML
-    StackPane topstack;
-    @FXML
-    ImageView profileimage;
-    @FXML
-    Button home;
-    @FXML
-    Button currentlistings;
-    @FXML
-    Button createlisting;
-    @FXML
-    Button logout;
+	//Header Attributes
+	@FXML StackPane topstack;
+	@FXML ImageView profileimage;
+	@FXML Button home;
+	@FXML Button currentlistings;
+	@FXML Button createlisting;
+	@FXML Button logout;
+	@FXML Button buttonMyGallery;
 
     //Profile Specific Attributes
     @FXML
@@ -158,16 +157,17 @@ public class ProfileController {
         Main.switchScene("Profile");
     }
 
-    /**
-     * Initialize the header
-     */
-    private void initializeHeader() {
-        this.currentlistings.setOnMouseClicked(e -> Main.switchScene("CurrentListings"));
-        this.profileimage.setImage(Main.accountManager.getLoggedIn().getAvatar());
-        this.profileimage.setOnMouseClicked(e -> viewProfile(Main.accountManager.getLoggedIn()));
-        this.createlisting.setOnMouseClicked(e -> Main.switchScene("CreateListing"));
-        this.home.setOnMouseClicked(e -> Main.switchScene("Home"));
-        this.logout.setOnMouseClicked(e -> Main.accountManager.logoutCurrentAccount());
+	/**
+	 * Initialize the header
+	 */
+	private void initializeHeader() {
+		this.currentlistings.setOnMouseClicked(e -> Main.switchScene("CurrentListings"));
+		this.profileimage.setImage(Main.accountManager.getLoggedIn().getAvatar());
+		this.profileimage.setOnMouseClicked(e -> viewProfile(Main.accountManager.getLoggedIn()));
+		this.createlisting.setOnMouseClicked(e -> Main.switchScene("CreateListing"));
+		this.home.setOnMouseClicked(e -> Main.switchScene("Home"));
+		this.logout.setOnMouseClicked(e -> Main.accountManager.logoutCurrentAccount());
+		this.buttonMyGallery.setOnMouseClicked(e -> Main.switchScene("UserGallery"));
 
         //I could not get topstack to ignore the mouse event and let the child nodes handle it, so instead
         //we check where the click happened and what should actually of been clicked.
