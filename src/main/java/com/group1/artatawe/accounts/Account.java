@@ -7,7 +7,6 @@ import com.group1.artatawe.Main;
 import com.group1.artatawe.listings.Listing;
 import com.group1.artatawe.utils.ImageUtil;
 import javafx.scene.image.Image;
-package com.group1.artatawe.accounts;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -50,23 +49,14 @@ public class Account {
     private List<Listing> endingListings;
 
     private final AccountHistory history = new AccountHistory(this);
-    private final LinkedList<String> favAccounts = new LinkedList<>();
+	private final LinkedList<String> favAccounts = new LinkedList<>();
+	private final LinkedList<Gallery> userGalleries = new LinkedList<>();
+
 
     static {
         //Create the avatar folder (if it doesn't exist)
         new File(AVATAR_FOLDER).mkdirs();
     }
-	private String userName;
-	private String firstName;
-	private String lastName;
-	private String mobileNum;
-	private Address address;
-	private Image avatar;
-	private long lastLogin;
-
-	private final AccountHistory history = new AccountHistory(this);
-	private final LinkedList<String> favAccounts = new LinkedList<>();
-	private final LinkedList<Gallery> userGalleries = new LinkedList<>();
 
 	static {
 		//Create the avatar folder (if it doesn't exist)
