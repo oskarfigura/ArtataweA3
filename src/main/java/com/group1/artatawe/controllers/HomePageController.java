@@ -35,7 +35,6 @@ public class HomePageController {
 	@FXML GridPane sellingbox;
 	@FXML GridPane mybidbox;
 	@FXML HBox favuserbox;
-	@FXML HBox customGalleryHbox;
 
 	public void initialize() {
 		this.initializeHeader();
@@ -43,7 +42,6 @@ public class HomePageController {
 		this.renderMySelling();
 		this.renderMyBids();
 		this.renderFavUsers();
-		this.renderGalleries();
 	}
 	
 	/**
@@ -54,7 +52,6 @@ public class HomePageController {
 		this.profileimage.setImage(Main.accountManager.getLoggedIn().getAvatar());
 		System.out.println(topstack.getWidth() + " " + topstack.getHeight());
 		this.createlisting.setOnMouseClicked(e -> Main.switchScene("CreateListing"));
-		//this.home.setOnMouseClicked(e -> Main.switchScene("Home"));
 		this.logout.setOnMouseClicked(e -> Main.accountManager.logoutCurrentAccount());
 		this.buttonMyGallery.setOnMouseClicked(e -> Main.switchScene("UserGallery"));
 
@@ -176,39 +173,6 @@ public class HomePageController {
 	}
 
 	/**
-	 * Turns a gallery into a node
-	 *
-	 * @param gallery - The gallery to turn into a node
-	 * @return The node created
-	 */
-	private LinkedList<Node> getGalleryNode(Gallery gallery) {
-
-		LinkedList<Node> nodes = new LinkedList<Node>();
-
-		gallery.getListings().stream().forEach(listing -> {
-			VBox vbox = new VBox();
-			vbox.setAlignment(Pos.CENTER);
-
-			//Add the title of the gallery
-			Label label = new Label(gallery.getName());
-			vbox.getChildren().add(label);
-
-			Image image = listing.getArtwork().getImage(); // Image of the listing
-			ImageView iv = new ImageView(image);
-			iv.setPreserveRatio(true);
-			iv.setFitHeight(120);
-			iv.setFitWidth(120);
-
-			vbox.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
-
-			vbox.getChildren().add(iv);
-			nodes.add(vbox);
-		});
-
-		return nodes;
-	}
-
-	/**
 	 * Render all Listings, that are active and a user has bid on in the box
 	 */
 	private void renderMyBids() {
@@ -249,18 +213,5 @@ public class HomePageController {
 		}
 
 		this.favuserbox.getChildren().addAll(nodes);
-	}
-
-	/**
-	 * Render the custom galleries in the box
-	 */
-	private void renderGalleries() {
-		LinkedList<Gallery> galleries = Main.accountManager.getLoggedIn().getUserGalleries();
-
-		galleries.stream().forEach(x -> {
-			LinkedList<Node> n = this.getGalleryNode(x);
-			this.customGalleryHbox.getChildren().addAll(n);
-		});
-
 	}
 }
