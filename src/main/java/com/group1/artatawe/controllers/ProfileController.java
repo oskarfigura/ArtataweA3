@@ -17,9 +17,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 
+import javax.swing.text.View;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Controller for "Profile.fxml"
@@ -30,6 +33,9 @@ public class ProfileController {
     private boolean viewingOwnProfile = false;
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
+
+    //Stores index of listings in list view notificationsList
+    private List<Listing> notificationsListings;
 
     //Header Attributes
     @FXML
@@ -75,6 +81,8 @@ public class ProfileController {
         Account loggedIn = Main.accountManager.getLoggedIn();
         viewingOwnProfile = loggedIn.getUserName().equals(viewing.getUserName());
 
+        notificationsListings = new ArrayList<>();
+
         this.initializeHeader();
         this.initializeFavButton();
 
@@ -108,31 +116,36 @@ public class ProfileController {
         this.notificationsList.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                System.out.println(notificationsList.getSelectionModel().getSelectedItems());
-                //System.out.println(notificationsList.);
+                try {
+                    ViewListingController
+                            .viewListing(notificationsListings
+                                    .get(notificationsList.getSelectionModel()
+                                            .getSelectedIndices().get(0)));
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println(e.getMessage());
+                }
             }
         });
 
         for (Listing listing : Main.accountManager.getLoggedIn().getNewListings()) {
             this.notificationsList.getItems().add("New Auction: " + listing.getArtwork().getTitle());
-            //this.notificationsList.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
+            notificationsListings.add(listing);
         }
 
         for (Listing listing : Main.accountManager.getLoggedIn().getEndingListings()) {
             this.notificationsList.getItems().add("Auction Ending: " + listing.getArtwork().getTitle());
-            //this.notificationsList.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
+            notificationsListings.add(listing);
         }
 
         for (Listing listing : Main.accountManager.getLoggedIn().getNewBids()) {
             this.notificationsList.getItems().add("New Bid: " + listing.getArtwork().getTitle());
-            //this.notificationsList.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
+            notificationsListings.add(listing);
         }
 
         for (Listing listing : Main.accountManager.getLoggedIn().getLostListings()) {
             this.notificationsList.getItems().add("Lost Auction: " + listing.getArtwork().getTitle());
-            //this.notificationsList.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
+            notificationsListings.add(listing);
         }
-
     }
 
     /**
