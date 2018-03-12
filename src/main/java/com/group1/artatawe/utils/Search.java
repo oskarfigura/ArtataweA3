@@ -1,4 +1,5 @@
 package com.group1.artatawe.utils;
+import java.util.LinkedList;
 import java.util.regex.*;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import com.group1.artatawe.managers.ListingManager;
 
 public class Search {
 
-    public static ArrayList<Artwork> searchForDetails(String s){
+    public static List<Listing> searchForDetails(String s){
 
         //ListingManager listingManager = new ListingManager();
 
@@ -18,16 +19,22 @@ public class Search {
         //listingManager.getAllActiveListings().stream().filter(x-> x.getArtwork().getTitle().contains("jesus"));
         List<Listing> lists = Main.listingManager.getAllActiveListings();
 
-        String pattern = "(.*)(.*" +s +".*)(.*)";
-        ArrayList<Artwork> found = new ArrayList<>();
+        String pattern = "(.*)(.*" + s +".*)(.*)";
+        List<Listing> found = new LinkedList<>();
         // Create a Pattern object
         Pattern r = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
         Matcher m;
         for (Listing L:lists) {
             m = r.matcher(L.getArtwork().getTitle());
-            if(m.find()) found.add(L.getArtwork());
+            if(m.find()) {
+                found.add(L);
+            }
             m = r.matcher(L.getArtwork().getDescription());
-            if(m.find())  found.add(L.getArtwork());
+            if(m.find())  {
+                if (!lists.contains(L)) {
+                    found.add(L);
+                }
+            }
         }
 
         // Now create matcher object.
@@ -42,6 +49,7 @@ public class Search {
 */      return found;
 
     }
+    /*
     public static void main(String[] args) {
 
 
@@ -55,5 +63,5 @@ public class Search {
             System.out.println(a.getTitle());
 
     }
-
+    */
 }

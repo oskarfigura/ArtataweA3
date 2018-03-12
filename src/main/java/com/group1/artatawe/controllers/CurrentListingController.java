@@ -1,11 +1,13 @@
 package com.group1.artatawe.controllers;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import com.group1.artatawe.Main;
 import com.group1.artatawe.listings.Listing;
 import com.group1.artatawe.utils.GridUtil;
 
+import com.group1.artatawe.utils.Search;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -29,6 +31,8 @@ public class CurrentListingController {
 
 	//Current Listing Specific Attributes
 	@FXML GridPane alllistings;
+	@FXML Button searchButton;
+	@FXML TextField searchBox;
 
 	public void initialize() {
 		this.initializeHeader();
@@ -99,12 +103,40 @@ public class CurrentListingController {
 	 * Render all the active listings into the box
 	 */
 	private void renderListings() {
-		LinkedList<Node> nodes = new LinkedList<>();
+		LinkedList<Node> nodes = new LinkedList<Node>();
 		
 		for(Listing listing : Main.listingManager.getAllActiveListings()) {
 			nodes.add(this.getListingNode(listing));
 		}
 		
 		GridUtil.insertList(this.alllistings, nodes);
+	}
+
+	/**
+	 *
+	 * @param listings
+	 */
+	private void renderSpecificListing(List<Listing> listings) {
+		LinkedList<Node> nodes  = new LinkedList<Node>();
+
+		for (Listing listing : listings) {
+			nodes.add(this.getListingNode(listing));
+		}
+
+		GridUtil.insertList(this.alllistings, nodes);
+	}
+
+	@FXML
+	public void search() {
+		if (getSearching().isEmpty()) {
+			//TODO -> Complain to the user about this, add alerts to it.
+		} else {
+			List<Listing> specificListings = Search.searchForDetails(getSearching());
+			renderSpecificListing(specificListings);
+		}
+	}
+
+	private String getSearching() {
+		return searchBox.getText().trim();
 	}
 }
