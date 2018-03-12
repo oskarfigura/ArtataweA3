@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 
 public class WeeklyBarChart {
 
-    private static int numOfWeeks=8;
+    private static int numOfWeeks;
     //Weeks are from Monday to Sunday
 
     private static String[] dateWeek;
@@ -21,7 +21,7 @@ public class WeeklyBarChart {
 
     public static BarChart<String, Number> start() {
 
-        //setNumOfWeeks(8);
+        setNumOfWeeks(8);
 
 
         dateWeek = new String[numOfWeeks+1];
@@ -140,8 +140,8 @@ public class WeeklyBarChart {
     }
 
 
-    public static void setNumOfWeeks(int numOfWeeks) {
-        numOfWeeks = numOfWeeks;
+    public static void setNumOfWeeks(int numberOfWeeks) {
+        numOfWeeks = numberOfWeeks;
     }
 
     public static void setDateWeek(int index, String period) {

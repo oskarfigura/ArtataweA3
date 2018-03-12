@@ -301,14 +301,14 @@ public class ProfileController {
 		Popup graphPopup = new Popup();
 		graphPopup.getContent().add(vbox);
 
-
-		//popup.setHeight(image.getHeight());
-		//popup.setWidth(image.getWidth());
-
 		graphPopup.setHideOnEscape(true);
 		graphPopup.setAutoHide(true);
 
-		graphPopup.show(vbox.getScene().getWindow());
+		vbox.setPrefWidth(1000);
+		vbox.setPrefHeight(chart.getPrefHeight());
+		vbox.setStyle("-fx-background-color: cornsilk; -fx-padding: 10;");
+
+		graphPopup.show(topstack.getScene().getWindow());
 	}
 
 
