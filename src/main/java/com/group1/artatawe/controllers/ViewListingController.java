@@ -458,10 +458,6 @@ public class ViewListingController {
 		popup.show(this.image.getScene().getWindow());
 	}
 
-	/** By Kristiyan
-	 *
-	 */
-
 	@FXML
 	public void addToCustomGallery() {
         if (currentGallery != null) {

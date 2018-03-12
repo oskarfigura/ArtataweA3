@@ -1,4 +1,4 @@
-package com.group1.artatawe.controllers;
+package com.group4.artatawe.controllers;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
