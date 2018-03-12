@@ -95,9 +95,10 @@ public class ProfileController {
 		});
 
 		//this.showWeeklySalesGraphButton.setOnMouseClicked(e -> WeeklyBarChart.showGraph() );
-		this.showWeeklySalesGraphButton.setOnMouseClicked(e -> renderGraphs());
+		this.showWeeklySalesGraphButton.setOnMouseClicked(e -> renderWeeklyGraph());
 
 		//this.showMonthlySalesGraphButton.setOnMouseClicked(e -> MonthlyBarChart.showGraph() );
+		this.showMonthlySalesGraphButton.setOnMouseClicked(e -> renderMonthlyGraph());
 	}
 
 	/**
@@ -294,10 +295,10 @@ public class ProfileController {
 		GridUtil.insertList(this.wonauctions, nodes);
 	}
 
-	private void renderGraphs() {
-		BarChart<String, Number> chart = WeeklyBarChart.start();
+	private void renderWeeklyGraph() {
+		BarChart<String, Number> wkChart = WeeklyBarChart.start();
 		VBox vbox = new VBox();
-		vbox.getChildren().add(chart);
+		vbox.getChildren().add(wkChart);
 		Popup graphPopup = new Popup();
 		graphPopup.getContent().add(vbox);
 
@@ -305,8 +306,25 @@ public class ProfileController {
 		graphPopup.setAutoHide(true);
 
 		vbox.setPrefWidth(1000);
-		vbox.setPrefHeight(chart.getPrefHeight());
-		vbox.setStyle("-fx-background-color: cornsilk; -fx-padding: 10;");
+		vbox.setPrefHeight(wkChart.getPrefHeight());
+		vbox.setStyle("-fx-background-color: lime; -fx-padding: 10;");
+
+		graphPopup.show(topstack.getScene().getWindow());
+	}
+
+	private void renderMonthlyGraph() {
+		BarChart<String, Number> mChart = MonthlyBarChart.start();
+		VBox vbox = new VBox();
+		vbox.getChildren().add(mChart);
+		Popup graphPopup = new Popup();
+		graphPopup.getContent().add(vbox);
+
+		graphPopup.setHideOnEscape(true);
+		graphPopup.setAutoHide(true);
+
+		vbox.setPrefWidth(1000);
+		vbox.setPrefHeight(mChart.getPrefHeight());
+		vbox.setStyle("-fx-background-color: hotpink; -fx-padding: 10;");
 
 		graphPopup.show(topstack.getScene().getWindow());
 	}

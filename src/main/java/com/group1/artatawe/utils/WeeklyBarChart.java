@@ -1,13 +1,9 @@
 package com.group1.artatawe.utils;
 
-
-import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 public class WeeklyBarChart {
 
@@ -18,15 +14,12 @@ public class WeeklyBarChart {
     private static int[] paintingSalesWk;
     private static int[] sculptureSalesWk;
 
-
     public static BarChart<String, Number> start() {
 
         setNumOfWeeks(8);
 
-
-        dateWeek = new String[numOfWeeks+1];
+        dateWeek = new String[numOfWeeks+1]; // Weeks are from Monday to Sunday
         // Not using [0] to avoid confusion.
-        //Weeks are from Monday to Sunday
 
         paintingSalesWk = new int[numOfWeeks+1];
         // Not using [0] to avoid confusion.
@@ -109,8 +102,9 @@ public class WeeklyBarChart {
 
         weeklySalesChart.setTitle("Your Weekly Sales Performance");
 
-        //VBox vbox = new VBox(weeklySalesChart);
         /*
+        VBox vbox = new VBox(weeklySalesChart);
+
         weeklyStage.setTitle("SALES PERFORMANCE CHART");
         Scene scene = new Scene(vbox);
 

@@ -1,27 +1,21 @@
 package com.group1.artatawe.utils;
 
-import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
-public class MonthlyBarChart extends Application {
+public class MonthlyBarChart {
 
-    private int numOfMonths;
+    private static int numOfMonths;
 
-    private String[] dateMonth;
-    private int[] paintingSalesM;
-    private int[] sculptureSalesM;
+    private static String[] dateMonth;
+    private static int[] paintingSalesM;
+    private static int[] sculptureSalesM;
 
-    @Override
-    public void start(Stage monthlyStage) {
+    public static BarChart<String, Number> start() {
 
         setNumOfMonths(8);
-
 
         dateMonth = new String[numOfMonths+1];
         // Not using [0] to avoid confusion.
@@ -103,6 +97,7 @@ public class MonthlyBarChart extends Application {
 
         monthlySalesChart.setTitle("Your Monthly Sales Performance");
 
+        /*
         VBox vbox = new VBox(monthlySalesChart);
 
         monthlyStage.setTitle("SALES PERFORMANCE CHART");
@@ -113,44 +108,46 @@ public class MonthlyBarChart extends Application {
         monthlyStage.setWidth(1000);
 
         monthlyStage.show();
+        */
+        return monthlySalesChart;
     }
 
-    public int getNumOfMonths() {
+    public static int getNumOfMonths() {
         return numOfMonths;
     }
 
-    public String getDateMonth(int index) {
+    public static String getDateMonth(int index) {
         return dateMonth[index];
     }
 
-    public int getPaintingSalesM(int index) {
+    public static int getPaintingSalesM(int index) {
         return paintingSalesM[index];
     }
 
-    public int getSculptureSalesM(int index) {
+    public static int getSculptureSalesM(int index) {
         return sculptureSalesM[index];
     }
 
 
-    public void setNumOfMonths(int numOfMonths) {
-        this.numOfMonths = numOfMonths;
+    public static void setNumOfMonths(int numberOfMonths) {
+        numOfMonths = numberOfMonths;
     }
 
-    public void setDateMonth(int index, String dateMonth) {
-        this.dateMonth[index] = dateMonth;
+    public static void setDateMonth(int index, String month) {
+        dateMonth[index] = month;
     }
 
-    public void setPaintingSalesM(int index, int paintingSalesM) {
-        this.paintingSalesM[index] = paintingSalesM;
+    public static void setPaintingSalesM(int index, int paintingSales) {
+        paintingSalesM[index] = paintingSales;
     }
 
-    public void setSculptureSalesM(int index, int sculptureSalesM) {
-        this.sculptureSalesM[index] = sculptureSalesM;
+    public static void setSculptureSalesM(int index, int sculptureSales) {
+        sculptureSalesM[index] = sculptureSales;
     }
 
-
-    public static void showGraph(){
-        Application.launch();
+    /*
+    public static void main(String[] args){
+        launch();
     }
-
+    */
 }
