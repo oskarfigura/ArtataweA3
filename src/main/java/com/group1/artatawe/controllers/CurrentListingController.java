@@ -1,7 +1,6 @@
 package com.group1.artatawe.controllers;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 import com.group1.artatawe.Main;
