@@ -97,6 +97,10 @@ public class ProfileController {
 
         if (!viewingOwnProfile) {
             this.editaccount.setVisible(false);
+            this.notificationsList.setVisible(false);
+        } else {
+            this.notificationsList.setVisible(true);
+            generateNotifications();
         }
 
         this.editaccount.setOnMouseClicked(e -> EditAccountController.editAccount());
@@ -111,7 +115,12 @@ public class ProfileController {
                 this.initializeFavButton();
             }
         });
+    }
 
+    /**
+     * Generate notifications for logged in user
+     */
+    private void generateNotifications(){
         this.notificationsList.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
