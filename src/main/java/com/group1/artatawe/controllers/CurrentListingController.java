@@ -2,6 +2,7 @@ package com.group1.artatawe.controllers;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import com.group1.artatawe.Main;
 import com.group1.artatawe.listings.Listing;
@@ -34,9 +35,11 @@ public class CurrentListingController {
 	@FXML Button searchButton;
 	@FXML TextField searchBox;
 
+	private String searched = "";
+	private boolean needsRefresh = false;
+
 	public void initialize() {
 		this.initializeHeader();
-		
 		this.renderListings();
 	}
 	
@@ -116,7 +119,7 @@ public class CurrentListingController {
 	 *
 	 * @param listings
 	 */
-	private void renderSpecificListing(List<Listing> listings) {
+	private void renderSpecificListing(Set<Listing> listings) {
 		LinkedList<Node> nodes  = new LinkedList<Node>();
 
 		for (Listing listing : listings) {
@@ -128,14 +131,37 @@ public class CurrentListingController {
 
 	@FXML
 	public void search() {
-		if (getSearching().isEmpty()) {
-			//TODO -> Complain to the user about this, add alerts to it.
-		} else {
-			List<Listing> specificListings = Search.searchForDetails(getSearching());
-			renderSpecificListing(specificListings);
-		}
+	    if (!searchBox.getText().trim().isEmpty()) {
+
+	        if (!searched.equals(getSearching())) {
+
+                this.searched = getSearching();
+                Set<Listing> specificListings = Search.searchForDetails(getSearching());
+                renderSpecificListing(specificListings);
+                this.needsRefresh = true;
+
+            } else {
+                // SKIP The same details are entered
+            }
+
+        } else {
+
+	        if (needsRefresh) {
+
+                this.renderListings();
+                this.needsRefresh = false;
+
+            } else {
+	            //SKIP already rendered
+            }
+
+        }
 	}
 
+    /**
+     *
+     * @return
+     */
 	private String getSearching() {
 		return searchBox.getText().trim();
 	}
