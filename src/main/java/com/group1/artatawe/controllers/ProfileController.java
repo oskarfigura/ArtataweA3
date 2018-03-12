@@ -1,16 +1,19 @@
-package com.group4.artatawe.controllers;
+package com.group1.artatawe.controllers;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 
-import com.group4.artatawe.Main;
-import com.group4.artatawe.accounts.Account;
-import com.group4.artatawe.listings.Listing;
-import com.group4.artatawe.utils.GridUtil;
+import com.group1.artatawe.Main;
+import com.group1.artatawe.utils.GridUtil;
+import com.group1.artatawe.accounts.Account;
+import com.group1.artatawe.listings.Listing;
+import com.group1.artatawe.utils.WeeklyBarChart;
+import com.group1.artatawe.utils.MonthlyBarChart;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.chart.BarChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -19,6 +22,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Popup;
 
 /**
  * Controller for "Profile.fxml"
@@ -46,6 +51,8 @@ public class ProfileController {
 	@FXML Label username;
 	@FXML Label lastseen;
 	@FXML Button editaccount;
+	@FXML Button showWeeklySalesGraphButton;
+	@FXML Button showMonthlySalesGraphButton;
 
 	@FXML GridPane selling;
 	@FXML GridPane sold;
@@ -70,6 +77,8 @@ public class ProfileController {
 
 		if(! viewingOwnProfile) {
 			this.editaccount.setVisible(false);
+			this.showWeeklySalesGraphButton.setVisible(false);
+			this.showMonthlySalesGraphButton.setVisible(false);
 		}
 
 		this.editaccount.setOnMouseClicked(e -> EditAccountController.editAccount());
@@ -84,6 +93,11 @@ public class ProfileController {
 				this.initializeFavButton();
 			}
 		});
+
+		//this.showWeeklySalesGraphButton.setOnMouseClicked(e -> WeeklyBarChart.showGraph() );
+		this.showWeeklySalesGraphButton.setOnMouseClicked(e -> renderGraphs());
+
+		//this.showMonthlySalesGraphButton.setOnMouseClicked(e -> MonthlyBarChart.showGraph() );
 	}
 
 	/**
@@ -279,4 +293,24 @@ public class ProfileController {
 
 		GridUtil.insertList(this.wonauctions, nodes);
 	}
+
+	private void renderGraphs() {
+		BarChart<String, Number> chart = WeeklyBarChart.start();
+		VBox vbox = new VBox();
+		vbox.getChildren().add(chart);
+		Popup graphPopup = new Popup();
+		graphPopup.getContent().add(vbox);
+
+
+		//popup.setHeight(image.getHeight());
+		//popup.setWidth(image.getWidth());
+
+		graphPopup.setHideOnEscape(true);
+		graphPopup.setAutoHide(true);
+
+		graphPopup.show(vbox.getScene().getWindow());
+	}
+
+
+
 }
