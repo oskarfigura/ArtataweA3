@@ -8,18 +8,23 @@ import com.group1.artatawe.listings.Listing;
 import com.group1.artatawe.managers.ListingManager;
 
 public class Search {
-
+    /**
+     * Search for method to find pieces with String s in name/description
+     * @param s String to be searched for
+     * @return Set of liastings including s
+     */
     public static Set<Listing> searchForDetails(String s) {
 
         List<Listing> lists = Main.listingManager.getAllActiveListings();
 
-        String pattern = "(.*)(.*" + s + ".*)(.*)";
-        Set<Listing> found = new HashSet<Listing>();
+        String pattern = "(.*)(.*" + s + ".*)(.*)"; //regex pattern to search for words before and after, and s being part of word
+        Set<Listing> found = new HashSet<Listing>(); // remove duplicates
 
         // Create a Pattern object
         Pattern r = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
         Matcher m;
 
+        // finding listings
         for (Listing L : lists) {
 
             m = r.matcher(L.getArtwork().getTitle());
@@ -47,4 +52,5 @@ public class Search {
         }
 
         return found;
-    }}
+    }
+}
