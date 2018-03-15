@@ -16,6 +16,7 @@ import com.group1.artatawe.listings.Listing;
 import com.group1.artatawe.listings.ListingState;
 import com.group1.artatawe.utils.AlertUtil;
 import com.group1.artatawe.utils.NumUtil;
+import com.group1.artatawe.utils.WeeklyBarChart;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
