@@ -50,7 +50,6 @@ public class HomePageController {
 	private void initializeHeader() {
 		this.currentlistings.setOnMouseClicked(e -> Main.switchScene("CurrentListings"));
 		this.profileimage.setImage(Main.accountManager.getLoggedIn().getAvatar());
-		System.out.println(topstack.getWidth() + " " + topstack.getHeight());
 		this.createlisting.setOnMouseClicked(e -> Main.switchScene("CreateListing"));
 		this.logout.setOnMouseClicked(e -> Main.accountManager.logoutCurrentAccount());
 		this.buttonMyGallery.setOnMouseClicked(e -> Main.switchScene("UserGallery"));
