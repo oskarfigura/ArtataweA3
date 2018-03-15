@@ -6,10 +6,10 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 
 /**
- * This class generates a bar chart, displaying one's weekly sales performance for the past 8 weeks
+ * This class generates a bar chart, displaying one's weekly sales performance for the past 8 weeks.
  *
  * @author K Carew.
- * @version 20180315Th1440
+ * @version 20180315Th1830.
  */
 public class WeeklyBarChart {
 
@@ -20,8 +20,8 @@ public class WeeklyBarChart {
     private static int[] sculptureSalesWk = new int[NUM_OF_WEEKS];
 
     /**
-     * This method generates a bar chart object, without a container/frame/stage, of one's sales performance
-     * @return The bar chart object of a user's weekly sales performance
+     * This method generates a bar chart object, without a container/frame/stage, of one's sales performance.
+     * @return The bar chart object of a user's weekly sales performance.
      */
     public static BarChart<String, Number> start() {
 
@@ -116,9 +116,9 @@ public class WeeklyBarChart {
     }
 
     /**
-     * Method to return the week period of time, as a string, in the form "DD/MM - DD/MM".
+     * Method to return the week period of time, as a string.
      * @param index The week number; also the index of the array where the dateWeek String values are stored.
-     * @return The week period of time "DD/MM - DD/MM", as a String.
+     * @return The week period of time, as a String.
      */
     public static String getDateWeek(int index) {
         return dateWeek[index];
@@ -126,7 +126,7 @@ public class WeeklyBarChart {
 
     /**
      * Method to return the number of paintings sold in the week number passed as a parameter.
-     * @param index The week number; also the index of the array where the getPaintingSalesWk values are stored.
+     * @param index The week number; also the index of the array where the PaintingSalesWk values are stored.
      * @return The number of paintings sold in the given week.
      */
     public static int getPaintingSalesWk(int index) {
@@ -135,18 +135,27 @@ public class WeeklyBarChart {
 
     /**
      * Method to return the number of sculptures sold in the week number passed as a parameter.
-     * @param index The week number; also the index of the array where the getSculptureSalesWk values are stored.
+     * @param index The week number; also the index of the array where the SculptureSalesWk values are stored.
      * @return The number of sculptures sold in the given week.
      */
     public static int getSculptureSalesWk(int index) {
         return sculptureSalesWk[index];
     }
 
-
+    /**
+     * Method to set the number of paintings sold in the given week.
+     * @param index The week number; also the index of the array where the PaintingSalesWk values are stored.
+     * @param paintingSales The number of paintings sold in the given week.
+     */
     public static void setPaintingSalesWk(int index, int paintingSales) {
         paintingSalesWk[index] = paintingSales;
     }
 
+    /**
+     * Method to set the number of sculptures sold in the given week.
+     * @param index The week number; also the index of the array where the sculptureSalesWk values are stored.
+     * @param sculptureSales The number of sculptures sold in the given week.
+     */
     public static void setSculptureSalesWk(int index, int sculptureSales) {
         sculptureSalesWk[index] = sculptureSales;
     }

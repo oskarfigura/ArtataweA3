@@ -358,6 +358,9 @@ public class ProfileController {
         GridUtil.insertList(this.wonauctions, nodes);
     }
 
+    /**
+     * Method to render and display (in a pop up) a bar chart (week).
+     */
 	private void renderWeeklyGraph() {
         getWeeklyGraphData();
 		BarChart<String, Number> wkChart = WeeklyBarChart.start();
@@ -376,6 +379,9 @@ public class ProfileController {
 		graphPopup.show(topstack.getScene().getWindow());
 	}
 
+    /**
+     * Method to render and display (in a pop up) a bar chart (month).
+     */
 	private void renderMonthlyGraph() {
         getMonthlyGraphData();
 		BarChart<String, Number> mChart = MonthlyBarChart.start();
@@ -394,6 +400,9 @@ public class ProfileController {
 		graphPopup.show(topstack.getScene().getWindow());
 	}
 
+    /**
+     * Method to populate the variables used in creating a bar chart (month)
+     */
 	public void getWeeklyGraphData() {
 
         final long WEEK_IN_MILLISEC = 604800000L;
@@ -427,6 +436,9 @@ public class ProfileController {
 
     }
 
+    /**
+     * Method to populate the variables used in creating a bar chart (month)
+     */
     public void getMonthlyGraphData() {
 
         final long MONTH_IN_MILLISEC = 2629743000L;

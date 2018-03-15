@@ -5,6 +5,12 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 
+/**
+ * This class generates a bar chart, displaying one's monthly sales performance for the past 8 months.
+ *
+ * @author K Carew.
+ * @version 20180315Th1830.
+ */
 public class MonthlyBarChart {
 
     private static final int NUM_OF_MONTHS = 8;
@@ -13,6 +19,10 @@ public class MonthlyBarChart {
     private static int[] paintingSalesM = new int[NUM_OF_MONTHS];
     private static int[] sculptureSalesM = new int[NUM_OF_MONTHS];
 
+    /**
+     * This method generates a bar chart object, without a container/frame/stage, of one's sales performance.
+     * @return The bar chart object of a user's monthly sales performance.
+     */
     public static BarChart<String, Number> start() {
 
 /*
@@ -94,27 +104,56 @@ public class MonthlyBarChart {
         return monthlySalesChart;
     }
 
+    /**
+     * Method to return the number of months being analysed.
+     * @return The number of months being analysed.
+     */
     public static int getNumOfMonths() {
         return NUM_OF_MONTHS;
     }
 
+    /**
+     * Method to return the month period of time, as a string.
+     * @param index The month number; also the index of the array where the dateMonth String values are stored.
+     * @return The month period of time, as a String.
+     */
     public static String getDateMonth(int index) {
         return dateMonth[index];
     }
 
+    /**
+     * Method to return the number of paintings sold in the month number passed as a parameter.
+     * @param index The month number; also the index of the array where the PaintingSalesM values are stored.
+     * @return The number of paintings sold in the given month.
+     */
     public static int getPaintingSalesM(int index) {
         return paintingSalesM[index];
     }
 
+    /**
+     * Method to return the number of sculptures sold in the month number passed as a parameter.
+     * @param index The month number; also the index of the array where the SculptureSalesM values are stored.
+     * @return The number of sculptures sold in the given month.
+     */
     public static int getSculptureSalesM(int index) {
         return sculptureSalesM[index];
     }
 
 
+    /**
+     * Method to set the number of paintings sold in the given month.
+     * @param index The month number; also the index of the array where the PaintingSalesM values are stored.
+     * @param paintingSales The number of paintings sold in the given month.
+     */
     public static void setPaintingSalesM(int index, int paintingSales) {
         paintingSalesM[index] = paintingSales;
     }
 
+    /**
+     * Method to set the number of sculptures sold in the given month.
+     * @param index The month number; also the index of the array where the sculptureSalesM values are stored.
+     * @param sculptureSales The number of sculptures sold in the given month.
+     */
     public static void setSculptureSalesM(int index, int sculptureSales) {
         sculptureSalesM[index] = sculptureSales;
     }
