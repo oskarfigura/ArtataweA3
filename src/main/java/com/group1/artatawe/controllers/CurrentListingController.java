@@ -3,8 +3,8 @@ package com.group1.artatawe.controllers;
 import java.util.LinkedList;
 
 import com.group1.artatawe.Main;
-import com.group1.artatawe.utils.GridUtil;
 import com.group1.artatawe.listings.Listing;
+import com.group1.artatawe.utils.GridUtil;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -26,6 +26,7 @@ public class CurrentListingController {
 	@FXML Button currentlistings;
 	@FXML Button createlisting;
 	@FXML Button logout;
+	@FXML Button buttonMyGallery;
 
 	//Current Listing Specific Attributes
 	@FXML GridPane alllistings;
@@ -44,6 +45,7 @@ public class CurrentListingController {
 		this.createlisting.setOnMouseClicked(e -> Main.switchScene("CreateListing"));
 		this.home.setOnMouseClicked(e -> Main.switchScene("Home"));
 		this.logout.setOnMouseClicked(e -> Main.accountManager.logoutCurrentAccount());
+		this.buttonMyGallery.setOnMouseClicked(e -> Main.switchScene("UserGallery"));
 
 		//I could not get topstack to ignore the mouse event and let the child nodes handle it, so instead
 		//we check where the click happened and what should actually of been clicked.

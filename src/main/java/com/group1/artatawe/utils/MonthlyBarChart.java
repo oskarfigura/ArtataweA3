@@ -7,52 +7,34 @@ import javafx.scene.chart.XYChart;
 
 public class MonthlyBarChart {
 
-    private static int numOfMonths;
+    private static final int NUM_OF_MONTHS = 8;
 
-    private static String[] dateMonth;
-    private static int[] paintingSalesM;
-    private static int[] sculptureSalesM;
+    private static String[] dateMonth = {"Month 1", "Month 2", "Month 3", "Month 4", "Month 5", "Month 6", "Month 7", "Month 8"};
+    private static int[] paintingSalesM = new int[NUM_OF_MONTHS];
+    private static int[] sculptureSalesM = new int[NUM_OF_MONTHS];
 
     public static BarChart<String, Number> start() {
 
-        setNumOfMonths(8);
-
-        dateMonth = new String[numOfMonths+1];
-        // Not using [0] to avoid confusion.
-
-        paintingSalesM = new int[numOfMonths+1];
-        // Not using [0] to avoid confusion.
-
-        sculptureSalesM = new int[numOfMonths+1];
-        // Not using [0] to avoid confusion.
-
+/*
         //TEST VALUES
-        setDateMonth(1, "July 2017");
-        setDateMonth(2, "August 2017");
-        setDateMonth(3, "September 2017");
-        setDateMonth(4, "October 2017");
-        setDateMonth(5, "November 2017");
-        setDateMonth(6, "December 2017");
-        setDateMonth(7, "January 2018");
-        setDateMonth(8, "February 2018");
-        setPaintingSalesM(1, 80);
-        setPaintingSalesM(2, 70);
-        setPaintingSalesM(3, 73);
+        setPaintingSalesM(0, 80);
+        setPaintingSalesM(1, 70);
+        setPaintingSalesM(2, 73);
+        setPaintingSalesM(3, 79);
         setPaintingSalesM(4, 79);
-        setPaintingSalesM(5, 79);
-        setPaintingSalesM(6, 69);
-        setPaintingSalesM(7, 66);
-        setPaintingSalesM(8, 71);
-        setSculptureSalesM(1, 50);
-        setSculptureSalesM(2, 45);
-        setSculptureSalesM(3, 46);
-        setSculptureSalesM(4, 30);
-        setSculptureSalesM(5, 38);
-        setSculptureSalesM(6, 36);
-        setSculptureSalesM(7, 38);
-        setSculptureSalesM(8, 41);
+        setPaintingSalesM(5, 69);
+        setPaintingSalesM(6, 66);
+        setPaintingSalesM(7, 71);
+        setSculptureSalesM(0, 50);
+        setSculptureSalesM(1, 45);
+        setSculptureSalesM(2, 46);
+        setSculptureSalesM(3, 30);
+        setSculptureSalesM(4, 38);
+        setSculptureSalesM(5, 36);
+        setSculptureSalesM(6, 38);
+        setSculptureSalesM(7, 41);
         // ^^ TEST VALUES ^^
-
+*/
 
 
         CategoryAxis xAxis = new CategoryAxis();
@@ -68,7 +50,7 @@ public class MonthlyBarChart {
         XYChart.Series<String, Number> monthlyPaintingSales = new XYChart.Series<>();
         monthlyPaintingSales.setName("Paintings");
 
-        for (int i=1; i< getNumOfMonths(); i++) {
+        for (int i = (getNumOfMonths()-1); i >= 0; i--) {
             monthlyPaintingSales.getData().add(new XYChart.Data<>(getDateMonth(i), getPaintingSalesM(i)));
         }
 
@@ -76,7 +58,7 @@ public class MonthlyBarChart {
         XYChart.Series<String, Number> monthlySculptureSales = new XYChart.Series<>();
         monthlySculptureSales.setName("Sculptures");
 
-        for (int i=1; i< getNumOfMonths(); i++) {
+        for (int i = (getNumOfMonths()-1); i >= 0; i--) {
             monthlySculptureSales.getData().add(new XYChart.Data<>(getDateMonth(i), getSculptureSalesM(i)));
         }
 
@@ -84,7 +66,7 @@ public class MonthlyBarChart {
         XYChart.Series<String, Number> monthlyTotalArtworkSales = new XYChart.Series<>();
         monthlyTotalArtworkSales.setName("Total Artworks");
 
-        for (int i=1; i< getNumOfMonths(); i++) {
+        for (int i = (getNumOfMonths()-1); i >= 0; i--) {
             monthlyTotalArtworkSales.getData().add(new XYChart.Data<>(getDateMonth(i), (getPaintingSalesM(i) + getSculptureSalesM(i)) ));
 
         }
@@ -112,36 +94,28 @@ public class MonthlyBarChart {
         return monthlySalesChart;
     }
 
-    private static int getNumOfMonths() {
-        return numOfMonths;
+    public static int getNumOfMonths() {
+        return NUM_OF_MONTHS;
     }
 
-    private static String getDateMonth(int index) {
+    public static String getDateMonth(int index) {
         return dateMonth[index];
     }
 
-    private static int getPaintingSalesM(int index) {
+    public static int getPaintingSalesM(int index) {
         return paintingSalesM[index];
     }
 
-    private static int getSculptureSalesM(int index) {
+    public static int getSculptureSalesM(int index) {
         return sculptureSalesM[index];
     }
 
 
-    private static void setNumOfMonths(int numberOfMonths) {
-        numOfMonths = numberOfMonths;
-    }
-
-    private static void setDateMonth(int index, String month) {
-        dateMonth[index] = month;
-    }
-
-    private static void setPaintingSalesM(int index, int paintingSales) {
+    public static void setPaintingSalesM(int index, int paintingSales) {
         paintingSalesM[index] = paintingSales;
     }
 
-    private static void setSculptureSalesM(int index, int sculptureSales) {
+    public static void setSculptureSalesM(int index, int sculptureSales) {
         sculptureSalesM[index] = sculptureSales;
     }
 

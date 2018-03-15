@@ -4,9 +4,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.group1.artatawe.Main;
@@ -26,6 +29,7 @@ public class AccountManager {
 	private Account loggedInAccount;
 
 	private final LinkedList<Account> allAccounts = new LinkedList<>();
+	private JsonArray galleryObjects = new JsonArray();
 
 	/**
 	 * Construct a AccountManager
@@ -33,6 +37,7 @@ public class AccountManager {
 	 */
 	public AccountManager() {
 		this.loadAccounts();
+		this.loadGalleries();
 	}
 
 	/**
@@ -49,8 +54,9 @@ public class AccountManager {
 	 */
 	public void login(Account account) {
 		this.loggedInAccount = account;
+		this.loggedInAccount.updateNotifications();
 		account.login();
-		
+
 		this.saveAccountFile();
 	}
 
@@ -138,6 +144,7 @@ public class AccountManager {
 					this.loadAccount(nextLine);
 				}
 			}
+
 		} catch (FileNotFoundException e) {
 			try {
 				new File(ACCOUNT_FILE).createNewFile();
@@ -160,11 +167,36 @@ public class AccountManager {
 		JsonParser jp = new JsonParser();
 		try {
 			JsonObject jo = (JsonObject) jp.parse(jsonString);
-			
+
 			Account account = new Account(jo);
 			this.allAccounts.add(account);
+			/*
+				Creates a Json array which would each line of text which represents a single account with all its
+				attributes including the galleries
+			 */
+			this.galleryObjects.add(jo);
 		} catch(Exception e) {
 			System.out.println("Parse error on string: \n" + jsonString + "\nThe account has not been loaded.");
+		}
+	}
+
+	/**
+	 *
+	 */
+	private void loadGalleries() {
+		// Adds the same exact line so we can go over it again and get the galleries
+		// This is because we need to have existing account before we add a gallery
+		/*
+			For testing
+			System.out.println("Size in AccountManager -> " + getAccounts().size());
+		 */
+		/*
+			Goes through each object and initiates the adding of the galleries
+		 */
+		for (int i = 0; i < galleryObjects.size(); i++) {
+			JsonObject object = galleryObjects.get(i).getAsJsonObject();
+			Account acc = this.allAccounts.get(i);
+			acc.loadGalleries(object, acc);
 		}
 	}
 }

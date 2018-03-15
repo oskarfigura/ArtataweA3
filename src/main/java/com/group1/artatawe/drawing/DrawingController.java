@@ -121,7 +121,7 @@ public class DrawingController {
 		DrawingController.WAS_SAVED = false;
 
 		try {
-			FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/fxml/Drawing.fxml"));     
+			FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/fxml/Drawing.fxml"));
 
 			BorderPane pane = (BorderPane) fxmlLoader.load();          
 

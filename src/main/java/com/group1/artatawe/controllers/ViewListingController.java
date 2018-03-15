@@ -2,24 +2,27 @@ package com.group1.artatawe.controllers;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.group1.artatawe.Main;
+import com.group1.artatawe.accounts.Account;
+import com.group1.artatawe.artwork.Gallery;
 import com.group1.artatawe.artwork.Painting;
 import com.group1.artatawe.artwork.Sculpture;
-import com.group1.artatawe.utils.AlertUtil;
-import com.group1.artatawe.utils.NumUtil;
-import com.group1.artatawe.accounts.Account;
 import com.group1.artatawe.listings.Bid;
 import com.group1.artatawe.listings.Listing;
 import com.group1.artatawe.listings.ListingState;
-
+import com.group1.artatawe.utils.AlertUtil;
+import com.group1.artatawe.utils.NumUtil;
 import com.group1.artatawe.utils.WeeklyBarChart;
+
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.Image;
@@ -28,7 +31,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
 import javafx.stage.Popup;
+import javafx.stage.Stage;
 
 /**
  * Controller for "ViewListing.fxml"
@@ -52,6 +57,7 @@ public class ViewListingController {
 	@FXML Button currentlistings;
 	@FXML Button createlisting;
 	@FXML Button logout;
+	@FXML Button buttonMyGallery;
 
 	//Listing Attributes
 	@FXML ImageView image;
@@ -66,6 +72,17 @@ public class ViewListingController {
 	//Seller Attributes
 	@FXML ImageView selleravatar;
 	@FXML Label sellername;
+
+	@FXML Button buttonAddCustomGallery;
+	@FXML MenuButton menuGallery;
+
+	//Gallery variables
+	private static final String ADD_BTN_MSG = "Add to gallery";
+	private static final String RMV_BTN_MSG = "Remove from gallery";
+
+	private Gallery currentGallery = null;
+
+
 
 	public void initialize() {
 		this.initializeHeader();
@@ -99,10 +116,61 @@ public class ViewListingController {
 		this.selleravatar.setOnMouseClicked(e -> ProfileController.viewProfile(seller));
 		this.sellername.setOnMouseClicked(e -> ProfileController.viewProfile(seller));
 
+		//Create a new gallery button
+		MenuItem newGalleryOpt = new MenuItem("New");
+		newGalleryOpt.setOnAction(event -> {
+			menuGallery.setText("New");
+			currentGallery = null;
+		});
+        menuGallery.getItems().add(newGalleryOpt);
+		menuGallery.setText("New");
+
+		//Add the user's galleries to the menu
+		for (Gallery gallery : Main.accountManager.getLoggedIn().getUserGalleries()) {
+			MenuItem menuItem = new MenuItem(gallery.getName());
+
+			//Update when a menuItem is selected
+			menuItem.setOnAction(event -> {
+				/*
+					Sets the text to the general menu button to the picked gallery
+				 */
+				menuGallery.setText(menuItem.getText());
+				currentGallery = gallery;
+
+				//Change the button text to reflect whether this will add to or remove from the gallery
+				if (gallery.containsListing(viewing)) {
+					buttonAddCustomGallery.setText(RMV_BTN_MSG);
+				} else {
+					buttonAddCustomGallery.setText(ADD_BTN_MSG);
+				}
+			});
+
+			menuGallery.getItems().add(menuItem);
+		}
+
 		//Render the different parts of the Listing view
 		this.displayCurrentBid();
 		this.displayBidHistory();
 		this.renderInfo();
+	}
+
+	public void updateGalleryMenu(String name, Gallery g) {
+		MenuItem item = new MenuItem(name);
+		item.setOnAction(event -> {
+			/*
+					Sets the text to the general menu button to the picked gallery
+				 */
+			menuGallery.setText(item.getText());
+			currentGallery = g;
+
+			//Change the button text to reflect whether this will add to or remove from the gallery
+			if (g.containsListing(viewing)) {
+				buttonAddCustomGallery.setText(RMV_BTN_MSG);
+			} else {
+				buttonAddCustomGallery.setText(ADD_BTN_MSG);
+			}
+		});
+		menuGallery.getItems().add(item);
 	}
 
 	/**
@@ -126,6 +194,7 @@ public class ViewListingController {
 		this.createlisting.setOnMouseClicked(e -> Main.switchScene("CreateListing"));
 		this.home.setOnMouseClicked(e -> Main.switchScene("Home"));
 		this.logout.setOnMouseClicked(e -> Main.accountManager.logoutCurrentAccount());
+		this.buttonMyGallery.setOnMouseClicked(e -> Main.switchScene("UserGallery"));
 
 		//I could not get topstack to ignore the mouse event and let the child nodes handle it, so instead
 		//we check where the click happened and what should actually of been clicked.
@@ -390,4 +459,79 @@ public class ViewListingController {
 		popup.show(this.image.getScene().getWindow());
 	}
 
+	@FXML
+	public void addToCustomGallery() {
+        if (currentGallery != null) {
+        	//A gallery has been selected
+        	if (currentGallery.containsListing(viewing)) {
+        		//Remove the listing from the gallery
+				currentGallery.removeListing(viewing);
+				buttonAddCustomGallery.setText(ADD_BTN_MSG);
+
+			} else {
+        		//Add the listing to the gallery
+        		currentGallery.addListing(viewing);
+				buttonAddCustomGallery.setText(RMV_BTN_MSG);
+
+			}
+
+		} else {
+			createNewGalPopup();
+		}
+		/*
+			Updates the file after a new item is added to a gallery
+		 */
+		Main.accountManager.saveAccountFile();
+	}
+
+	/**
+	 * Displays a modal popup allowing the user to create a new gallery
+	 */
+	private void createNewGalPopup() {
+		Stage popup = new Stage();
+		popup.initModality(Modality.APPLICATION_MODAL);
+
+		VBox popBack = new VBox(10);
+		popBack.setAlignment(Pos.CENTER);
+
+		Label label = new Label("Name your new gallery");
+		TextField input = new TextField();
+		Button button = new Button("Create");
+
+		popBack.getChildren().add(label);
+		popBack.getChildren().add(input);
+		popBack.getChildren().add(button);
+
+		//Create the gallery when button is clicked
+		button.setOnMouseClicked(e -> {
+			Account user = Main.accountManager.getLoggedIn();
+
+			if (input.getText() == null || input.getText().trim().isEmpty()) {
+				AlertUtil.sendAlert(AlertType.ERROR, "No gallery name", "Please provide a gallery name");
+				popup.close();
+				createNewGalPopup();
+			} else if (!user.checkGallery(input.getText())) {
+				Gallery newGallery = new Gallery(user, input.getText());
+				newGallery.addListing(viewing);
+				user.addGallery(newGallery);
+				updateGalleryMenu(newGallery.getName(), newGallery);
+			} else {
+				AlertUtil.sendAlert(AlertType.ERROR, "Existing gallery", "This gallery already exists," +
+						" please try with another name");
+				popup.close();
+				createNewGalPopup();
+			}
+
+			/*
+				Update the file after a new gallery is added to a user's account
+		 	*/
+			Main.accountManager.saveAccountFile();
+
+			popup.close();
+		});
+
+		Scene popupScene = new Scene(popBack, 300, 100);
+		popup.setScene(popupScene);
+		popup.show();
+	}
 }

@@ -2,11 +2,11 @@ package com.group1.artatawe.controllers;
 
 
 import com.group1.artatawe.Main;
+import com.group1.artatawe.accounts.Account;
+import com.group1.artatawe.accounts.Address;
 import com.group1.artatawe.drawing.DrawingController;
 import com.group1.artatawe.utils.AlertUtil;
 import com.group1.artatawe.utils.ValidationUtil;
-import com.group1.artatawe.accounts.Account;
-import com.group1.artatawe.accounts.Address;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
