@@ -25,15 +25,12 @@ public class CustomGalleryController {
     @FXML Button logout;
     @FXML Button buttonMyGalleries;
 
-    @FXML TilePane tilePaneGalleries;
-    @FXML VBox vboxOptions;
-
-    private List<RadioButton> buttons = new LinkedList<RadioButton>();
+    @FXML VBox galleryBox;
 
     public void initialize() {
 
         this.initializeHeader();
-        this.fixTile();
+        //this.fixTile();
         this.anyGalleries();
 
         }
@@ -60,24 +57,16 @@ public class CustomGalleryController {
      */
     private void anyGalleries() {
 
-        boolean noListings = Main.accountManager.getLoggedIn().getUserGalleries()
-                .stream()
-                .allMatch(x -> x.getListings().isEmpty());
-
         int size = Main.accountManager.getLoggedIn().getUserGalleries().size(); // all galleries
 
         if (size == 0) {
 
             noGalleries();
 
-        } else if (noListings) {
-
-            noListings();
-
         } else {
 
-            this.renderGalleries();
-            this.renderButtons(size, Main.accountManager.getLoggedIn().getGalleryNames());
+            //this.renderGalleries();
+            this.renderGalleriesNu();
 
         }
     }
@@ -85,78 +74,32 @@ public class CustomGalleryController {
     /**
      * Renders all artworks/listings from all galleries a user has
      */
-    private void renderGalleries() {
+    private void renderGalleriesNu() {
         Main.accountManager.getLoggedIn().getUserGalleries().stream().forEach(gallery -> {
+            VBox galVert = new VBox();
+            galVert.setPrefWidth(this.galleryBox.getPrefWidth());
+            this.galleryBox.getChildren().add(galVert);
+
+            Label galTitle = new Label(gallery.getName());
+            galVert.getChildren().add(galTitle);
+
+            ScrollPane galList = new ScrollPane();
+            galVert.getChildren().add(galList);
+
+            HBox galBox = new HBox();
+            galList.setContent(galBox);
+
             gallery.getListings().stream().forEach(listing -> {
-                String title = gallery.getName();
+                String title = listing.getArtwork().getTitle();
                 Image image = listing.getArtwork().getImage();
                 ImageView iv = makeImgView(image);
                 VBox v = galleryNode(iv, title);
                 v.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
-                this.tilePaneGalleries.getChildren().add(v);
+                galBox.getChildren().add(v);
+
             });
         });
-
     }
-
-    private void renderSpecificGallery(String galleryName) {
-        Gallery g = Main.accountManager.getLoggedIn().getSpecificGallery(galleryName);
-        g.getListings().stream().forEach(listing -> {
-            String title = g.getName();
-            Image image = listing.getArtwork().getImage();
-            ImageView iv = makeImgView(image);
-            VBox v = galleryNode(iv, title);
-            v.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
-            this.tilePaneGalleries.getChildren().add(v);
-        });
-    }
-
-    /**
-     *
-     * @param size
-     */
-    private void renderButtons(int size, List<String> names) {
-
-        ToggleGroup group = new ToggleGroup();
-
-        Label l = new Label("Select from the display options");
-        l.setFont(new Font("Calibri", 18));
-        l.setPadding(new Insets(15.0, 15.0, 0.0, 15.0));
-
-        RadioButton rb = new RadioButton("All galleries");
-        rb.setToggleGroup(group);
-        rb.setSelected(true);
-        rb.setPadding(new Insets(15.0, 15.0, 0.0, 15.0));
-        rb.selectedProperty().addListener((observable -> {
-            /*
-                Renders all galleries and listings associated with a gallery
-             */
-            this.clearTilePane();
-            renderGalleries();
-        }));
-
-
-        buttons.add(rb);
-        vboxOptions.getChildren().addAll(l, rb);
-
-        while (size > 0) {
-
-            String name = names.get((names.size() - 1) - (size - 1));
-            RadioButton r = new RadioButton(name);
-            r.setToggleGroup(group);
-            r.setPadding(new Insets(15.0, 15.0, 0.0, 15.0));
-            r.selectedProperty().addListener(observable -> {
-                this.clearTilePane();
-                this.renderSpecificGallery(name);
-            });
-
-            buttons.add(r);
-            vboxOptions.getChildren().add(r);
-            size--;
-        }
-    }
-
-
 
     /**
      * Creates a VBox container
@@ -184,18 +127,7 @@ public class CustomGalleryController {
         Label l = new Label("You do not have any galleries");
         l.setFont(new Font("Calibri", 24));
 
-        tilePaneGalleries.setAlignment(Pos.CENTER);
-        tilePaneGalleries.getChildren().add(l);
-
-    }
-
-    private void noListings() {
-        Label l = new Label("You do not have any listings in your galleries, click to add.");
-        l.setFont(new Font("Calibri", 24));
-        l.setOnMouseClicked(e -> Main.switchScene("CurrentListings"));
-
-        tilePaneGalleries.setAlignment(Pos.CENTER);
-        tilePaneGalleries.getChildren().add(l);
+        this.galleryBox.getChildren().add(l);
 
     }
 
@@ -217,22 +149,4 @@ public class CustomGalleryController {
 
     }
 
-    /**
-     * Fixes the HGap and padding of the elements inside the TilePane making it a lot easier for the eye
-     */
-    private void fixTile() {
-
-        tilePaneGalleries.setHgap(10.0);
-        tilePaneGalleries.setPadding(new Insets(10.0, 10.0, 10.0, 10.0));
-
-    }
-
-    /**
-     * Whenever a new gallery will be loaded the tile pane is cleared.
-     */
-    private void clearTilePane() {
-
-        tilePaneGalleries.getChildren().clear();
-
-    }
 }
