@@ -112,36 +112,36 @@ public class MonthlyBarChart {
         return monthlySalesChart;
     }
 
-    public static int getNumOfMonths() {
+    private static int getNumOfMonths() {
         return numOfMonths;
     }
 
-    public static String getDateMonth(int index) {
+    private static String getDateMonth(int index) {
         return dateMonth[index];
     }
 
-    public static int getPaintingSalesM(int index) {
+    private static int getPaintingSalesM(int index) {
         return paintingSalesM[index];
     }
 
-    public static int getSculptureSalesM(int index) {
+    private static int getSculptureSalesM(int index) {
         return sculptureSalesM[index];
     }
 
 
-    public static void setNumOfMonths(int numberOfMonths) {
+    private static void setNumOfMonths(int numberOfMonths) {
         numOfMonths = numberOfMonths;
     }
 
-    public static void setDateMonth(int index, String month) {
+    private static void setDateMonth(int index, String month) {
         dateMonth[index] = month;
     }
 
-    public static void setPaintingSalesM(int index, int paintingSales) {
+    private static void setPaintingSalesM(int index, int paintingSales) {
         paintingSalesM[index] = paintingSales;
     }
 
-    public static void setSculptureSalesM(int index, int sculptureSales) {
+    private static void setSculptureSalesM(int index, int sculptureSales) {
         sculptureSalesM[index] = sculptureSales;
     }
 

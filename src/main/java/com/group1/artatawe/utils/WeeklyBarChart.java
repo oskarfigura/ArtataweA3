@@ -5,6 +5,12 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 
+/**
+ * This class generates a bar chart, displaying one's weekly sales performance for the past 8 weeks
+ *
+ * @author K Carew.
+ * @version 20180315Th1440
+ */
 public class WeeklyBarChart {
 
     private static int numOfWeeks;
@@ -14,11 +20,15 @@ public class WeeklyBarChart {
     private static int[] paintingSalesWk;
     private static int[] sculptureSalesWk;
 
+    /**
+     * This method generates a bar chart object, without a container/frame/stage, of one's sales performance
+     * @return The bar chart object of a user's weekly sales performance
+     */
     public static BarChart<String, Number> start() {
 
         setNumOfWeeks(8);
 
-        dateWeek = new String[numOfWeeks+1]; // Weeks are from Monday to Sunday
+        dateWeek = new String[numOfWeeks+1];
         // Not using [0] to avoid confusion.
 
         paintingSalesWk = new int[numOfWeeks+1];
@@ -55,7 +65,7 @@ public class WeeklyBarChart {
         setSculptureSalesWk(8, 11);
         // ^^ TEST VALUES ^^
 
-        //Could probably use a for loop to set the values
+        // Could probably use a for loop to set the values
 
 
 
@@ -117,36 +127,64 @@ public class WeeklyBarChart {
         return weeklySalesChart;
     }
 
-    public static int getNumOfWeeks() {
+    /**
+     * Method to return the number of weeks being analysed.
+     * @return The number of weeks being analysed.
+     */
+    private static int getNumOfWeeks() {
         return numOfWeeks;
     }
 
-    public static String getDateWeek(int index) {
+    /**
+     * Method to return the week period of time, as a string, in the form "DD/MM - DD/MM".
+     * @param index The week number; also the index of the array where the dateWeek String values are stored.
+     * @return The week period of time "DD/MM - DD/MM", as a String.
+     */
+    private static String getDateWeek(int index) {
         return dateWeek[index];
     }
 
-    public static int getPaintingSalesWk(int index) {
+    /**
+     * Method to return the number of paintings sold in the week number passed as a parameter.
+     * @param index The week number; also the index of the array where the getPaintingSalesWk values are stored.
+     * @return The number of paintings sold in the given week.
+     */
+    private static int getPaintingSalesWk(int index) {
         return paintingSalesWk[index];
     }
 
-    public static int getSculptureSalesWk(int index) {
+    /**
+     * Method to return the number of sculptures sold in the week number passed as a parameter.
+     * @param index The week number; also the index of the array where the getSculptureSalesWk values are stored.
+     * @return The number of sculptures sold in the given week.
+     */
+    private static int getSculptureSalesWk(int index) {
         return sculptureSalesWk[index];
     }
 
 
-    public static void setNumOfWeeks(int numberOfWeeks) {
+    /**
+     * Method to set the number of weeks to display on the bar chart.
+     * @param numberOfWeeks The number of weeks.
+     */
+    private static void setNumOfWeeks(int numberOfWeeks) {
         numOfWeeks = numberOfWeeks;
     }
 
-    public static void setDateWeek(int index, String period) {
+    /**
+     * Method to set the week period of time, and store it in an array of all the week periods of time.
+     * @param index The week number, also the index of the array
+     * @param period The week period of time.
+     */
+    private static void setDateWeek(int index, String period) {
         dateWeek[index] = period;
     }
 
-    public static void setPaintingSalesWk(int index, int paintingSales) {
+    private static void setPaintingSalesWk(int index, int paintingSales) {
         paintingSalesWk[index] = paintingSales;
     }
 
-    public static void setSculptureSalesWk(int index, int sculptureSales) {
+    private static void setSculptureSalesWk(int index, int sculptureSales) {
         sculptureSalesWk[index] = sculptureSales;
     }
 
