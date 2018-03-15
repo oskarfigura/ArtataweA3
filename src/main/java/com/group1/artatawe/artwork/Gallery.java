@@ -41,6 +41,10 @@ public class Gallery {
         this.loadFromJson(jo, acc);
     }
 
+    /**
+     *  Transfors a gallery object into a Json so it could later be saved in the data files
+     * @return
+     */
     public JsonObject toJsonObject() {
         JsonObject jo = new JsonObject();
 

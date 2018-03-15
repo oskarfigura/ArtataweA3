@@ -16,17 +16,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Collectors;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.group1.artatawe.artwork.Gallery;
-import com.group1.artatawe.listings.Listing;
-import com.group1.artatawe.utils.ImageUtil;
-
-import javafx.scene.image.Image;
 
 /**
  * Represent a single account / user in the system
@@ -424,7 +414,6 @@ public class Account {
 			galleriesArray.add(j); // Adding a json object into an array
 		});
 
-		//TODO -> Needs some testing
 		jo.add("galleries", galleriesArray);
 
 		return jo;
