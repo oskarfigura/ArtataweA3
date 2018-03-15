@@ -5,12 +5,20 @@ import java.util.Date;
 import java.util.LinkedList;
 
 import com.group1.artatawe.Main;
+import com.group1.artatawe.utils.GridUtil;
+import com.group1.artatawe.accounts.Account;
+import com.group1.artatawe.listings.Listing;
+import com.group1.artatawe.utils.WeeklyBarChart;
+import com.group1.artatawe.utils.MonthlyBarChart;
+
+import com.group1.artatawe.Main;
 import com.group1.artatawe.accounts.Account;
 import com.group1.artatawe.listings.Listing;
 import com.group1.artatawe.utils.GridUtil;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.chart.BarChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -20,6 +28,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Popup;
 
 import javax.swing.text.View;
 import java.text.SimpleDateFormat;
@@ -50,21 +60,16 @@ public class ProfileController {
 	@FXML Button logout;
 	@FXML Button buttonMyGallery;
 
-    //Profile Specific Attributes
-    @FXML
-    ImageView avatar;
-    @FXML
-    Button favbutton;
-    @FXML
-    Label firstname;
-    @FXML
-    Label lastname;
-    @FXML
-    Label username;
-    @FXML
-    Label lastseen;
-    @FXML
-    Button editaccount;
+	//Profile Specific Attributes
+	@FXML ImageView avatar;
+	@FXML Button favbutton;
+	@FXML Label firstname;
+	@FXML Label lastname;
+	@FXML Label username;
+	@FXML Label lastseen;
+	@FXML Button editaccount;
+	@FXML Button showWeeklySalesGraphButton;
+	@FXML Button showMonthlySalesGraphButton;
 
     @FXML
     GridPane selling;
@@ -116,6 +121,23 @@ public class ProfileController {
             }
         });
     }
+		this.favbutton.setOnMouseClicked(e -> {
+			if(! viewingOwnProfile) {
+				if(loggedIn.isFavAccount(viewing)) {
+					loggedIn.removeFavAccounts(viewing);
+				} else {
+					loggedIn.addFavAccount(viewing);
+				}
+				this.initializeFavButton();
+			}
+		});
+
+		//this.showWeeklySalesGraphButton.setOnMouseClicked(e -> WeeklyBarChart.showGraph() );
+		this.showWeeklySalesGraphButton.setOnMouseClicked(e -> renderWeeklyGraph());
+
+		//this.showMonthlySalesGraphButton.setOnMouseClicked(e -> MonthlyBarChart.showGraph() );
+		this.showMonthlySalesGraphButton.setOnMouseClicked(e -> renderMonthlyGraph());
+	}
 
     /**
      * Generate notifications for logged in user
@@ -351,4 +373,43 @@ public class ProfileController {
 
         GridUtil.insertList(this.wonauctions, nodes);
     }
+		GridUtil.insertList(this.wonauctions, nodes);
+	}
+
+	private void renderWeeklyGraph() {
+		BarChart<String, Number> wkChart = WeeklyBarChart.start();
+		VBox vbox = new VBox();
+		vbox.getChildren().add(wkChart);
+		Popup graphPopup = new Popup();
+		graphPopup.getContent().add(vbox);
+
+		graphPopup.setHideOnEscape(true);
+		graphPopup.setAutoHide(true);
+
+		vbox.setPrefWidth(1000);
+		vbox.setPrefHeight(wkChart.getPrefHeight());
+		vbox.setStyle("-fx-background-color: lime; -fx-padding: 10;");
+
+		graphPopup.show(topstack.getScene().getWindow());
+	}
+
+	private void renderMonthlyGraph() {
+		BarChart<String, Number> mChart = MonthlyBarChart.start();
+		VBox vbox = new VBox();
+		vbox.getChildren().add(mChart);
+		Popup graphPopup = new Popup();
+		graphPopup.getContent().add(vbox);
+
+		graphPopup.setHideOnEscape(true);
+		graphPopup.setAutoHide(true);
+
+		vbox.setPrefWidth(1000);
+		vbox.setPrefHeight(mChart.getPrefHeight());
+		vbox.setStyle("-fx-background-color: hotpink; -fx-padding: 10;");
+
+		graphPopup.show(topstack.getScene().getWindow());
+	}
+
+
+
 }
