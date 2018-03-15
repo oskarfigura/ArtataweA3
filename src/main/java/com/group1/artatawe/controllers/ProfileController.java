@@ -1,20 +1,15 @@
 package com.group1.artatawe.controllers;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.LinkedList;
+import java.util.*;
 
 import com.group1.artatawe.Main;
 import com.group1.artatawe.utils.GridUtil;
 import com.group1.artatawe.accounts.Account;
 import com.group1.artatawe.listings.Listing;
-import com.group1.artatawe.utils.WeeklyBarChart;
+
 import com.group1.artatawe.utils.MonthlyBarChart;
-
-import com.group1.artatawe.Main;
-import com.group1.artatawe.accounts.Account;
-import com.group1.artatawe.listings.Listing;
-import com.group1.artatawe.utils.GridUtil;
+import com.group1.artatawe.utils.WeeklyBarChart;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -33,10 +28,8 @@ import javafx.stage.Popup;
 
 import javax.swing.text.View;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Controller for "Profile.fxml"
@@ -120,24 +113,15 @@ public class ProfileController {
                 this.initializeFavButton();
             }
         });
+
+        //this.showWeeklySalesGraphButton.setOnMouseClicked(e -> WeeklyBarChart.showGraph() );
+        this.showWeeklySalesGraphButton.setOnMouseClicked(e -> renderWeeklyGraph());
+
+        //this.showMonthlySalesGraphButton.setOnMouseClicked(e -> MonthlyBarChart.showGraph() );
+        this.showMonthlySalesGraphButton.setOnMouseClicked(e -> renderMonthlyGraph());
     }
-		this.favbutton.setOnMouseClicked(e -> {
-			if(! viewingOwnProfile) {
-				if(loggedIn.isFavAccount(viewing)) {
-					loggedIn.removeFavAccounts(viewing);
-				} else {
-					loggedIn.addFavAccount(viewing);
-				}
-				this.initializeFavButton();
-			}
-		});
 
-		//this.showWeeklySalesGraphButton.setOnMouseClicked(e -> WeeklyBarChart.showGraph() );
-		this.showWeeklySalesGraphButton.setOnMouseClicked(e -> renderWeeklyGraph());
 
-		//this.showMonthlySalesGraphButton.setOnMouseClicked(e -> MonthlyBarChart.showGraph() );
-		this.showMonthlySalesGraphButton.setOnMouseClicked(e -> renderMonthlyGraph());
-	}
 
     /**
      * Generate notifications for logged in user
@@ -373,10 +357,9 @@ public class ProfileController {
 
         GridUtil.insertList(this.wonauctions, nodes);
     }
-		GridUtil.insertList(this.wonauctions, nodes);
-	}
 
 	private void renderWeeklyGraph() {
+        getWeeklyGraphData();
 		BarChart<String, Number> wkChart = WeeklyBarChart.start();
 		VBox vbox = new VBox();
 		vbox.getChildren().add(wkChart);
@@ -394,6 +377,7 @@ public class ProfileController {
 	}
 
 	private void renderMonthlyGraph() {
+        getMonthlyGraphData();
 		BarChart<String, Number> mChart = MonthlyBarChart.start();
 		VBox vbox = new VBox();
 		vbox.getChildren().add(mChart);
@@ -410,6 +394,71 @@ public class ProfileController {
 		graphPopup.show(topstack.getScene().getWindow());
 	}
 
+	public void getWeeklyGraphData() {
+
+        final long WEEK_IN_MILLISEC = 604800000L;
+
+        long currentTime = Calendar.getInstance().getTime().getTime();
+        long currentUnixWeek = currentTime / WEEK_IN_MILLISEC;
+
+        for (Listing l:  Main.accountManager.getLoggedIn().getHistory().getSoldListings()) {
+
+            long elemTime = l.getBidHistory().getCurrentBid().getDate();
+            long elemWeek = elemTime / WEEK_IN_MILLISEC;
+
+            int elemWeeksAgo = (int) (currentUnixWeek - elemWeek); //Rounds down
+
+            if (elemWeeksAgo < WeeklyBarChart.getNumOfWeeks()) {
+
+                if (l.getArtwork().getClass().getSimpleName().equals("Painting")) {
+
+                    WeeklyBarChart.setPaintingSalesWk(elemWeeksAgo, (WeeklyBarChart.getPaintingSalesWk(elemWeeksAgo) + 1));
+
+                } else if (l.getArtwork().getClass().getSimpleName().equals("Sculpture")) {
+
+                    WeeklyBarChart.setSculptureSalesWk(elemWeeksAgo, (WeeklyBarChart.getSculptureSalesWk(elemWeeksAgo) + 1));
+
+                } else {
+                    System.out.println("ERROR CODE 006");
+                }
+            }
+        }
+
+
+    }
+
+    public void getMonthlyGraphData() {
+
+        final long MONTH_IN_MILLISEC = 2629743000L;
+
+        long currentTime = Calendar.getInstance().getTime().getTime();
+        long currentUnixMonth = currentTime / MONTH_IN_MILLISEC;
+
+        for (Listing l:  Main.accountManager.getLoggedIn().getHistory().getSoldListings()) {
+
+            long elemTime = l.getBidHistory().getCurrentBid().getDate();
+            long elemMonth = elemTime / MONTH_IN_MILLISEC;
+
+            int elemMonthsAgo = (int) (currentUnixMonth - elemMonth); //Rounds down
+
+            if (elemMonthsAgo < MonthlyBarChart.getNumOfMonths()) {
+
+                if (l.getArtwork().getClass().getSimpleName().equals("Painting")) {
+
+                    MonthlyBarChart.setPaintingSalesM(elemMonthsAgo, (MonthlyBarChart.getPaintingSalesM(elemMonthsAgo) + 1));
+
+                } else if (l.getArtwork().getClass().getSimpleName().equals("Sculpture")) {
+
+                    MonthlyBarChart.setSculptureSalesM(elemMonthsAgo, (MonthlyBarChart.getSculptureSalesM(elemMonthsAgo) + 1));
+
+                } else {
+                    System.out.println("ERROR CODE 007");
+                }
+            }
+        }
+
+
+    }
 
 
 }
