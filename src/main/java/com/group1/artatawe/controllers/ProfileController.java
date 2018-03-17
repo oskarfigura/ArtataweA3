@@ -1,5 +1,6 @@
 package com.group1.artatawe.controllers;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -12,7 +13,9 @@ import com.group1.artatawe.utils.MonthlyBarChart;
 import com.group1.artatawe.utils.WeeklyBarChart;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -20,11 +23,10 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.stage.Modality;
 import javafx.stage.Popup;
+import javafx.stage.Stage;
 
 import javax.swing.text.View;
 import java.text.SimpleDateFormat;
@@ -61,6 +63,7 @@ public class ProfileController {
 	@FXML Label username;
 	@FXML Label lastseen;
 	@FXML Button editaccount;
+	@FXML Button editGalleries;
 	@FXML Button showWeeklySalesGraphButton;
 	@FXML Button showMonthlySalesGraphButton;
 
@@ -114,11 +117,10 @@ public class ProfileController {
             }
         });
 
-        //this.showWeeklySalesGraphButton.setOnMouseClicked(e -> WeeklyBarChart.showGraph() );
         this.showWeeklySalesGraphButton.setOnMouseClicked(e -> renderWeeklyGraph());
-
-        //this.showMonthlySalesGraphButton.setOnMouseClicked(e -> MonthlyBarChart.showGraph() );
         this.showMonthlySalesGraphButton.setOnMouseClicked(e -> renderMonthlyGraph());
+        this.editGalleries.setOnMouseClicked(e -> galleryMenuPopup());
+
     }
 
 
@@ -446,7 +448,7 @@ public class ProfileController {
         long currentTime = Calendar.getInstance().getTime().getTime();
         long currentUnixMonth = currentTime / MONTH_IN_MILLISEC;
 
-        for (Listing l:  Main.accountManager.getLoggedIn().getHistory().getSoldListings()) {
+        for (Listing l : Main.accountManager.getLoggedIn().getHistory().getSoldListings()) {
 
             long elemTime = l.getBidHistory().getCurrentBid().getDate();
             long elemMonth = elemTime / MONTH_IN_MILLISEC;
@@ -469,7 +471,34 @@ public class ProfileController {
             }
         }
 
+    }
 
+    private void galleryMenuPopup() {
+        try {
+
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/fxml/GalleryOptions.fxml"));
+
+            BorderPane someRoot = (BorderPane) loader.load();
+
+            GalleryOptionsController controller = loader.getController();
+
+            Scene defaultAvatarScene = new Scene(someRoot);
+
+            Stage defaultAvatarStage = new Stage();
+            defaultAvatarStage.setScene(defaultAvatarScene);
+            defaultAvatarStage.setTitle("Artatawe");
+
+            defaultAvatarStage.initModality(Modality.APPLICATION_MODAL);
+
+            defaultAvatarStage.showAndWait();
+
+            Main.accountManager.saveAccountFile();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
     }
 
 

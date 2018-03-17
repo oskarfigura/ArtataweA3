@@ -263,7 +263,12 @@ public class Account {
 	    this.userGalleries.add(g);
 	}
 
-	public Gallery getSpecificGallery(String galleryName) {
+	/**
+	 * Returns a specific gallery by a given name;
+	 * @param galleryName
+	 * @return
+	 */
+	private Gallery getSpecificGallery(String galleryName) {
 		return this.userGalleries.stream()
 									.filter(x -> x.getName().equals(galleryName))
 									.findFirst()
@@ -297,13 +302,18 @@ public class Account {
 	}
 
 	/**
-	 * permanently removes a gallery from the users profile
+	 * Permanently removes a gallery from the users profile
 	 * @param galleryName
 	 */
-	public void removeGallery(String galleryName) {
-		Gallery g = this.userGalleries.stream().filter(x -> x.getName().equalsIgnoreCase(galleryName))
-				.findFirst().get();
-		this.userGalleries.remove(g);
+	public boolean removeGallery(String galleryName) {
+
+		if (checkGallery(galleryName)) {
+			this.userGalleries.remove(getSpecificGallery(galleryName));
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 
 	/**
