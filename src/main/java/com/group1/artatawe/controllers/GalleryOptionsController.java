@@ -13,6 +13,7 @@ import javafx.scene.text.Text;
  * @author Kristiyan Vladimirov
  */
 public class GalleryOptionsController {
+
     @FXML ToggleButton toggleDeleteGal;
     @FXML ToggleButton toggleAddGal;
     @FXML Text infoText;
@@ -25,7 +26,6 @@ public class GalleryOptionsController {
     public void initialize() {
 
         initializeListView();
-        addListenersToGalleries();
         initializeStyles();
 
         toggleAddGal.setOnMouseClicked(e -> this.showAddChanges());
@@ -34,14 +34,21 @@ public class GalleryOptionsController {
 
     }
 
+    /**
+     *
+     */
     private void initializeStyles() {
 
         toggleAddGal.setSelected(true);
         toggleAddGal.setStyle("-fx-background-color: #3421a4; -fx-border-color: #3421a4; -fx-text-fill: #fff");
+        toggleDeleteGal.setStyle("-fx-background-color: #fff; -fx-border-color: #3421a4; -fx-text-fill: #000");
         infoText.setText("Please name your new Gallery and press add button.");
 
     }
 
+    /**
+     *
+     */
     private void initializeListView() {
 
         this.galleries = new ListView<>();
@@ -55,18 +62,22 @@ public class GalleryOptionsController {
      *
      */
     private void updateListView() {
+        this.galleries.getItems().clear();
         Main.accountManager.getLoggedIn().getGalleryNames().stream().forEach(x -> {
             this.galleries.getItems().add(x);
         });
         this.addListenersToGalleries();
     }
 
+    /**
+     *
+     */
     private void addListenersToGalleries() {
 
-        //TODO -> set listeners to each item in the listview
         galleries.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
             textFieldChoice.setText(newValue);
         }));
+
     }
 
     /**
@@ -76,7 +87,7 @@ public class GalleryOptionsController {
 
         toggleAddGal.setSelected(true);
         toggleAddGal.setStyle("-fx-background-color: #3421a4; -fx-border-color: #3421a4; -fx-text-fill: #fff");
-        toggleDeleteGal.setStyle("-fx-background-color: lightgrey");
+        toggleDeleteGal.setStyle("-fx-background-color: #fff; -fx-border-color: #3421a4; -fx-text-fill: #000");
 
         infoText.setText("Please name your new Gallery and press add button.");
         buttonChanges.setText("Add gallery");
@@ -90,7 +101,7 @@ public class GalleryOptionsController {
 
         toggleDeleteGal.setSelected(true);
         toggleDeleteGal.setStyle("-fx-background-color: #3421a4; -fx-border-color: #3421a4; -fx-text-fill: #fff");
-        toggleAddGal.setStyle("-fx-background-color: lightgrey");
+        toggleAddGal.setStyle("-fx-background-color: #fff; -fx-border-color: #3421a4; -fx-text-fill: #000");
 
         infoText.setText("Please name the gallery you would like to delete, or simple click from the list view.");
         buttonChanges.setText("Delete gallery");
@@ -108,12 +119,15 @@ public class GalleryOptionsController {
 
                 String s = textFieldChoice.getText().trim();
                 boolean existence = Main.accountManager.getLoggedIn().checkGallery(s);
+
                 // Checks if a gallery is already there it is not it adds a new one
                 if (!existence) {
 
                     this.galleries.getItems().add(s);
                     Main.accountManager.getLoggedIn().addGallery(new Gallery(Main.accountManager.getLoggedIn(), s));
                     this.addListenersToGalleries();
+
+                    textFieldChoice.clear();
 
                 } else {
 
@@ -125,6 +139,9 @@ public class GalleryOptionsController {
 
                 String s = textFieldChoice.getText().trim();
 
+                // Performs a check to see if a gallery is present in a user's list of galleries
+                // If it is not there false would be returned and thus the user would get notified about this
+                // If it is there the user would get notified that the gallery has been deleted
                 if (!Main.accountManager.getLoggedIn().removeGallery(s)) {
 
                     AlertUtil.sendAlert(Alert.AlertType.ERROR, "Gallery does not exist",
@@ -136,17 +153,18 @@ public class GalleryOptionsController {
 
                     if (selectedIndex != -1) {
 
-                        int newSelectedIndex = (selectedIndex == galleries.getItems().size() - 1) ? selectedIndex - 1 : selectedIndex;
+                        //int newSelectedIndex = (selectedIndex == galleries.getItems().size() - 1) ? selectedIndex - 1 : selectedIndex;
                         galleries.getItems().remove(selectedIndex);
-                        galleries.getSelectionModel().select(newSelectedIndex);
+                        //galleries.getSelectionModel().select(newSelectedIndex);
 
                     } else {
 
                         System.out.println(galleries.getItems().remove(textFieldChoice.getText().trim()));
-                        
+
                     }
 
                     this.updateListView();
+                    textFieldChoice.clear();
 
                 }
 
