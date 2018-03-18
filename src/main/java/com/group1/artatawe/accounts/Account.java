@@ -20,12 +20,12 @@ import com.group1.artatawe.artwork.Gallery;
 
 /**
  * Represent a single account / user in the system
- * @author Kristiyan Vladimirov
+ * @author Kristiyan Vladimirov, Adam Payne, Oscar Figura
  *
  */
 public class Account {
 
-    public static final String AVATAR_FOLDER = "avatars";
+    private static final String AVATAR_FOLDER = "avatars";
 
     private String userName;
     private String firstName;
@@ -239,7 +239,7 @@ public class Account {
 	/**
 	 * Check if an account is to be flagged as favourite
 	 * 
-	 * @param userName - The username of the account to check
+	 * @param account - The username of the account to check
 	 * @return True if account if favourite, else False
 	 */
 	public boolean isFavAccount(Account account) {
@@ -249,8 +249,8 @@ public class Account {
 
 	/**
 	 *
-	 * @param galleryName
-	 * @return
+	 * @param galleryName The name of a gallery
+	 * @return True if a gallery is presents in the user's account or false if not
 	 */
 	public boolean checkGallery(String galleryName) {
 		return this.userGalleries.stream()
@@ -258,8 +258,8 @@ public class Account {
 	}
 
 	/**
-	 * Adds a new gallery to the users profie
-	 * @param g
+	 * Adds a new gallery to the users profile
+	 * @param g The Object representing a single gallery
 	 */
 	public void addGallery(Gallery g) {
 	    this.userGalleries.add(g);
@@ -267,8 +267,8 @@ public class Account {
 
 	/**
 	 * Returns a specific gallery by a given name;
-	 * @param galleryName
-	 * @return
+	 * @param galleryName The name of a gallery
+	 * @return A specific gallery, given a name
 	 */
 	private Gallery getSpecificGallery(String galleryName) {
 		return this.userGalleries.stream()
@@ -278,7 +278,7 @@ public class Account {
 	}
 	/**
 	 *
-	 * @return
+	 * @return A list of all gallery names
 	 */
 	public List<String> getGalleryNames() {
 		List<String> list = new ArrayList<>();
@@ -290,23 +290,11 @@ public class Account {
 		return list;
 	}
 
-	/**
-	 * Finds the gallery the user has picked and then assignes a new listing to it
-	 * @param galleryName
-	 * @param l
-	 */
-	public void addToGallery(String galleryName, Listing l) {
-		this.userGalleries.stream()
-				.filter(x -> x.getName().equalsIgnoreCase(galleryName))
-				.findFirst()
-				.get()
-				.addListing(l);
-	}
-
-	/**
-	 * Permanently removes a gallery from the users profile
-	 * @param galleryName
-	 */
+    /**
+     * Permanently removes a gallery from the users profile
+     * @param galleryName The name of a gallery
+     * @return True if a gallery has been removed, false otherwise
+     */
 	public boolean removeGallery(String galleryName) {
 
 		if (checkGallery(galleryName)) {
@@ -470,7 +458,7 @@ public class Account {
 
     /**
      * Loads all the galleries of a particular user
-     * @param jo
+     * @param jo JsonObject containing the data associated with all galleries
      */
 	public void loadGalleries(JsonObject jo, Account acc) {
 	    /*

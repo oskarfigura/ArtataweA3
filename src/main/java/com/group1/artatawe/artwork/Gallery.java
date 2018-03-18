@@ -14,10 +14,11 @@ import java.util.stream.Collectors;
 
 /**
  * Represents a gallery of artworks curated by a user
- * @author Adam Payne
+ * @author Adam Payne, Kristiyan Vladimirov
  * @version 1.0
  */
 public class Gallery {
+
     //Properties
     private ArrayList<Listing> listings = new ArrayList<>();
     private Account user;
@@ -35,7 +36,7 @@ public class Gallery {
 
     /**
      * Read up and construct a gallery
-     * @param jo
+     * @param jo JsonObject containing the data associated with the attributes of a custom gallery
      */
     public Gallery(JsonObject jo, Account acc) {
         this.loadFromJson(jo, acc);
@@ -43,7 +44,7 @@ public class Gallery {
 
     /**
      *  Transfors a gallery object into a Json so it could later be saved in the data files
-     * @return
+     * @return A JsonObject modelling a user's custom gallery
      */
     public JsonObject toJsonObject() {
         JsonObject jo = new JsonObject();
@@ -76,7 +77,7 @@ public class Gallery {
 
     /**
      * Loads a user gallery from a JsonObject
-     * @param jo
+     * @param jo JsonObject containing the data associated with the attributes of a custom gallery
      */
     public void loadFromJson(JsonObject jo, Account acc) {
         try {
