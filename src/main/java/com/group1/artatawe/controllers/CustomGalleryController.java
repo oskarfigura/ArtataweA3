@@ -14,6 +14,9 @@ import javafx.scene.text.Font;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author Adam Payne
+ */
 public class CustomGalleryController {
     //Header Attributes
     @FXML StackPane topstack;
@@ -30,7 +33,6 @@ public class CustomGalleryController {
     public void initialize() {
 
         this.initializeHeader();
-        //this.fixTile();
         this.anyGalleries();
 
         }
@@ -65,7 +67,6 @@ public class CustomGalleryController {
 
         } else {
 
-            //this.renderGalleries();
             this.renderGalleriesNu();
 
         }
@@ -103,9 +104,9 @@ public class CustomGalleryController {
 
     /**
      * Creates a VBox container
-     * @param iv
-     * @param title
-     * @return
+     * @param iv ImageView which would store a Listings image
+     * @param title The title fo a gallery
+     * @return A gallery node representing a single Listing of a gallery
      */
     private VBox galleryNode(ImageView iv, String title) {
 
@@ -133,8 +134,8 @@ public class CustomGalleryController {
 
     /**
      * Makes an image view which would be added to a VBox container holding a listing from a particular gallery
-     * @param image
-     * @return
+     * @param image The image file (main image) corresponding to a Listing
+     * @return A ImageView container holding a Listings image
      */
     private ImageView makeImgView(Image image) {
 
