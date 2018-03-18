@@ -75,6 +75,7 @@ public class GalleryOptionsController {
     private void addListenersToGalleries() {
 
         galleries.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
+            System.out.println("I set the new value");
             textFieldChoice.setText(newValue);
         }));
 
@@ -131,7 +132,9 @@ public class GalleryOptionsController {
 
                 } else {
 
-                    AlertUtil.sendAlert(Alert.AlertType.ERROR, "Existing gallery", "A gallery with the same name is already present.");
+                    AlertUtil.sendAlert(Alert.AlertType.ERROR, "Existing gallery",
+                            "A gallery with the same name is already present.");
+                    galleries.getSelectionModel().clearSelection();
 
                 }
 
