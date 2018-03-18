@@ -42,6 +42,7 @@ public class GalleryOptionsController {
         toggleAddGal.setSelected(true);
         toggleAddGal.setStyle("-fx-background-color: #3421a4; -fx-border-color: #3421a4; -fx-text-fill: #fff");
         toggleDeleteGal.setStyle("-fx-background-color: #fff; -fx-border-color: #3421a4; -fx-text-fill: #000");
+        buttonChanges.setText("Add gallery");
         infoText.setText("Please name your new Gallery and press add button.");
 
     }
@@ -75,7 +76,6 @@ public class GalleryOptionsController {
     private void addListenersToGalleries() {
 
         galleries.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
-            System.out.println("I set the new value");
             textFieldChoice.setText(newValue);
         }));
 
