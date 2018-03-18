@@ -35,7 +35,7 @@ public class GalleryOptionsController {
     }
 
     /**
-     *
+     * Initializes the default values of the toggle button and the information label
      */
     private void initializeStyles() {
 
@@ -48,7 +48,7 @@ public class GalleryOptionsController {
     }
 
     /**
-     *
+     * Creates a list view with galleries names
      */
     private void initializeListView() {
 
@@ -60,7 +60,7 @@ public class GalleryOptionsController {
     }
 
     /**
-     *
+     * Updates the list view. Primarily used when a gallery is deleted from the list view
      */
     private void updateListView() {
         this.galleries.getItems().clear();
@@ -71,7 +71,7 @@ public class GalleryOptionsController {
     }
 
     /**
-     *
+     * Assigns a listener to each element of the list view.
      */
     private void addListenersToGalleries() {
 
@@ -82,7 +82,8 @@ public class GalleryOptionsController {
     }
 
     /**
-     *
+     * Changes the some elements in the window so they would be correspond to the appropriate decision
+     * made by the user, either add or delete a gallery
      */
     private void showAddChanges() {
 
@@ -96,7 +97,8 @@ public class GalleryOptionsController {
     }
 
     /**
-     *
+     * Changes the some elements in the window so they would be correspond to the appropriate decision
+     * made by the user, either add or delete a gallery
      */
     private void showDeleteChanges() {
 
@@ -110,7 +112,15 @@ public class GalleryOptionsController {
     }
 
     /**
-     *
+     * This method has two functions. First, it adds a new gallery to a user's custom gallery list.
+     * Second it deletes a defined custom gallery from the user's account.
+     * Both operations share the same button. This is done by using two toggle button which
+     * share the same group. This means that only one can be pressed at a time.
+     * Whenever the user wishes to perform the addition or deletion information, the method below
+     * checks which of the two buttons is selected and proceeds with validation.
+     * If the user has done a mistake (i.e. leaves a field empty, tries to add the same gallery again or
+     * wishes to delete a nonexistent gallery) he would get notified and the execution process would
+     * have to start from the beginning.
      */
     private void execute() {
 
@@ -138,7 +148,7 @@ public class GalleryOptionsController {
 
                 }
 
-            } else if (toggleDeleteGal.isSelected()){
+            } else if (toggleDeleteGal.isSelected()) {
 
                 String s = textFieldChoice.getText().trim();
 
@@ -185,7 +195,7 @@ public class GalleryOptionsController {
     }
 
     /**
-     *
+     * Validates if the text field is empty or not
      * @return
      */
     private boolean checkIfEmpty() {

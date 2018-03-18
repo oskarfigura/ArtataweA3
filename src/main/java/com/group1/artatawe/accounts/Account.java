@@ -20,6 +20,8 @@ import com.group1.artatawe.artwork.Gallery;
 
 /**
  * Represent a single account / user in the system
+ * @author Kristiyan Vladimirov
+ *
  */
 public class Account {
 
