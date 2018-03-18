@@ -103,6 +103,16 @@ public class AccountManager {
 	/**
 	 * Construct a new account and save it in the system
 	 */
+	/**
+	 *
+	 * @param userName - The username of an account
+	 * @param firstName - The first name of a user
+	 * @param lastName - The last name of a user
+	 * @param mobileNum - The mobile number of a user
+	 * @param address - The address of a user
+	 * @param avatar -  The avatar of a user
+	 * @return Account object with all attributes of a user
+	 */
 	public Account createAccount(String userName, String firstName, String lastName, String mobileNum, Address address, Image avatar) {
 		Account newAccount = new Account(userName, firstName, lastName, mobileNum, address, avatar, System.currentTimeMillis());
 		this.allAccounts.add(newAccount);

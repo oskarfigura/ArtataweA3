@@ -19,10 +19,10 @@ public class ImageUtil {
 	/**
 	 * Save an image to a file
 	 * 
-	 * @see http://www.java2s.com/Tutorials/Java/JavaFX_How_to/Image/Save_an_Image_to_a_file.htm
+	 * @see "http://www.java2s.com/Tutorials/Java/JavaFX_How_to/Image/Save_an_Image_to_a_file.htm"
 	 * @param file  - The file to save the image to
 	 * @param image - The image to save
-	 * @throws IOException 
+	 * @throws IOException  Thrown if the image has not been saved
 	 */
 	public static void writeImageToFile(File file, Image image) throws IOException {
 		BufferedImage bImage = SwingFXUtils.fromFXImage(image, null);
@@ -34,7 +34,7 @@ public class ImageUtil {
 	 * 
 	 * @param file - The file to load
 	 * @return The loaded file
-	 * @throws FileNotFoundException 
+	 * @throws FileNotFoundException Thrown if a the image file is not found
 	 */
 	public static Image loadImage(File file) throws FileNotFoundException {
 		FileInputStream stream = new FileInputStream(file);

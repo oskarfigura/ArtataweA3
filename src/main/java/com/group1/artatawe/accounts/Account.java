@@ -456,10 +456,11 @@ public class Account {
 
 	}
 
-    /**
-     * Loads all the galleries of a particular user
-     * @param jo JsonObject containing the data associated with all galleries
-     */
+	/**
+	 * Loads all the galleries of a particular user
+	 * @param jo JsonObject containing the data associated with all galleries
+	 * @param acc The account holding a set of particular galleries
+	 */
 	public void loadGalleries(JsonObject jo, Account acc) {
 	    /*
 	        From the Json object passed, the array with the galleries is read in

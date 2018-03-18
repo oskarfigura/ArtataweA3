@@ -62,6 +62,7 @@ public class Address {
 	/**
 	 * Gets the address of the user
 	 * @param line - The line in the address (1, 2 or 3)
+	 * @return A single line of a user's address
 	 */
 	public String getLine(int line) {
 		switch(line) {
@@ -74,7 +75,7 @@ public class Address {
 
 	/**
 	 * Get the city of the user
-	 * @param city - The users city
+	 * @return The users city
 	 */
 	public String getCity() {
 		return this.city;
@@ -82,7 +83,7 @@ public class Address {
 
 	/**
 	 * Get the postcode of the user
-	 * @param postcode - The users postcode
+	 * @return The users postcode
 	 */
 	public String getPostcode() {
 		return this.postcode;

@@ -56,6 +56,7 @@ public abstract class Artwork {
 
 	/**
 	 * Turn a Artwork into a JsonObject
+	 * @param listing - the listing being saved
 	 * @return The created JsonObject
 	 */
 	public JsonObject toJsonObject(Listing listing) {

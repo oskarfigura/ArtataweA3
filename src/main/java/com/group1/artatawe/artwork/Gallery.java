@@ -37,6 +37,7 @@ public class Gallery {
     /**
      * Read up and construct a gallery
      * @param jo JsonObject containing the data associated with the attributes of a custom gallery
+     * @param acc The account holding a particular gallery
      */
     public Gallery(JsonObject jo, Account acc) {
         this.loadFromJson(jo, acc);
@@ -78,6 +79,7 @@ public class Gallery {
     /**
      * Loads a user gallery from a JsonObject
      * @param jo JsonObject containing the data associated with the attributes of a custom gallery
+     * @param acc The account holding a particular gallery
      */
     public void loadFromJson(JsonObject jo, Account acc) {
         try {

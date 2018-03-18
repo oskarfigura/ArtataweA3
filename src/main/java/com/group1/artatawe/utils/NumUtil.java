@@ -17,7 +17,6 @@ public class NumUtil {
 	 * If no Exception is thrown, the operation was a success.
 	 * 
 	 * @param number - The String to turn into a number
-	 * @param too    - The class of the Number
 	 * @param predicate - The predicate to apply to the number. <b>Can be null</b>
 	 * @return The casted number
 	 * @throws Exception <br>- If the parse fails. <br>
@@ -40,7 +39,6 @@ public class NumUtil {
 	 * If no Exception is thrown, the operation was a success.
 	 * 
 	 * @param number - The String to turn into a number
-	 * @param too    - The class of the Number
 	 * @param predicate - The predicate to apply to the number. <b>Can be null</b>
 	 * @return The casted number
 	 * @throws Exception <br>- If the parse fails. <br>
