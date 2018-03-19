@@ -187,6 +187,7 @@ public class AccountManager {
 			this.galleryObjects.add(jo);
 		} catch(Exception e) {
 			System.out.println("Parse error on string: \n" + jsonString + "\nThe account has not been loaded.");
+			System.out.println(e.getMessage());
 		}
 	}
 

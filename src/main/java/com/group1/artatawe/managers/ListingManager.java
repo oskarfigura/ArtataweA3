@@ -148,6 +148,7 @@ public class ListingManager {
 			this.listings.add(listing);
 		} catch(Exception e) {
 			System.out.println("Parse error on string: \n" + jsonString + "\nThe listing has not been loaded.");
+			System.out.println(e.getMessage());
 		}
 	}
 }
