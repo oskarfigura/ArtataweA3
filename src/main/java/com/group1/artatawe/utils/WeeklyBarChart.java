@@ -24,31 +24,6 @@ public class WeeklyBarChart {
      * @return The bar chart object of a user's weekly sales performance.
      */
     public static BarChart<String, Number> start() {
-
-
-        /*
-        //TEST VALUES
-        setPaintingSalesWk(0, 20);
-        setPaintingSalesWk(1, 15);
-        setPaintingSalesWk(2, 13);
-        setPaintingSalesWk(3, 18);
-        setPaintingSalesWk(4, 16);
-        setPaintingSalesWk(5, 21);
-        setPaintingSalesWk(6, 17);
-        setPaintingSalesWk(7, 18);
-        setSculptureSalesWk(0, 15);
-        setSculptureSalesWk(1, 12);
-        setSculptureSalesWk(2, 8);
-        setSculptureSalesWk(3, 11);
-        setSculptureSalesWk(4, 12);
-        setSculptureSalesWk(5, 10);
-        setSculptureSalesWk(6, 14);
-        setSculptureSalesWk(7, 11);
-        // ^^ TEST VALUES ^^
-        */
-
-
-
         CategoryAxis xAxis = new CategoryAxis();
         xAxis.setLabel("Week");
 
@@ -92,18 +67,6 @@ public class WeeklyBarChart {
 
         weeklySalesChart.setTitle("Your Weekly Sales Performance");
 
-        /*
-        VBox vbox = new VBox(weeklySalesChart);
-
-        weeklyStage.setTitle("SALES PERFORMANCE CHART");
-        Scene scene = new Scene(vbox);
-
-        weeklyStage.setScene(scene);
-        weeklyStage.setHeight(700);
-        weeklyStage.setWidth(1000);
-
-        weeklyStage.show();
-        */
         return weeklySalesChart;
     }
 
@@ -160,9 +123,11 @@ public class WeeklyBarChart {
         sculptureSalesWk[index] = sculptureSales;
     }
 
-/*
-    public static void main(String[] args){
-        launch();
+    /**
+     * Method to reset the counters for sales to 0, allowing the graph data to be generated again
+     */
+    public static void reset() {
+        paintingSalesWk = new int[NUM_OF_WEEKS];
+        sculptureSalesWk = new int[NUM_OF_WEEKS];
     }
-*/
 }

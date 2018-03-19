@@ -25,28 +25,6 @@ public class MonthlyBarChart {
      */
     public static BarChart<String, Number> start() {
 
-/*
-        //TEST VALUES
-        setPaintingSalesM(0, 80);
-        setPaintingSalesM(1, 70);
-        setPaintingSalesM(2, 73);
-        setPaintingSalesM(3, 79);
-        setPaintingSalesM(4, 79);
-        setPaintingSalesM(5, 69);
-        setPaintingSalesM(6, 66);
-        setPaintingSalesM(7, 71);
-        setSculptureSalesM(0, 50);
-        setSculptureSalesM(1, 45);
-        setSculptureSalesM(2, 46);
-        setSculptureSalesM(3, 30);
-        setSculptureSalesM(4, 38);
-        setSculptureSalesM(5, 36);
-        setSculptureSalesM(6, 38);
-        setSculptureSalesM(7, 41);
-        // ^^ TEST VALUES ^^
-*/
-
-
         CategoryAxis xAxis = new CategoryAxis();
         xAxis.setLabel("Month");
 
@@ -89,18 +67,6 @@ public class MonthlyBarChart {
 
         monthlySalesChart.setTitle("Your Monthly Sales Performance");
 
-        /*
-        VBox vbox = new VBox(monthlySalesChart);
-
-        monthlyStage.setTitle("SALES PERFORMANCE CHART");
-        Scene scene = new Scene(vbox);
-
-        monthlyStage.setScene(scene);
-        monthlyStage.setHeight(700);
-        monthlyStage.setWidth(1000);
-
-        monthlyStage.show();
-        */
         return monthlySalesChart;
     }
 
@@ -158,9 +124,11 @@ public class MonthlyBarChart {
         sculptureSalesM[index] = sculptureSales;
     }
 
-    /*
-    public static void main(String[] args){
-        launch();
+    /**
+     * Method to reset the counters for sales to 0, allowing the graph data to be generated again
+     */
+    public static void reset() {
+        paintingSalesM = new int[NUM_OF_MONTHS];
+        sculptureSalesM = new int[NUM_OF_MONTHS];
     }
-    */
 }

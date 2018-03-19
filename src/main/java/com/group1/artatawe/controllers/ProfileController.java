@@ -42,6 +42,8 @@ public class ProfileController {
     private boolean viewingOwnProfile = false;
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
+    private static final long MONTH_IN_MILLISEC = 2629743000L;
+    private static final long WEEK_IN_MILLISEC = 604800000L;
 
     //Stores index of listings in list view notificationsList
     private List<Listing> notificationsListings;
@@ -406,8 +408,7 @@ public class ProfileController {
      * Method to populate the variables used in creating a bar chart (month)
      */
 	public void getWeeklyGraphData() {
-
-        final long WEEK_IN_MILLISEC = 604800000L;
+	    WeeklyBarChart.reset();
 
         long currentTime = Calendar.getInstance().getTime().getTime();
         long currentUnixWeek = currentTime / WEEK_IN_MILLISEC;
@@ -442,9 +443,7 @@ public class ProfileController {
      * Method to populate the variables used in creating a bar chart (month)
      */
     public void getMonthlyGraphData() {
-
-        final long MONTH_IN_MILLISEC = 2629743000L;
-
+        MonthlyBarChart.reset();
         long currentTime = Calendar.getInstance().getTime().getTime();
         long currentUnixMonth = currentTime / MONTH_IN_MILLISEC;
 
