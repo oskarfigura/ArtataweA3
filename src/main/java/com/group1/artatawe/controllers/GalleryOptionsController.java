@@ -166,13 +166,24 @@ public class GalleryOptionsController {
 
                     if (selectedIndex != -1) {
 
-                        //int newSelectedIndex = (selectedIndex == galleries.getItems().size() - 1) ? selectedIndex - 1 : selectedIndex;
-                        galleries.getItems().remove(selectedIndex);
-                        //galleries.getSelectionModel().select(newSelectedIndex);
+                        if (!galleries.getItems().remove(textFieldChoice.getText().trim())) {
+
+                            AlertUtil.sendAlert(Alert.AlertType.ERROR, "Gallery does not exist",
+                                    "Please type in a correct name of a gallery or click from the list view.");
+
+                        } else {
+
+                            //int newSelectedIndex = (selectedIndex == galleries.getItems().size() - 1) ? selectedIndex - 1 : selectedIndex;
+                            galleries.getItems().remove(selectedIndex);
+                            //galleries.getSelectionModel().select(newSelectedIndex);
+
+                        }
 
                     } else {
 
-                        System.out.println(galleries.getItems().remove(textFieldChoice.getText().trim()));
+                        AlertUtil.sendAlert(Alert.AlertType.ERROR, "Gallery does not exist",
+                                "Please type in a correct name of a gallery or click from the list view.");
+                        //System.out.println(galleries.getItems().remove(textFieldChoice.getText().trim()));
 
                     }
 

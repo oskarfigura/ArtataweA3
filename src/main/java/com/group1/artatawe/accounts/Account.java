@@ -11,10 +11,7 @@ import javafx.scene.image.Image;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
 import com.group1.artatawe.artwork.Gallery;
 
@@ -298,7 +295,12 @@ public class Account {
 	public boolean removeGallery(String galleryName) {
 
 		if (checkGallery(galleryName)) {
-			this.userGalleries.remove(getSpecificGallery(galleryName));
+			try {
+				this.userGalleries.remove(getSpecificGallery(galleryName));
+
+			} catch (NoSuchElementException e) {
+				//return false;
+			}
 			return true;
 		} else {
 			return false;
