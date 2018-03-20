@@ -1,11 +1,13 @@
-package com.group4.artatawe.controllers;
+package com.group1.artatawe.controllers;
 
 import java.util.LinkedList;
+import java.util.Set;
 
-import com.group4.artatawe.Main;
-import com.group4.artatawe.listings.Listing;
-import com.group4.artatawe.utils.GridUtil;
+import com.group1.artatawe.Main;
+import com.group1.artatawe.listings.Listing;
+import com.group1.artatawe.utils.GridUtil;
 
+import com.group1.artatawe.utils.Search;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -26,13 +28,18 @@ public class CurrentListingController {
 	@FXML Button currentlistings;
 	@FXML Button createlisting;
 	@FXML Button logout;
+	@FXML Button buttonMyGallery;
 
 	//Current Listing Specific Attributes
 	@FXML GridPane alllistings;
+	@FXML Button searchButton;
+	@FXML TextField searchBox;
+
+	private String searched = "";
+	private boolean needsRefresh = false;
 
 	public void initialize() {
 		this.initializeHeader();
-		
 		this.renderListings();
 	}
 	
@@ -44,6 +51,7 @@ public class CurrentListingController {
 		this.createlisting.setOnMouseClicked(e -> Main.switchScene("CreateListing"));
 		this.home.setOnMouseClicked(e -> Main.switchScene("Home"));
 		this.logout.setOnMouseClicked(e -> Main.accountManager.logoutCurrentAccount());
+		this.buttonMyGallery.setOnMouseClicked(e -> Main.switchScene("UserGallery"));
 
 		//I could not get topstack to ignore the mouse event and let the child nodes handle it, so instead
 		//we check where the click happened and what should actually of been clicked.
@@ -99,12 +107,63 @@ public class CurrentListingController {
 	 * Render all the active listings into the box
 	 */
 	private void renderListings() {
-		LinkedList<Node> nodes = new LinkedList<>();
+		LinkedList<Node> nodes = new LinkedList<Node>();
 		
 		for(Listing listing : Main.listingManager.getAllActiveListings()) {
 			nodes.add(this.getListingNode(listing));
 		}
 		
 		GridUtil.insertList(this.alllistings, nodes);
+	}
+
+	/**
+	 *
+	 * @param listings
+	 */
+	private void renderSpecificListing(Set<Listing> listings) {
+		LinkedList<Node> nodes  = new LinkedList<Node>();
+
+		for (Listing listing : listings) {
+			nodes.add(this.getListingNode(listing));
+		}
+
+		GridUtil.insertList(this.alllistings, nodes);
+	}
+
+	@FXML
+	public void search() {
+	    if (!searchBox.getText().trim().isEmpty()) {
+
+	        if (!searched.equals(getSearching())) {
+
+                this.searched = getSearching();
+                Set<Listing> specificListings = Search.searchForDetails(getSearching());
+                renderSpecificListing(specificListings);
+                this.needsRefresh = true;
+
+            } else {
+                // SKIP The same details are entered
+            }
+
+        } else {
+
+	        if (needsRefresh) {
+
+                this.renderListings();
+                this.needsRefresh = false;
+
+            } else {
+	            //SKIP already rendered
+            }
+
+        }
+	}
+
+    /**
+     *
+     * @return
+     */
+	private String getSearching() {
+		return searchBox.getText().trim();
 	}
 }

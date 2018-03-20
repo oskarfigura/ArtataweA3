@@ -1,4 +1,4 @@
-package com.group4.artatawe.artwork;
+package com.group1.artatawe.artwork;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,8 +8,8 @@ import java.util.List;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.group4.artatawe.listings.Listing;
-import com.group4.artatawe.utils.ImageUtil;
+import com.group1.artatawe.listings.Listing;
+import com.group1.artatawe.utils.ImageUtil;
 
 import javafx.scene.image.Image;
 
@@ -27,14 +27,17 @@ public class Sculpture extends Artwork {
 
 	/**
 	 * Construct a new Sculpture.
-	 * 
+	 * @param title  - The title
+	 * @param desc   - The description
+	 * @param img  - The image
+	 * @param artist - The artist
+	 * @param year   - The year the art was produced
 	 * @param height   - The height of the sculpture
 	 * @param width    - The width of the sculpture
 	 * @param depth    - The depth of the sculpture.
 	 * @param weight   - The weight of the sculpture.
 	 * @param material - The material of the sculpture.
 	 * @param extraImages - Extra images.
-	 * @see {@link com.group4.artatawe.artwork.Artwork#Artwork Artwork}'s constructor for more parameter descriptions.
 	 */
 	public Sculpture(String title, String desc, Image img, String artist, int year,
 			double height, double width, double depth, double weight, String material, List<Image> extraImages) {
@@ -50,13 +53,16 @@ public class Sculpture extends Artwork {
 	
 	/**
 	 * Construct a new Sculpture, without extra images.
-	 * 
+	 * @param title  - The title
+	 * @param desc   - The description
+	 * @param img  - The image
+	 * @param artist - The artist
+	 * @param year   - The year the art was produced
 	 * @param height   - The height of the sculpture
 	 * @param width    - The width of the sculpture
 	 * @param depth    - The depth of the sculpture.
 	 * @param weight   - The weight of the sculpture.
 	 * @param material - The material of the sculpture.
-	 * @see {@link com.group4.artatawe.artwork.Artwork#Artwork Artwork}'s constructor for more parameter descriptions.
 	 */
 	public Sculpture(String title, String desc, Image img, String artist, int year,
 			double height, double width, double depth, double weight, String material) {
@@ -149,7 +155,7 @@ public class Sculpture extends Artwork {
 	 * Load a Sculpture from a JsonObject
 	 * @param title  - The title
 	 * @param desc   - The description
-	 * @param image  - The image
+	 * @param img  - The image
 	 * @param artist - The artist
 	 * @param year   - The year the art was produced
 	 * @param jo     - The JsonObject to load from

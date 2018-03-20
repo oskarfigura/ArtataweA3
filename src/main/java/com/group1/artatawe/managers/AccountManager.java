@@ -1,17 +1,20 @@
-package com.group4.artatawe.managers;
+package com.group1.artatawe.managers;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.group4.artatawe.Main;
-import com.group4.artatawe.accounts.Account;
-import com.group4.artatawe.accounts.Address;
+import com.group1.artatawe.Main;
+import com.group1.artatawe.accounts.Account;
+import com.group1.artatawe.accounts.Address;
 
 import javafx.scene.image.Image;
 
@@ -26,6 +29,7 @@ public class AccountManager {
 	private Account loggedInAccount;
 
 	private final LinkedList<Account> allAccounts = new LinkedList<>();
+	private JsonArray galleryObjects = new JsonArray();
 
 	/**
 	 * Construct a AccountManager
@@ -33,6 +37,7 @@ public class AccountManager {
 	 */
 	public AccountManager() {
 		this.loadAccounts();
+		this.loadGalleries();
 	}
 
 	/**
@@ -49,8 +54,9 @@ public class AccountManager {
 	 */
 	public void login(Account account) {
 		this.loggedInAccount = account;
+		this.loggedInAccount.updateNotifications();
 		account.login();
-		
+
 		this.saveAccountFile();
 	}
 
@@ -97,6 +103,16 @@ public class AccountManager {
 	/**
 	 * Construct a new account and save it in the system
 	 */
+	/**
+	 *
+	 * @param userName - The username of an account
+	 * @param firstName - The first name of a user
+	 * @param lastName - The last name of a user
+	 * @param mobileNum - The mobile number of a user
+	 * @param address - The address of a user
+	 * @param avatar -  The avatar of a user
+	 * @return Account object with all attributes of a user
+	 */
 	public Account createAccount(String userName, String firstName, String lastName, String mobileNum, Address address, Image avatar) {
 		Account newAccount = new Account(userName, firstName, lastName, mobileNum, address, avatar, System.currentTimeMillis());
 		this.allAccounts.add(newAccount);
@@ -138,6 +154,7 @@ public class AccountManager {
 					this.loadAccount(nextLine);
 				}
 			}
+
 		} catch (FileNotFoundException e) {
 			try {
 				new File(ACCOUNT_FILE).createNewFile();
@@ -160,11 +177,37 @@ public class AccountManager {
 		JsonParser jp = new JsonParser();
 		try {
 			JsonObject jo = (JsonObject) jp.parse(jsonString);
-			
+
 			Account account = new Account(jo);
 			this.allAccounts.add(account);
+			/*
+				Creates a Json array which would each line of text which represents a single account with all its
+				attributes including the galleries
+			 */
+			this.galleryObjects.add(jo);
 		} catch(Exception e) {
 			System.out.println("Parse error on string: \n" + jsonString + "\nThe account has not been loaded.");
+			System.out.println(e.getMessage());
+		}
+	}
+
+	/**
+	 *
+	 */
+	private void loadGalleries() {
+		// Adds the same exact line so we can go over it again and get the galleries
+		// This is because we need to have existing account before we add a gallery
+		/*
+			For testing
+			System.out.println("Size in AccountManager -> " + getAccounts().size());
+		 */
+		/*
+			Goes through each object and initiates the adding of the galleries
+		 */
+		for (int i = 0; i < galleryObjects.size(); i++) {
+			JsonObject object = galleryObjects.get(i).getAsJsonObject();
+			Account acc = this.allAccounts.get(i);
+			acc.loadGalleries(object, acc);
 		}
 	}
 }

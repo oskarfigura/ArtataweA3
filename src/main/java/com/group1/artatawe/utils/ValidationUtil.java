@@ -1,4 +1,4 @@
-package com.group4.artatawe.utils;
+package com.group1.artatawe.utils;
 
 import java.util.regex.Pattern;
 
@@ -10,7 +10,7 @@ public class ValidationUtil {
 	/**
 	 * Validate that a postcode is a valid UK postcode
 	 * 
-	 * @see https://stackoverflow.com/questions/164979/uk-postcode-regex-comprehensive
+	 * @see "https://stackoverflow.com/questions/164979/uk-postcode-regex-comprehensive"
 	 * @param postcode - The postcode to be validated.
 	 * @return True if valid, else False.
 	 */
@@ -24,7 +24,7 @@ public class ValidationUtil {
 	/**
 	 * Validate that a phone number is a valid phone number
 	 * 
-	 * @see https://stackoverflow.com/questions/25155970/validating-uk-phone-number-regex-c
+	 * @see "https://stackoverflow.com/questions/25155970/validating-uk-phone-number-regex-c"
 	 * @param phone - The phone number to be validated.
 	 * @return True if valid, else False.
 	 */

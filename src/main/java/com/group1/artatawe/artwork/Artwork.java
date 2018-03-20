@@ -1,4 +1,4 @@
-package com.group4.artatawe.artwork;
+package com.group1.artatawe.artwork;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,8 +6,8 @@ import java.util.Map.Entry;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.group4.artatawe.listings.Listing;
-import com.group4.artatawe.utils.ImageUtil;
+import com.group1.artatawe.listings.Listing;
+import com.group1.artatawe.utils.ImageUtil;
 
 import javafx.scene.image.Image;
 
@@ -56,6 +56,7 @@ public abstract class Artwork {
 
 	/**
 	 * Turn a Artwork into a JsonObject
+	 * @param listing - the listing being saved
 	 * @return The created JsonObject
 	 */
 	public JsonObject toJsonObject(Listing listing) {

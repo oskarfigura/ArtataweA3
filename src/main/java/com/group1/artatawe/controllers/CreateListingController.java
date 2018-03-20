@@ -1,17 +1,17 @@
-package com.group4.artatawe.controllers;
+package com.group1.artatawe.controllers;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.group4.artatawe.Main;
-import com.group4.artatawe.artwork.Artwork;
-import com.group4.artatawe.artwork.Painting;
-import com.group4.artatawe.artwork.Sculpture;
-import com.group4.artatawe.utils.AlertUtil;
-import com.group4.artatawe.utils.ImageUtil;
-import com.group4.artatawe.utils.NumUtil;
+import com.group1.artatawe.Main;
+import com.group1.artatawe.artwork.Artwork;
+import com.group1.artatawe.artwork.Painting;
+import com.group1.artatawe.artwork.Sculpture;
+import com.group1.artatawe.utils.AlertUtil;
+import com.group1.artatawe.utils.ImageUtil;
+import com.group1.artatawe.utils.NumUtil;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -40,6 +40,7 @@ public class CreateListingController {
 	@FXML Button currentlistings;
 	@FXML Button home;
 	@FXML Button logout;
+	@FXML Button buttonMyGallery;
 	@FXML ImageView profileimage;
 
 	//Main Attributes
@@ -86,6 +87,7 @@ public class CreateListingController {
 		this.profileimage.setImage(Main.accountManager.getLoggedIn().getAvatar());
 		this.home.setOnMouseClicked(e -> Main.switchScene("Home"));
 		this.logout.setOnMouseClicked(e -> Main.accountManager.logoutCurrentAccount());
+		this.buttonMyGallery.setOnMouseClicked(e -> Main.switchScene("UserGallery"));
 
 		//I could not get topstack to ignore the mouse event and let the child nodes handle it, so instead
 		//we check where the click happened and what should actually of been clicked.

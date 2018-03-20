@@ -1,11 +1,13 @@
-package com.group4.artatawe.controllers;
+package com.group1.artatawe.controllers;
 
 import java.util.LinkedList;
+import java.util.List;
 
-import com.group4.artatawe.Main;
-import com.group4.artatawe.accounts.Account;
-import com.group4.artatawe.listings.Listing;
-import com.group4.artatawe.utils.GridUtil;
+import com.group1.artatawe.Main;
+import com.group1.artatawe.accounts.Account;
+import com.group1.artatawe.artwork.Gallery;
+import com.group1.artatawe.listings.Listing;
+import com.group1.artatawe.utils.GridUtil;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -27,6 +29,7 @@ public class HomePageController {
 	@FXML Button currentlistings;
 	@FXML Button createlisting;
 	@FXML Button logout;
+	@FXML Button buttonMyGallery;
 
 	//Home Page Specific Attributes
 	@FXML GridPane sellingbox;
@@ -48,8 +51,8 @@ public class HomePageController {
 		this.currentlistings.setOnMouseClicked(e -> Main.switchScene("CurrentListings"));
 		this.profileimage.setImage(Main.accountManager.getLoggedIn().getAvatar());
 		this.createlisting.setOnMouseClicked(e -> Main.switchScene("CreateListing"));
-		//this.home.setOnMouseClicked(e -> Main.switchScene("Home"));
 		this.logout.setOnMouseClicked(e -> Main.accountManager.logoutCurrentAccount());
+		this.buttonMyGallery.setOnMouseClicked(e -> Main.switchScene("UserGallery"));
 
 		//I could not get topstack to ignore the mouse event and let the child nodes handle it, so instead
 		//we check where the click happened and what should actually of been clicked.
@@ -100,10 +103,10 @@ public class HomePageController {
 
 		return hbox;
 	}
-	
+
 	/**
 	 * Turns a Listing that has been bid on, into a node
-	 * 
+	 *
 	 * @param listing - The listing to turn into a node
 	 * @return The node created
 	 */
@@ -118,21 +121,21 @@ public class HomePageController {
 
 		double myBid = listing.getBidHistory().getBid(Main.accountManager.getLoggedIn()).getPrice();
 		double currentBid = listing.getCurrentBid().getPrice();
-		
+
 		ListView<String> info = new ListView<>();
 		info.getItems().addAll(listing.getArtwork().getTitle(),
 				"£" + myBid,
 				"£" + currentBid);
 		info.getItems().add(listing.getBidsLeft() + " bids remaining");
-		
+
 		if(! listing.getCurrentBid().getBidder().equals(Main.accountManager.getLoggedIn().getUserName())) {
 			info.getItems().add("You are not winning!");
 		} else {
 			info.getItems().add("You are winning");
 		}
-		
+
 		info.setMaxHeight(125);
-		
+
 		hbox.setOnMouseClicked(e -> ViewListingController.viewListing(listing));
 
 		hbox.getChildren().add(iv);
@@ -143,7 +146,7 @@ public class HomePageController {
 	
 	/**
 	 * Turns a favourite Account into a node
-	 * 
+	 *
 	 * @param account - The account to turn into a node
 	 * @return The node created
 	 */
@@ -159,15 +162,15 @@ public class HomePageController {
 		Label label = new Label(account.getUserName());
 
 		vbox.setAlignment(Pos.CENTER);
-		
+
 		vbox.setOnMouseClicked(e -> ProfileController.viewProfile(account));
-		
+
 		vbox.getChildren().add(iv);
 		vbox.getChildren().add(label);
 
 		return vbox;
 	}
-	
+
 	/**
 	 * Render all Listings, that are active and a user has bid on in the box
 	 */
@@ -191,23 +194,23 @@ public class HomePageController {
 		
 		GridUtil.insertList(this.sellingbox, nodes);
 	}
-	
+
 	/**
 	 * Render the favourite users in the box
 	 */
 	private void renderFavUsers() {
 		LinkedList<String> favAccs = Main.accountManager.getLoggedIn().getFavAccounts();
 		LinkedList<Node> nodes = new LinkedList<>();
-		
+
 		for(String favAcct : favAccs) {
 			Account account = Main.accountManager.getAccount(favAcct);
 			Node node = this.getFavUserNode(account);
-			
+
 			node.setOnMouseClicked(e -> ProfileController.viewProfile(account));
-			
+
 			nodes.add(node);
 		}
-		
+
 		this.favuserbox.getChildren().addAll(nodes);
 	}
 }
