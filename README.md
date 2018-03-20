@@ -1,2 +1,2 @@
 # Artatawe
-Before uploading rename Artatawe to source and generate a .jar?
+CS-235 A2 Completed on 19/03/2017
