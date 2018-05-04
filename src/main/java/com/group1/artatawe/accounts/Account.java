@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.group1.artatawe.Main;
 import com.group1.artatawe.listings.Listing;
 import com.group1.artatawe.utils.ImageUtil;
+import com.group1.artatawe.utils.Review;
 import javafx.scene.image.Image;
 
 import java.io.File;
@@ -31,11 +32,13 @@ public class Account {
     private Address address;
     private Image avatar;
     private long lastLogin;
+    private int rating;
 
     private List<Listing> newListings;
     private List<Listing> newBids;
 	private List<Listing> lostListings;
     private List<Listing> endingListings;
+    private List<Review> reviews;
 
     private final AccountHistory history = new AccountHistory(this);
 	private final LinkedList<String> favAccounts = new LinkedList<>();
@@ -72,6 +75,7 @@ public class Account {
         this.address = address;
         this.avatar = avatar;
         this.lastLogin = lastLogin;
+        this.rating = 0;
     }
 
     /**
@@ -81,7 +85,6 @@ public class Account {
      */
     public Account(JsonObject json) {
         this.loadFromJson(json);
-
     }
 
     /**
