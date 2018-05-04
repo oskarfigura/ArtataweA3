@@ -10,6 +10,8 @@ import com.group1.artatawe.listings.Listing;
 import com.group1.artatawe.listings.ListingState;
 import com.group1.artatawe.utils.AlertUtil;
 import com.group1.artatawe.utils.NumUtil;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -98,7 +100,7 @@ public class ViewListingController {
     @FXML
     TextArea txtReview;
     @FXML
-    ComboBox ratingList;
+    ComboBox<String> selectRating;
 
     //Gallery variables
     private static final String ADD_BTN_MSG = "Add to gallery";
@@ -135,6 +137,8 @@ public class ViewListingController {
             if (viewing.getCurrentBid().getBidder()
                     .equals(Main.accountManager.getLoggedIn().getUserName())) {
                 this.reviewSection.setVisible(true);
+                selectRating.getItems().addAll("1","2","3","4","5");
+                selectRating.getSelectionModel().select(4);
             }
         }
 
@@ -183,6 +187,24 @@ public class ViewListingController {
         this.displayCurrentBid();
         this.displayBidHistory();
         this.renderInfo();
+    }
+
+    /**
+     * Adds a new review to the system
+     */
+    public void addReview() {
+        int rating = Integer.parseInt(selectRating.getSelectionModel().getSelectedItem());
+        Account seller = Main.accountManager.getAccount(viewing.getSeller());
+        long date = System.currentTimeMillis();
+        String review = txtReview.getText();
+
+        if(!review.isEmpty()) {
+            Main.reviewManager.addReview(date,title.getText(),review,rating,seller);
+            AlertUtil.sendAlert(AlertType.INFORMATION, "Success", "Review successfully added");
+            reviewSection.setVisible(false);
+        } else {
+            AlertUtil.sendAlert(AlertType.INFORMATION, "Missing Data", "Please fill in review text area");
+        }
     }
 
     public void updateGalleryMenu(String name, Gallery g) {

@@ -38,7 +38,7 @@ public class ReviewManager {
      * @param seller
      * @return The review created
      */
-    public Review addListing(long dateCreated, String title, String reviewText,
+    public Review addReview(long dateCreated, String title, String reviewText,
                              int sellerRating, Account seller) {
         int id = reviews.size() + 1;
 
@@ -87,20 +87,6 @@ public class ReviewManager {
         } else {
             return 0;
         }
-    }
-
-    /**
-     * Rounds number to specified number of decimal place
-     * @param value The value to be rounder
-     * @param places Number of decimal places to be rounded off to
-     * @return Rounded value
-     */
-    private static double round(double value, int places) {
-        if (places < 0) throw new IllegalArgumentException();
-
-        BigDecimal bd = new BigDecimal(value);
-        bd = bd.setScale(places, RoundingMode.HALF_UP);
-        return bd.doubleValue();
     }
 
     /**
@@ -164,5 +150,19 @@ public class ReviewManager {
             System.out.println("Parse error on string: \n" + jsonString + "\nThe review has not been loaded.");
             System.out.println(e.getMessage());
         }
+    }
+
+    /**
+     * Rounds number to specified number of decimal place
+     * @param value The value to be rounder
+     * @param places Number of decimal places to be rounded off to
+     * @return Rounded value
+     */
+    private static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }
