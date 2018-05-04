@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.group1.artatawe.Main;
 import com.group1.artatawe.listings.Listing;
 import com.group1.artatawe.utils.ImageUtil;
+import com.group1.artatawe.utils.Review;
 import javafx.scene.image.Image;
 
 import java.io.File;
@@ -40,7 +41,6 @@ public class Account {
     private final AccountHistory history = new AccountHistory(this);
 	private final LinkedList<String> favAccounts = new LinkedList<>();
 	private final LinkedList<Gallery> userGalleries = new LinkedList<>();
-
 
     static {
         //Create the avatar folder (if it doesn't exist)
@@ -81,7 +81,6 @@ public class Account {
      */
     public Account(JsonObject json) {
         this.loadFromJson(json);
-
     }
 
     /**
