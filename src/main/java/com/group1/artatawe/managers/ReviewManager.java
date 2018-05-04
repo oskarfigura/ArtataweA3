@@ -11,10 +11,9 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Files;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ReviewManager {
 
@@ -65,9 +64,11 @@ public class ReviewManager {
      * @return All reviews of specified seller
      */
     public List<Review> getSellersReviews(Account seller) {
-        return this.reviews.stream()
+        List<Review> reviews = this.reviews.stream()
                 .filter(x -> x.getSellerUsername().equals(seller.getUserName()))
-                .collect(Collectors.toList());
+                .sorted(Comparator.comparing(o -> o.getDateCreated())).collect(Collectors.toList());
+        Collections.reverse(reviews);
+        return reviews;
     }
 
     /**
