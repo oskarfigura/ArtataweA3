@@ -14,6 +14,9 @@ import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Used to process all reviews
+ */
 public class ReviewManager {
 
     private static final String REVIEWS_FILE = "reviews.json";
@@ -30,11 +33,12 @@ public class ReviewManager {
     /**
      * Add a review to the system
      *
-     * @param dateCreated
-     * @param title
-     * @param reviewText
-     * @param sellerRating
-     * @param seller
+     * @param dateCreated Review date
+     * @param title Title of artwork for which review is given
+     * @param reviewText The review
+     * @param sellerRating Buyers rating of seller
+     * @param seller The seller
+     * @param listingId The ID of listing for which review is given
      * @return The review created
      */
     public Review addReview(long dateCreated, String title, String reviewText,

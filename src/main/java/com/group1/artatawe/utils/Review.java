@@ -17,12 +17,12 @@ public class Review {
     /**
      * Construct a new Review.
      *
-     * @param id
-     * @param dateCreated
-     * @param title
-     * @param reviewText
-     * @param sellerRating
-     * @param listingId
+     * @param id ID of the review
+     * @param dateCreated Date of the review
+     * @param title Title of artwork for which review is given
+     * @param reviewText The review
+     * @param sellerRating Buyers rating of seller
+     * @param listingId Listing ID for which review is given
      */
     public Review(int id, String sellerUsername, long dateCreated, String title,
                   String reviewText, int sellerRating, int listingId) {
