@@ -207,6 +207,11 @@ public class ViewListingController {
         }
     }
 
+    /**
+     * Updates the gallery menu
+     * @param name Name of gallery
+     * @param g the gallery
+     */
     public void updateGalleryMenu(String name, Gallery g) {
         MenuItem item = new MenuItem(name);
         item.setOnAction(event -> {
