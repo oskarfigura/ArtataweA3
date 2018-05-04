@@ -72,7 +72,6 @@ public class Account {
         this.address = address;
         this.avatar = avatar;
         this.lastLogin = lastLogin;
-        this.rating = 0;
     }
 
     /**

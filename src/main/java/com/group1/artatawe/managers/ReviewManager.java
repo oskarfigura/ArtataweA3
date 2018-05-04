@@ -78,7 +78,12 @@ public class ReviewManager {
         List<Review> sellersReviews = getSellersReviews(seller);
         int noOfReviews = sellersReviews.size();
         int ratingSum = sellersReviews.stream().mapToInt(x -> x.getSellerRating()).sum();
-        return ratingSum / noOfReviews;
+
+        if(noOfReviews > 0 && ratingSum > 0) {
+            return ratingSum / noOfReviews;
+        } else {
+            return 0;
+        }
     }
 
     /**
