@@ -10,6 +10,7 @@ import com.group1.artatawe.accounts.Account;
 import com.group1.artatawe.listings.Listing;
 
 import com.group1.artatawe.utils.MonthlyBarChart;
+import com.group1.artatawe.utils.Review;
 import com.group1.artatawe.utils.WeeklyBarChart;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -20,6 +21,7 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -47,6 +49,7 @@ public class ProfileController {
 
     //Stores index of listings in list view notificationsList
     private List<Listing> notificationsListings;
+    private List<Review> reviews = new ArrayList<>();
 
 	//Header Attributes
 	@FXML StackPane topstack;
@@ -64,10 +67,14 @@ public class ProfileController {
 	@FXML Label lastname;
 	@FXML Label username;
 	@FXML Label lastseen;
+	@FXML Label lblRating;
 	@FXML Button editaccount;
 	@FXML Button editGalleries;
 	@FXML Button showWeeklySalesGraphButton;
 	@FXML Button showMonthlySalesGraphButton;
+
+	@FXML
+    TextArea txtReviews;
 
     @FXML
     GridPane selling;
@@ -122,9 +129,29 @@ public class ProfileController {
         this.showWeeklySalesGraphButton.setOnMouseClicked(e -> renderWeeklyGraph());
         this.showMonthlySalesGraphButton.setOnMouseClicked(e -> renderMonthlyGraph());
         this.editGalleries.setOnMouseClicked(e -> galleryMenuPopup());
-
+        String rating = Integer.toString(Main.reviewManager.getSellerRating(loggedIn));
+        this.lblRating.setText(rating);
+        reviews = Main.reviewManager.getSellersReviews(loggedIn);
+        txtReviews.setText(renderSellersReviews());
     }
 
+    /**
+     * Renders all sellers reviews
+     * @return All reviews formatted into a String
+     */
+    private String renderSellersReviews(){
+        StringBuilder sb = new StringBuilder();
+        for (Review review: reviews) {
+            sb.append('\n');
+            sb.append('\n');
+            sb.append(DATE_FORMAT.format(new Date(review.getDateCreated())));
+            sb.append(review.getTitle());
+            sb.append(review.getReviewText());
+            sb.append('\n');
+            sb.append('\n');
+        }
+        return sb.toString();
+    }
 
 
     /**

@@ -80,7 +80,7 @@ public class ReviewManager {
         int ratingSum = sellersReviews.stream().mapToInt(x -> x.getSellerRating()).sum();
         return ratingSum / noOfReviews;
     }
-    
+
     /**
      * Save all the Reviews back to the file
      */
