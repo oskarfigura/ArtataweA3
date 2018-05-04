@@ -90,6 +90,13 @@ public class ProfileController {
         Account loggedIn = Main.accountManager.getLoggedIn();
         viewingOwnProfile = loggedIn.getUserName().equals(viewing.getUserName());
 
+        Account accountViewed;
+        if(viewingOwnProfile) {
+            accountViewed = loggedIn;
+        } else {
+            accountViewed = viewing;
+        }
+
         notificationsListings = new ArrayList<>();
 
         this.initializeHeader();
@@ -129,9 +136,10 @@ public class ProfileController {
         this.showWeeklySalesGraphButton.setOnMouseClicked(e -> renderWeeklyGraph());
         this.showMonthlySalesGraphButton.setOnMouseClicked(e -> renderMonthlyGraph());
         this.editGalleries.setOnMouseClicked(e -> galleryMenuPopup());
-        String rating = Integer.toString(Main.reviewManager.getSellerRating(loggedIn));
+        
+        String rating = Integer.toString(Main.reviewManager.getSellerRating(accountViewed));
         this.lblRating.setText(rating);
-        reviews = Main.reviewManager.getSellersReviews(loggedIn);
+        reviews = Main.reviewManager.getSellersReviews(accountViewed);
         txtReviews.setText(renderSellersReviews());
     }
 
@@ -143,10 +151,14 @@ public class ProfileController {
         StringBuilder sb = new StringBuilder();
         for (Review review: reviews) {
             sb.append('\n');
-            sb.append('\n');
             sb.append(DATE_FORMAT.format(new Date(review.getDateCreated())));
+            sb.append('\n');
             sb.append(review.getTitle());
+            sb.append('\n');
             sb.append(review.getReviewText());
+            sb.append('\n');
+            sb.append("Rating: ");
+            sb.append(review.getSellerRating());
             sb.append('\n');
             sb.append('\n');
         }

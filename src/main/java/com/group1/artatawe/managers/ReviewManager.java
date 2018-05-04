@@ -43,7 +43,6 @@ public class ReviewManager {
 
         Review r = new Review(id, seller.getUserName(), dateCreated, title, reviewText, sellerRating);
         this.reviews.add(r);
-        //seller.getReviews().addReview(r);
         this.saveReviewsFile();
         return r;
     }
