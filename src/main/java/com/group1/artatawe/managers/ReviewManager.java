@@ -8,6 +8,8 @@ import com.group1.artatawe.utils.Review;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.util.LinkedList;
 import java.util.List;
@@ -73,16 +75,31 @@ public class ReviewManager {
      * @param seller The seller
      * @return Return sellers rating
      */
-    public int getSellerRating(Account seller) {
+    public double getSellerRating(Account seller) {
         List<Review> sellersReviews = getSellersReviews(seller);
-        int noOfReviews = sellersReviews.size();
-        int ratingSum = sellersReviews.stream().mapToInt(x -> x.getSellerRating()).sum();
+        double noOfReviews = sellersReviews.size();
+        double ratingSum = sellersReviews.stream().mapToInt(x -> x.getSellerRating()).sum();
 
         if(noOfReviews > 0 && ratingSum > 0) {
-            return ratingSum / noOfReviews;
+            double rating = ratingSum / noOfReviews;
+            return round(rating, 2);
         } else {
             return 0;
         }
+    }
+
+    /**
+     * Rounds number to specified number of decimal place
+     * @param value The value to be rounder
+     * @param places Number of decimal places to be rounded off to
+     * @return Rounded value
+     */
+    private static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 
     /**

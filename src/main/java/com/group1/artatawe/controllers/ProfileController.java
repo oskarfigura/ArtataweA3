@@ -136,8 +136,8 @@ public class ProfileController {
         this.showWeeklySalesGraphButton.setOnMouseClicked(e -> renderWeeklyGraph());
         this.showMonthlySalesGraphButton.setOnMouseClicked(e -> renderMonthlyGraph());
         this.editGalleries.setOnMouseClicked(e -> galleryMenuPopup());
-        
-        String rating = Integer.toString(Main.reviewManager.getSellerRating(accountViewed));
+
+        String rating = Double.toString(Main.reviewManager.getSellerRating(accountViewed));
         this.lblRating.setText(rating);
         reviews = Main.reviewManager.getSellersReviews(accountViewed);
         txtReviews.setText(renderSellersReviews());
