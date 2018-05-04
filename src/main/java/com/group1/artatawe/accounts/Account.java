@@ -32,18 +32,15 @@ public class Account {
     private Address address;
     private Image avatar;
     private long lastLogin;
-    private int rating;
 
     private List<Listing> newListings;
     private List<Listing> newBids;
 	private List<Listing> lostListings;
     private List<Listing> endingListings;
-    private List<Review> reviews;
 
     private final AccountHistory history = new AccountHistory(this);
 	private final LinkedList<String> favAccounts = new LinkedList<>();
 	private final LinkedList<Gallery> userGalleries = new LinkedList<>();
-
 
     static {
         //Create the avatar folder (if it doesn't exist)

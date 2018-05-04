@@ -3,8 +3,6 @@ package com.group1.artatawe.managers;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.group1.artatawe.accounts.Account;
-import com.group1.artatawe.artwork.Artwork;
-import com.group1.artatawe.listings.Listing;
 import com.group1.artatawe.utils.Review;
 
 import java.io.File;
@@ -40,7 +38,7 @@ public class ReviewManager {
      * @return The review created
      */
     public Review addListing(long dateCreated, String title, String reviewText,
-                              int sellerRating, Account seller) {
+                             int sellerRating, Account seller) {
         int id = reviews.size() + 1;
 
         Review r = new Review(id, seller.getUserName(), dateCreated, title, reviewText, sellerRating);
@@ -61,6 +59,7 @@ public class ReviewManager {
 
     /**
      * Get all reviews of a specific seller
+     *
      * @param seller The seller
      * @return All reviews of specified seller
      */
@@ -70,6 +69,18 @@ public class ReviewManager {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Calculate the overall sellers rating from reviews
+     * @param seller The seller
+     * @return Return sellers rating
+     */
+    public int getSellerRating(Account seller) {
+        List<Review> sellersReviews = getSellersReviews(seller);
+        int noOfReviews = sellersReviews.size();
+        int ratingSum = sellersReviews.stream().mapToInt(x -> x.getSellerRating()).sum();
+        return ratingSum / noOfReviews;
+    }
+    
     /**
      * Save all the Reviews back to the file
      */
