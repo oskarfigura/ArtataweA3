@@ -10,8 +10,6 @@ import com.group1.artatawe.listings.Listing;
 import com.group1.artatawe.listings.ListingState;
 import com.group1.artatawe.utils.AlertUtil;
 import com.group1.artatawe.utils.NumUtil;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -133,11 +131,12 @@ public class ViewListingController {
             this.bidsleft.setText("Auction Has Ended.");
         }
 
-        if (viewing.getNumOfBids() > 0 && viewing.getListingState() == ListingState.FINISHED) {
+        if (viewing.getNumOfBids() > 0 && viewing.getListingState() == ListingState.FINISHED &&
+                !Main.reviewManager.doesReviewExist(viewing.getID())) {
             if (viewing.getCurrentBid().getBidder()
                     .equals(Main.accountManager.getLoggedIn().getUserName())) {
                 this.reviewSection.setVisible(true);
-                selectRating.getItems().addAll("1","2","3","4","5");
+                selectRating.getItems().addAll("1", "2", "3", "4", "5");
                 selectRating.getSelectionModel().select(4);
             }
         }
@@ -190,16 +189,17 @@ public class ViewListingController {
     }
 
     /**
-     * Adds a new review to the system
+     * Adds a new review to the system if it doesn't already exist
      */
     public void addReview() {
         int rating = Integer.parseInt(selectRating.getSelectionModel().getSelectedItem());
         Account seller = Main.accountManager.getAccount(viewing.getSeller());
         long date = System.currentTimeMillis();
         String review = txtReview.getText();
+        int listingId = viewing.getID();
 
-        if(!review.isEmpty()) {
-            Main.reviewManager.addReview(date,title.getText(),review,rating,seller);
+        if (!review.isEmpty()) {
+            Main.reviewManager.addReview(date, title.getText(), review, rating, seller, listingId);
             AlertUtil.sendAlert(AlertType.INFORMATION, "Success", "Review successfully added");
             reviewSection.setVisible(false);
         } else {
@@ -209,8 +209,9 @@ public class ViewListingController {
 
     /**
      * Updates the gallery menu
+     *
      * @param name Name of gallery
-     * @param g the gallery
+     * @param g    the gallery
      */
     public void updateGalleryMenu(String name, Gallery g) {
         MenuItem item = new MenuItem(name);

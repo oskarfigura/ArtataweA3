@@ -13,7 +13,6 @@ import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ReviewManager {
 
@@ -39,10 +38,11 @@ public class ReviewManager {
      * @return The review created
      */
     public Review addReview(long dateCreated, String title, String reviewText,
-                             int sellerRating, Account seller) {
+                            int sellerRating, Account seller, int listingId) {
         int id = reviews.size() + 1;
 
-        Review r = new Review(id, seller.getUserName(), dateCreated, title, reviewText, sellerRating);
+        Review r = new Review(id, seller.getUserName(), dateCreated,
+                title, reviewText, sellerRating, listingId);
         this.reviews.add(r);
         this.saveReviewsFile();
         return r;
@@ -73,6 +73,7 @@ public class ReviewManager {
 
     /**
      * Calculate the overall sellers rating from reviews
+     *
      * @param seller The seller
      * @return Return sellers rating
      */
@@ -81,12 +82,21 @@ public class ReviewManager {
         double noOfReviews = sellersReviews.size();
         double ratingSum = sellersReviews.stream().mapToInt(x -> x.getSellerRating()).sum();
 
-        if(noOfReviews > 0 && ratingSum > 0) {
+        if (noOfReviews > 0 && ratingSum > 0) {
             double rating = ratingSum / noOfReviews;
             return round(rating, 2);
         } else {
             return 0;
         }
+    }
+
+    /**
+     * Check if a review already exists for a listing
+     * @param listingId The id of listing
+     * @return true if review exists, otherwise false
+     */
+    public boolean doesReviewExist(int listingId) {
+        return reviews.stream().anyMatch(x -> x.getListingId() == listingId);
     }
 
     /**
@@ -154,7 +164,8 @@ public class ReviewManager {
 
     /**
      * Rounds number to specified number of decimal place
-     * @param value The value to be rounder
+     *
+     * @param value  The value to be rounder
      * @param places Number of decimal places to be rounded off to
      * @return Rounded value
      */

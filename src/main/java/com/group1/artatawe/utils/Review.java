@@ -12,6 +12,7 @@ public class Review {
     private final String reviewText;
     private final String sellerUsername;
     private final int sellerRating;
+    private final int listingId;
 
     /**
      * Construct a new Review.
@@ -21,14 +22,17 @@ public class Review {
      * @param title
      * @param reviewText
      * @param sellerRating
+     * @param listingId
      */
-    public Review(int id, String sellerUsername, long dateCreated, String title, String reviewText, int sellerRating) {
+    public Review(int id, String sellerUsername, long dateCreated, String title,
+                  String reviewText, int sellerRating, int listingId) {
         this.id = id;
         this.dateCreated = dateCreated;
         this.title = title;
         this.reviewText = reviewText;
         this.sellerRating = sellerRating;
         this.sellerUsername = sellerUsername;
+        this.listingId = listingId;
     }
 
     /**
@@ -44,6 +48,7 @@ public class Review {
         this.title = jo.get("title").getAsString();
         this.reviewText = jo.get("review").getAsString();
         this.sellerRating = jo.get("rating").getAsInt();
+        this.listingId = jo.get("listingId").getAsInt();
     }
 
     /**
@@ -59,6 +64,7 @@ public class Review {
         jo.addProperty("title", this.title);
         jo.addProperty("review", this.reviewText);
         jo.addProperty("rating", this.sellerRating);
+        jo.addProperty("listingId", this.listingId);
 
         return jo;
     }
@@ -85,5 +91,9 @@ public class Review {
 
     public int getSellerRating() {
         return sellerRating;
+    }
+
+    public int getListingId() {
+        return listingId;
     }
 }
