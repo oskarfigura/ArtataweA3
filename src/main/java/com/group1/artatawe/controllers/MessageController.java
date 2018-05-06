@@ -17,7 +17,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -30,8 +29,8 @@ import java.util.List;
 
 import static com.group1.artatawe.controllers.ProfileController.viewProfile;
 
-
 /**
+ * Controller for "MsgWindow.fxml", handles message processing
  * @author Oskar Figura (915070)
  */
 public class MessageController {
@@ -79,6 +78,10 @@ public class MessageController {
     private boolean msgSelected;
     private ObservableList<String> userList;
 
+    /**
+     * Initializes the system with some basic data ready for user to
+     * use the messaging functionality
+     */
     public void initialize() {
         this.initializeHeader();
         this.recipient = "";
@@ -125,6 +128,9 @@ public class MessageController {
         listUser.setItems(userList);
     }
 
+    /**
+     * Detects which username has been clicked from inbox
+     */
     public void inboxClicked() {
         Conversation conversation;
         recipient = listUser.getSelectionModel().getSelectedItems().toString();
@@ -140,13 +146,17 @@ public class MessageController {
         }
     }
 
+    /**
+     * Displays messages for a particular conversation
+     * @param conversation Conversation for which messages are displayed
+     */
     private void displayMessages(Conversation conversation) {
         MessageHistory msgHistory = conversation.getMessageHistory();
         List<Message> msgList = msgHistory.getAllMessages();
 
         List<Text> chatMessages = new ArrayList<>();
         txtAreaMsgs.getChildren().clear();
-        
+
         for (Message m : msgList) {
             chatMessages.add(new Text() {{
                 setText(m.getAuthor() + " >> " + m.getMessage() + '\n');
@@ -187,28 +197,20 @@ public class MessageController {
         //Scroll to the bottom of messages
         txtAreaMsgs.heightProperty().addListener(observable -> txtMsgAreaScroll.setVvalue(1D));
     }
-//    /**
-//     * To start the dialog
-//     */
-//    public void start() {
-//        String msg = "Random message";
-//        display(msg);
-//    }
-//
-//    /**
-//     * Send a message to the GUI
-//     * @param msg The message
-//     */
-//    private void display(String msg) {
-//        txtAreaServerMsgs.appendText(msg + "\n"); // append to the Chat Area
-//    }
 
+    /**
+     * Enables user to send message to new recipient
+     */
     public void newMessage() {
         txtRecipient.setDisable(false);
         txtRecipient.setEditable(true);
         newMsg = true;
     }
 
+    /**
+     * Validates a message to a new recipient
+     * @return true if data valid else false
+     */
     private boolean validateNewMsg() {
         boolean state;
         if (recipient.equals("")) {
@@ -217,6 +219,10 @@ public class MessageController {
         } else if (Main.accountManager.getAccount(recipient) == null) {
             AlertUtil.sendAlert(
                     Alert.AlertType.INFORMATION, "Error", "Incorrect recipient username");
+            state = false;
+        } else if (recipient.equals(loggedUser)){
+            AlertUtil.sendAlert(
+                    Alert.AlertType.INFORMATION, "Error", "You cannot message yourself");
             state = false;
         } else if (message.equals("")) {
             AlertUtil.sendAlert(Alert.AlertType.INFORMATION, "Error", "Message cannot be empty");
@@ -227,6 +233,10 @@ public class MessageController {
         return state;
     }
 
+    /**
+     * Validates a message
+     * @return true if message valid else false
+     */
     private boolean validateMsg() {
         if (message.equals("")) {
             AlertUtil.sendAlert(Alert.AlertType.INFORMATION, "Error", "Message cannot be empty");
@@ -236,6 +246,9 @@ public class MessageController {
         }
     }
 
+    /**
+     * Adds a new message to the system
+     */
     private void handleSend() {
         if (Main.messageManager.getConversation(loggedUser, recipient) != null) {
             Main.messageManager.getConversation(loggedUser, recipient)
@@ -246,13 +259,14 @@ public class MessageController {
         }
     }
 
+    /**
+     * Processes recipient and message data before it is sent to handleSend()
+     */
     public void sendMessage() {
-
         if (!newMsg && !msgSelected) {
             AlertUtil.sendAlert(Alert.AlertType.INFORMATION, "Error",
                     "Select a conversation or create a new message.");
         } else {
-
             recipient = txtRecipient.getText();
             message = txtUserMsg.getText();
 
@@ -260,10 +274,10 @@ public class MessageController {
                 recipient = txtRecipient.getText();
                 recipientAcc = Main.accountManager.getAccount(recipient);
                 handleSend();
-
             } else if (!newMsg && validateMsg()) {
                 handleSend();
             }
+
             AlertUtil.sendAlert(Alert.AlertType.INFORMATION, "Success", "Message Sent!");
             txtRecipient.setDisable(true);
             txtRecipient.setEditable(false);
@@ -271,7 +285,12 @@ public class MessageController {
             txtUserMsg.clear();
             newMsg = false;
             txtAreaMsgs.getChildren().clear();
-            //RELOAD THE CHAT HERE
+
+            //Refresh chat with new message
+            Conversation conversation = Main.messageManager.getConversation(loggedUser, recipient);
+            if (conversation != null) {
+                displayMessages(conversation);
+            }
         }
     }
 }
