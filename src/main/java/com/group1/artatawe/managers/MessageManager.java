@@ -57,7 +57,7 @@ public class MessageManager {
      *
      * @param id The ID to search for
      * @return The conversation with that ID
-     * @throws NoSuchElementException
+     * @throws NoSuchElementException If conversation not found throw exception
      */
     public Conversation getConversation(int id) throws NoSuchElementException {
         return this.conversations.stream()

@@ -19,9 +19,9 @@ public class Conversation {
 
     /**
      * Construct a new Conversation
-     * @param id
-     * @param converser1
-     * @param converser2
+     * @param id The ID of conversation
+     * @param converser1 First participant in conversation
+     * @param converser2 Second participant in conversation
      */
     public Conversation(int id, String converser1, String converser2) {
         this.id = id;
