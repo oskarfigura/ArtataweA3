@@ -54,10 +54,18 @@ public class MessageController {
     private Text authorMsgs;
     private Text recipientMsgs;
     private String user;
+    private String recipient;
+    private Account recipientAcc;
+    private String message;
     private boolean newMsg;
+    private boolean msgSelected;
 
     public void initialize() {
         this.initializeHeader();
+        this.recipient = "";
+        this.message = "";
+        this.msgSelected = false;
+        newMsg = false;
         txtAreaMsgs.setPrefWidth(600);
 
         authorMsgs = new Text();
@@ -112,7 +120,7 @@ public class MessageController {
         newMsg = true;
     }
 
-    private boolean validateNewMsg(String recipient, String message) {
+    private boolean validateNewMsg() {
         boolean state;
         if (recipient.equals("")) {
             AlertUtil.sendAlert(Alert.AlertType.INFORMATION, "Error", "Recipient Missing");
@@ -130,7 +138,7 @@ public class MessageController {
         return state;
     }
 
-    private boolean validateMsg(String message) {
+    private boolean validateMsg() {
         if (message.equals("")) {
             AlertUtil.sendAlert(Alert.AlertType.INFORMATION, "Error", "Message cannot be empty");
             return false;
@@ -139,37 +147,43 @@ public class MessageController {
         }
     }
 
+    private void handleSend() {
+        if (Main.messageManager.getConversation(user, recipient) != null) {
+            Main.messageManager.getConversation(user, recipient)
+                    .createMessage(user, message, recipientAcc);
+        } else {
+            Main.messageManager.addConversation(user, recipient)
+                    .createMessage(user, message, recipientAcc);
+        }
+    }
+
     public void sendMessage() {
-        String message = txtUserMsg.getText();
-        String recipient = txtRecipient.getText();
-        Account recipientAcc;
 
+        if (!newMsg && !msgSelected) {
+            AlertUtil.sendAlert(Alert.AlertType.INFORMATION, "Error",
+                    "Select a conversation or create a new message.");
+        }
+
+        recipient = txtRecipient.getText();
+        message = txtUserMsg.getText();
+
+        if (newMsg && validateNewMsg()) {
+            recipient = txtRecipient.getText();
+            recipientAcc = Main.accountManager.getAccount(recipient);
+            handleSend();
+
+        } else if (!newMsg && validateMsg()) {
+            handleSend();
+        }
+        AlertUtil.sendAlert(Alert.AlertType.INFORMATION, "Success", "Message Sent!");
+        txtRecipient.setDisable(true);
+        txtRecipient.setEditable(false);
+        txtRecipient.clear();
+        txtUserMsg.clear();
+        newMsg = false;
         txtAreaMsgs.getChildren().clear();
+        //RELOAD THE CHAT HERE
 
-
-        if (newMsg && validateNewMsg(recipient, message)) {
-            recipientAcc = Main.accountManager.getAccount(recipient);
-        } else if (!newMsg && validateMsg(message)) {
-
-        }
-
-        if (validateNewMsg(recipient, message)) {
-            recipientAcc = Main.accountManager.getAccount(recipient);
-
-            if (Main.messageManager.getConversation(user, recipient) != null) {
-                Main.messageManager.getConversation(user, recipient)
-                        .createMessage(user, message, recipientAcc);
-            } else {
-                Main.messageManager.addConversation(user, recipient)
-                        .createMessage(user, message, recipientAcc);
-                AlertUtil.sendAlert(Alert.AlertType.INFORMATION, "Success", "Message Sent!");
-                txtRecipient.setDisable(true);
-                txtRecipient.setEditable(false);
-                txtUserMsg.clear();
-                newMsg = false;
-                //LOAD THE MESSAGE HERE
-            }
-        }
 
 //        String message0 = ">> Hello \n";
 //        String message2 = ">> Hey! \n";
