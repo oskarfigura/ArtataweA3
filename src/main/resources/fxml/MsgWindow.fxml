@@ -14,7 +14,6 @@
          <font>
             <Font size="17.0" />
          </font></Label>
-      <TextArea fx:id="txtAreaServerMsgs" editable="false" layoutX="14.0" layoutY="43.0" prefHeight="200.0" prefWidth="421.0" wrapText="true" />
       <TitledPane animated="false" layoutX="450.0" layoutY="140.0" prefHeight="227.0" prefWidth="174.0" text="Messages">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="195.0" prefWidth="172.0">
@@ -36,5 +35,6 @@
             <Font size="18.0" />
          </font>
       </Label>
+      <TextFlow fx:id="txtAreaServerMsgs" layoutX="14.0" layoutY="40.0" prefHeight="200.0" prefWidth="420.0" />
 </children>
 </AnchorPane>
