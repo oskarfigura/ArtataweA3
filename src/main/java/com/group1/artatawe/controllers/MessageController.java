@@ -9,13 +9,22 @@ import com.group1.artatawe.utils.AlertUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
+import java.awt.*;
+import java.awt.event.InputEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,10 +68,9 @@ public class MessageController {
     ListView<String> listUser;
     @FXML
     ScrollPane txtMsgAreaScroll;
+    @FXML
+    Label lblTitle;
 
-    private ObservableList<String> usersMessages;
-    private Text authorMsgs;
-    private Text recipientMsgs;
     private String loggedUser;
     private String recipient;
     private Account recipientAcc;
@@ -78,12 +86,6 @@ public class MessageController {
         this.msgSelected = false;
         newMsg = false;
         txtAreaMsgs.setPrefWidth(600);
-
-        authorMsgs = new Text();
-        authorMsgs.setStyle("-fx-fill: RED;-fx-font-weight:normal;");
-
-        recipientMsgs = new Text();
-        recipientMsgs.setStyle("-fx-fill: BLUE;-fx-font-weight:normal;");
 
         loggedUser = Main.accountManager.getLoggedIn().getUserName();
         userList = FXCollections.observableArrayList();
@@ -144,7 +146,7 @@ public class MessageController {
 
         List<Text> chatMessages = new ArrayList<>();
         txtAreaMsgs.getChildren().clear();
-        txtAreaMsgs.getChildren().removeAll();
+        
         for (Message m : msgList) {
             chatMessages.add(new Text() {{
                 setText(m.getAuthor() + " >> " + m.getMessage() + '\n');
@@ -159,6 +161,30 @@ public class MessageController {
         for (Text t : chatMessages) {
             txtAreaMsgs.getChildren().add(t);
         }
+
+        //The following code is used to refresh TextFlow which would only refresh on mouse click
+
+        //Store current mouse position
+        double currentX = MouseInfo.getPointerInfo().getLocation().x;
+        double currentY = MouseInfo.getPointerInfo().getLocation().y;
+
+        //Locate the position of TextFlow
+        Bounds boundsInScreen = txtAreaMsgs.localToScreen(txtAreaMsgs.getBoundsInLocal());
+        double x = boundsInScreen.getMaxX();
+        double y = boundsInScreen.getMinY();
+
+        //Fire a mouse click on TextFlow to refresh and return to original position
+        try{
+            Robot robot = new Robot();
+            robot.mouseMove((int)x, (int)y);
+            robot.mousePress(InputEvent.BUTTON1_MASK);
+            robot.mouseRelease(InputEvent.BUTTON1_MASK);
+            robot.mouseMove((int)currentX, (int)currentY);
+        }catch (AWTException ex){
+            ex.printStackTrace();
+        }
+
+        //Scroll to the bottom of messages
         txtAreaMsgs.heightProperty().addListener(observable -> txtMsgAreaScroll.setVvalue(1D));
     }
 //    /**

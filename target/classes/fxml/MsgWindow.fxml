@@ -11,7 +11,7 @@
    <center>
       <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="877.0" prefWidth="1280.0">
          <content>
-            <AnchorPane prefHeight="700.0" prefWidth="1278.0">
+            <AnchorPane fx:id="messagePane" prefHeight="700.0" prefWidth="1278.0">
                <children>
                   <Label fx:id="lblRecipient" layoutX="1002.0" layoutY="60.0" prefHeight="17.0" prefWidth="174.0" text="Recipient:">
                      <font>
@@ -22,7 +22,7 @@
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="324.0" prefWidth="172.0">
                            <children>
-                              <ListView fx:id="listUser" layoutX="5.0" prefHeight="376.0" prefWidth="163.0" onMouseClicked="#inboxClicked" />
+                              <ListView fx:id="listUser" layoutX="5.0" onMouseClicked="#inboxClicked" prefHeight="376.0" prefWidth="163.0" />
                            </children>
                         </AnchorPane>
                      </content>
@@ -35,7 +35,7 @@
                   <TextArea fx:id="txtUserMsg" layoutX="30.0" layoutY="408.0" prefHeight="114.0" prefWidth="870.0" promptText="Type your Message here..." wrapText="true" />
                   <Button fx:id="btnNewMessage" layoutX="1002.0" layoutY="35.0" mnemonicParsing="false" onAction="#newMessage" prefHeight="25.0" prefWidth="174.0" text="New Message" />
                   <TextField fx:id="txtRecipient" disable="true" editable="false" layoutX="1002.0" layoutY="86.0" prefHeight="25.0" prefWidth="174.0" promptText="Recipient username" />
-                  <Label layoutX="30.0" prefHeight="35.0" prefWidth="267.0" text="Messages">
+                  <Label fx:id="lblTitle" layoutX="30.0" prefHeight="35.0" prefWidth="267.0" text="Messages">
                      <font>
                         <Font size="24.0" />
                      </font>
