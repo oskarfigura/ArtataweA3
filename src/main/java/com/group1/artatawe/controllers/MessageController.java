@@ -140,6 +140,7 @@ public class MessageController {
         Conversation conversation;
         recipient = listUser.getSelectionModel().getSelectedItems().toString();
         if (recipient != null) {
+            msgSelected = true;
             recipient = recipient
                     .replaceAll("\\[", "")
                     .replaceAll("\\]", "")
@@ -285,18 +286,15 @@ public class MessageController {
             AlertUtil.sendAlert(Alert.AlertType.INFORMATION, "Error",
                     "Select a conversation or create a new message.");
         } else {
-            recipient = txtRecipient.getText();
             message = txtUserMsg.getText();
 
             if (newMsg && validateNewMsg()) {
                 recipient = txtRecipient.getText();
                 recipientAcc = Main.accountManager.getAccount(recipient);
                 handleSend();
-            } else if (!newMsg && validateMsg()) {
+            } else if (!newMsg && validateMsg() && msgSelected) {
                 handleSend();
             }
-
-
         }
     }
 }
