@@ -2,7 +2,9 @@ package com.group1.artatawe.controllers;
 
 import com.group1.artatawe.Main;
 import com.group1.artatawe.accounts.Account;
+import com.group1.artatawe.messages.Conversation;
 import com.group1.artatawe.utils.AlertUtil;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -10,6 +12,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.group1.artatawe.controllers.ProfileController.viewProfile;
 
@@ -48,17 +53,18 @@ public class MessageController {
     @FXML
     TextField txtRecipient;
     @FXML
-    ListView listUser;
+    ListView<String> listUser;
 
     private ObservableList<String> usersMessages;
     private Text authorMsgs;
     private Text recipientMsgs;
-    private String user;
+    private String loggedUser;
     private String recipient;
     private Account recipientAcc;
     private String message;
     private boolean newMsg;
     private boolean msgSelected;
+    private ObservableList<String> userList;
 
     public void initialize() {
         this.initializeHeader();
@@ -74,8 +80,9 @@ public class MessageController {
         recipientMsgs = new Text();
         recipientMsgs.setStyle("-fx-fill: BLUE;-fx-font-weight:normal;");
 
-        user = Main.accountManager.getLoggedIn().getUserName();
-
+        loggedUser = Main.accountManager.getLoggedIn().getUserName();
+        userList = FXCollections.observableArrayList();
+        updateUserList();
     }
 
     /**
@@ -97,7 +104,38 @@ public class MessageController {
         });
     }
 
+    /**
+     * Loads all username with who the logged-in user had a conversation
+     */
+    public void updateUserList(){
+        List<Conversation> conversations = Main.messageManager.getUsersConversations(loggedUser);
+        String user;
+        for (Conversation conversation : conversations) {
+            user = conversation.getConverser1().equals(loggedUser) ?
+                    conversation.getConverser2() : conversation.getConverser1();
+            userList.add(user);
+        }
+        listUser.setItems(userList);
+    }
 
+    public void inboxClicked() {
+        Conversation conversation;
+        String selectedUser = listUser.getSelectionModel().getSelectedItems().toString();
+        if (selectedUser != null) {
+            selectedUser = selectedUser
+                    .replaceAll("\\[", "")
+                    .replaceAll("\\]", "")
+                    .replaceAll("\\*", "");
+            conversation = Main.messageManager.getConversation(loggedUser, selectedUser);
+            if(conversation != null) {
+                displayMessages(conversation);
+            }
+        }
+    }
+
+    private void displayMessages(Conversation conversation){
+        System.out.println("HEY");
+    }
 //    /**
 //     * To start the dialog
 //     */
@@ -148,12 +186,12 @@ public class MessageController {
     }
 
     private void handleSend() {
-        if (Main.messageManager.getConversation(user, recipient) != null) {
-            Main.messageManager.getConversation(user, recipient)
-                    .createMessage(user, message, recipientAcc);
+        if (Main.messageManager.getConversation(loggedUser, recipient) != null) {
+            Main.messageManager.getConversation(loggedUser, recipient)
+                    .createMessage(loggedUser, message, recipientAcc);
         } else {
-            Main.messageManager.addConversation(user, recipient)
-                    .createMessage(user, message, recipientAcc);
+            Main.messageManager.addConversation(loggedUser, recipient)
+                    .createMessage(loggedUser, message, recipientAcc);
         }
     }
 
@@ -162,28 +200,28 @@ public class MessageController {
         if (!newMsg && !msgSelected) {
             AlertUtil.sendAlert(Alert.AlertType.INFORMATION, "Error",
                     "Select a conversation or create a new message.");
-        }
+        } else {
 
-        recipient = txtRecipient.getText();
-        message = txtUserMsg.getText();
-
-        if (newMsg && validateNewMsg()) {
             recipient = txtRecipient.getText();
-            recipientAcc = Main.accountManager.getAccount(recipient);
-            handleSend();
+            message = txtUserMsg.getText();
 
-        } else if (!newMsg && validateMsg()) {
-            handleSend();
+            if (newMsg && validateNewMsg()) {
+                recipient = txtRecipient.getText();
+                recipientAcc = Main.accountManager.getAccount(recipient);
+                handleSend();
+
+            } else if (!newMsg && validateMsg()) {
+                handleSend();
+            }
+            AlertUtil.sendAlert(Alert.AlertType.INFORMATION, "Success", "Message Sent!");
+            txtRecipient.setDisable(true);
+            txtRecipient.setEditable(false);
+            txtRecipient.clear();
+            txtUserMsg.clear();
+            newMsg = false;
+            txtAreaMsgs.getChildren().clear();
+            //RELOAD THE CHAT HERE
         }
-        AlertUtil.sendAlert(Alert.AlertType.INFORMATION, "Success", "Message Sent!");
-        txtRecipient.setDisable(true);
-        txtRecipient.setEditable(false);
-        txtRecipient.clear();
-        txtUserMsg.clear();
-        newMsg = false;
-        txtAreaMsgs.getChildren().clear();
-        //RELOAD THE CHAT HERE
-
 
 //        String message0 = ">> Hello \n";
 //        String message2 = ">> Hey! \n";

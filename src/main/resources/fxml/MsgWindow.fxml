@@ -22,7 +22,7 @@
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="324.0" prefWidth="172.0">
                            <children>
-                              <ListView fx:id="listUser" layoutX="5.0" prefHeight="376.0" prefWidth="163.0" />
+                              <ListView fx:id="listUser" layoutX="5.0" prefHeight="376.0" prefWidth="163.0" onMouseClicked="#inboxClicked" />
                            </children>
                         </AnchorPane>
                      </content>

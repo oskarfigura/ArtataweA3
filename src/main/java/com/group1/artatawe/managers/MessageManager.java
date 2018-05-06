@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class MessageManager {
     private static final String MESSAGE_FILE = "conversations.json";
@@ -67,6 +68,7 @@ public class MessageManager {
 
     /**
      * Get the conversation between two specific users
+     *
      * @param user1 First user in conversation
      * @param user2 Second user in conversation
      * @return Conversation between users else null
@@ -78,6 +80,17 @@ public class MessageManager {
                 .findFirst().orElse(null);
     }
 
+    /**
+     * Gets a list of users conversations
+     * @param username The user for which list is returned
+     * @return List of conversations
+     */
+    public List<Conversation> getUsersConversations(String username) {
+        return this.conversations.stream()
+                .filter(x -> x.getConverser1().equals(username) ||
+                        x.getConverser2().equals(username))
+                .collect(Collectors.toList());
+    }
 
     /**
      * Save all the messages back to the file
