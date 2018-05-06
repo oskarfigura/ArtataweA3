@@ -11,7 +11,7 @@
    <center>
       <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="877.0" prefWidth="1280.0">
          <content>
-            <AnchorPane prefHeight="700.0" prefWidth="1278.0">
+            <AnchorPane fx:id="messagePane" prefHeight="700.0" prefWidth="1278.0">
                <children>
                   <Label fx:id="lblRecipient" layoutX="1002.0" layoutY="60.0" prefHeight="17.0" prefWidth="174.0" text="Recipient:">
                      <font>
@@ -22,7 +22,7 @@
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="324.0" prefWidth="172.0">
                            <children>
-                              <ListView fx:id="listUser" layoutX="5.0" prefHeight="376.0" prefWidth="163.0" onMouseClicked="#inboxClicked" />
+                              <ListView fx:id="listUser" layoutX="5.0" onMouseClicked="#inboxClicked" prefHeight="376.0" prefWidth="163.0" />
                            </children>
                         </AnchorPane>
                      </content>
