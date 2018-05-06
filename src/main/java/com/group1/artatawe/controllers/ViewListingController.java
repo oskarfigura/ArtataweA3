@@ -244,6 +244,31 @@ public class ViewListingController {
         Main.switchScene("ViewListing");
     }
 
+    @FXML
+    public void addToCustomGallery() {
+        if (currentGallery != null) {
+            //A gallery has been selected
+            if (currentGallery.containsListing(viewing)) {
+                //Remove the listing from the gallery
+                currentGallery.removeListing(viewing);
+                buttonAddCustomGallery.setText(ADD_BTN_MSG);
+
+            } else {
+                //Add the listing to the gallery
+                currentGallery.addListing(viewing);
+                buttonAddCustomGallery.setText(RMV_BTN_MSG);
+
+            }
+
+        } else {
+            createNewGalPopup();
+        }
+		/*
+			Updates the file after a new item is added to a gallery
+		 */
+        Main.accountManager.saveAccountFile();
+    }
+
     /**
      * Initialize the header
      */
@@ -520,31 +545,6 @@ public class ViewListingController {
         popup.setAutoHide(true);
 
         popup.show(this.image.getScene().getWindow());
-    }
-
-    @FXML
-    public void addToCustomGallery() {
-        if (currentGallery != null) {
-            //A gallery has been selected
-            if (currentGallery.containsListing(viewing)) {
-                //Remove the listing from the gallery
-                currentGallery.removeListing(viewing);
-                buttonAddCustomGallery.setText(ADD_BTN_MSG);
-
-            } else {
-                //Add the listing to the gallery
-                currentGallery.addListing(viewing);
-                buttonAddCustomGallery.setText(RMV_BTN_MSG);
-
-            }
-
-        } else {
-            createNewGalPopup();
-        }
-		/*
-			Updates the file after a new item is added to a gallery
-		 */
-        Main.accountManager.saveAccountFile();
     }
 
     /**

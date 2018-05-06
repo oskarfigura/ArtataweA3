@@ -30,8 +30,6 @@ import javafx.stage.Modality;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 
-import javax.swing.text.View;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 
@@ -59,6 +57,7 @@ public class ProfileController {
 	@FXML Button createlisting;
 	@FXML Button logout;
 	@FXML Button buttonMyGallery;
+    @FXML Button btnMessages;
 
 	//Profile Specific Attributes
 	@FXML ImageView avatar;
@@ -73,19 +72,17 @@ public class ProfileController {
 	@FXML Button showWeeklySalesGraphButton;
 	@FXML Button showMonthlySalesGraphButton;
 
-	@FXML
-    TextArea txtReviews;
+	@FXML TextArea txtReviews;
 
-    @FXML
-    GridPane selling;
-    @FXML
-    GridPane sold;
-    @FXML
-    GridPane wonauctions;
+    @FXML GridPane selling;
+    @FXML GridPane sold;
+    @FXML GridPane wonauctions;
 
-    @FXML
-    ListView<String> notificationsList;
+    @FXML ListView<String> notificationsList;
 
+    /**
+     * Initialize the controller
+     */
     public void initialize() {
         Account loggedIn = Main.accountManager.getLoggedIn();
         viewingOwnProfile = loggedIn.getUserName().equals(viewing.getUserName());
@@ -144,6 +141,84 @@ public class ProfileController {
     }
 
     /**
+     * Open the profile GUI on a specific account
+     *
+     * @param account - The account to show the GUI of
+     */
+    public static void viewProfile(Account account) {
+        viewing = account;
+        Main.switchScene("Profile");
+    }
+
+    /**
+     * Method to populate the variables used in creating a bar chart (month)
+     */
+    public void getWeeklyGraphData() {
+        WeeklyBarChart.reset();
+
+        long currentTime = Calendar.getInstance().getTime().getTime();
+        long currentUnixWeek = currentTime / WEEK_IN_MILLISEC;
+
+        for (Listing l:  Main.accountManager.getLoggedIn().getHistory().getSoldListings()) {
+
+            long elemTime = l.getBidHistory().getCurrentBid().getDate();
+            long elemWeek = elemTime / WEEK_IN_MILLISEC;
+
+            int elemWeeksAgo = (int) (currentUnixWeek - elemWeek); //Rounds down
+
+            if (elemWeeksAgo < WeeklyBarChart.getNumOfWeeks()) {
+
+                if (l.getArtwork().getClass().getSimpleName().equals("Painting")) {
+
+                    WeeklyBarChart.setPaintingSalesWk(elemWeeksAgo, (WeeklyBarChart.getPaintingSalesWk(elemWeeksAgo) + 1));
+
+                } else if (l.getArtwork().getClass().getSimpleName().equals("Sculpture")) {
+
+                    WeeklyBarChart.setSculptureSalesWk(elemWeeksAgo, (WeeklyBarChart.getSculptureSalesWk(elemWeeksAgo) + 1));
+
+                } else {
+                    System.out.println("ERROR CODE 006");
+                }
+            }
+        }
+
+
+    }
+
+    /**
+     * Method to populate the variables used in creating a bar chart (month)
+     */
+    public void getMonthlyGraphData() {
+        MonthlyBarChart.reset();
+        long currentTime = Calendar.getInstance().getTime().getTime();
+        long currentUnixMonth = currentTime / MONTH_IN_MILLISEC;
+
+        for (Listing l : Main.accountManager.getLoggedIn().getHistory().getSoldListings()) {
+
+            long elemTime = l.getBidHistory().getCurrentBid().getDate();
+            long elemMonth = elemTime / MONTH_IN_MILLISEC;
+
+            int elemMonthsAgo = (int) (currentUnixMonth - elemMonth); //Rounds down
+
+            if (elemMonthsAgo < MonthlyBarChart.getNumOfMonths()) {
+
+                if (l.getArtwork().getClass().getSimpleName().equals("Painting")) {
+
+                    MonthlyBarChart.setPaintingSalesM(elemMonthsAgo, (MonthlyBarChart.getPaintingSalesM(elemMonthsAgo) + 1));
+
+                } else if (l.getArtwork().getClass().getSimpleName().equals("Sculpture")) {
+
+                    MonthlyBarChart.setSculptureSalesM(elemMonthsAgo, (MonthlyBarChart.getSculptureSalesM(elemMonthsAgo) + 1));
+
+                } else {
+                    System.out.println("ERROR CODE 007");
+                }
+            }
+        }
+
+    }
+
+    /**
      * Renders all sellers reviews
      * @return All reviews formatted into a String
      */
@@ -164,7 +239,6 @@ public class ProfileController {
         }
         return sb.toString();
     }
-
 
     /**
      * Generate notifications for logged in user
@@ -205,16 +279,6 @@ public class ProfileController {
         }
     }
 
-    /**
-     * Open the profile GUI on a specific account
-     *
-     * @param account - The account to show the GUI of
-     */
-    public static void viewProfile(Account account) {
-        viewing = account;
-        Main.switchScene("Profile");
-    }
-
 	/**
 	 * Initialize the header
 	 */
@@ -226,6 +290,7 @@ public class ProfileController {
 		this.home.setOnMouseClicked(e -> Main.switchScene("Home"));
 		this.logout.setOnMouseClicked(e -> Main.accountManager.logoutCurrentAccount());
 		this.buttonMyGallery.setOnMouseClicked(e -> Main.switchScene("UserGallery"));
+        this.btnMessages.setOnMouseClicked(e -> Main.switchScene("MsgWindow"));
 
         //I could not get topstack to ignore the mouse event and let the child nodes handle it, so instead
         //we check where the click happened and what should actually of been clicked.
@@ -443,74 +508,6 @@ public class ProfileController {
 		graphPopup.show(topstack.getScene().getWindow());
 	}
 
-    /**
-     * Method to populate the variables used in creating a bar chart (month)
-     */
-	public void getWeeklyGraphData() {
-	    WeeklyBarChart.reset();
-
-        long currentTime = Calendar.getInstance().getTime().getTime();
-        long currentUnixWeek = currentTime / WEEK_IN_MILLISEC;
-
-        for (Listing l:  Main.accountManager.getLoggedIn().getHistory().getSoldListings()) {
-
-            long elemTime = l.getBidHistory().getCurrentBid().getDate();
-            long elemWeek = elemTime / WEEK_IN_MILLISEC;
-
-            int elemWeeksAgo = (int) (currentUnixWeek - elemWeek); //Rounds down
-
-            if (elemWeeksAgo < WeeklyBarChart.getNumOfWeeks()) {
-
-                if (l.getArtwork().getClass().getSimpleName().equals("Painting")) {
-
-                    WeeklyBarChart.setPaintingSalesWk(elemWeeksAgo, (WeeklyBarChart.getPaintingSalesWk(elemWeeksAgo) + 1));
-
-                } else if (l.getArtwork().getClass().getSimpleName().equals("Sculpture")) {
-
-                    WeeklyBarChart.setSculptureSalesWk(elemWeeksAgo, (WeeklyBarChart.getSculptureSalesWk(elemWeeksAgo) + 1));
-
-                } else {
-                    System.out.println("ERROR CODE 006");
-                }
-            }
-        }
-
-
-    }
-
-    /**
-     * Method to populate the variables used in creating a bar chart (month)
-     */
-    public void getMonthlyGraphData() {
-        MonthlyBarChart.reset();
-        long currentTime = Calendar.getInstance().getTime().getTime();
-        long currentUnixMonth = currentTime / MONTH_IN_MILLISEC;
-
-        for (Listing l : Main.accountManager.getLoggedIn().getHistory().getSoldListings()) {
-
-            long elemTime = l.getBidHistory().getCurrentBid().getDate();
-            long elemMonth = elemTime / MONTH_IN_MILLISEC;
-
-            int elemMonthsAgo = (int) (currentUnixMonth - elemMonth); //Rounds down
-
-            if (elemMonthsAgo < MonthlyBarChart.getNumOfMonths()) {
-
-                if (l.getArtwork().getClass().getSimpleName().equals("Painting")) {
-
-                    MonthlyBarChart.setPaintingSalesM(elemMonthsAgo, (MonthlyBarChart.getPaintingSalesM(elemMonthsAgo) + 1));
-
-                } else if (l.getArtwork().getClass().getSimpleName().equals("Sculpture")) {
-
-                    MonthlyBarChart.setSculptureSalesM(elemMonthsAgo, (MonthlyBarChart.getSculptureSalesM(elemMonthsAgo) + 1));
-
-                } else {
-                    System.out.println("ERROR CODE 007");
-                }
-            }
-        }
-
-    }
-
     private void galleryMenuPopup() {
         try {
 
@@ -538,6 +535,5 @@ public class ProfileController {
             System.exit(-1);
         }
     }
-
 
 }
