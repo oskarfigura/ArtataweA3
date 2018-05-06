@@ -120,6 +120,11 @@ public class MessageController {
     public void updateUserList() {
         List<Conversation> conversations = Main.messageManager.getUsersConversations(loggedUser);
         String user;
+
+        userList.removeAll();
+        listUser.getItems().removeAll();
+        listUser.getItems().clear();
+
         for (Conversation conversation : conversations) {
             user = conversation.getConverser1().equals(loggedUser) ?
                     conversation.getConverser2() : conversation.getConverser1();
@@ -256,6 +261,19 @@ public class MessageController {
         } else {
             Main.messageManager.addConversation(loggedUser, recipient)
                     .createMessage(loggedUser, message, recipientAcc);
+            updateUserList();
+        }
+        txtRecipient.setDisable(true);
+        txtRecipient.setEditable(false);
+        txtRecipient.clear();
+        txtUserMsg.clear();
+        newMsg = false;
+        txtAreaMsgs.getChildren().clear();
+
+        //Refresh chat with new message
+        Conversation conversation = Main.messageManager.getConversation(loggedUser, recipient);
+        if (conversation != null) {
+            displayMessages(conversation);
         }
     }
 
@@ -278,19 +296,7 @@ public class MessageController {
                 handleSend();
             }
 
-            AlertUtil.sendAlert(Alert.AlertType.INFORMATION, "Success", "Message Sent!");
-            txtRecipient.setDisable(true);
-            txtRecipient.setEditable(false);
-            txtRecipient.clear();
-            txtUserMsg.clear();
-            newMsg = false;
-            txtAreaMsgs.getChildren().clear();
 
-            //Refresh chat with new message
-            Conversation conversation = Main.messageManager.getConversation(loggedUser, recipient);
-            if (conversation != null) {
-                displayMessages(conversation);
-            }
         }
     }
 }
