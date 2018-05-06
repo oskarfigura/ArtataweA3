@@ -24,7 +24,9 @@ import javafx.scene.text.TextFlow;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.group1.artatawe.controllers.ProfileController.viewProfile;
@@ -35,6 +37,16 @@ import static com.group1.artatawe.controllers.ProfileController.viewProfile;
  * @author Oskar Figura (915070)
  */
 public class MessageController {
+
+    private String loggedUser;
+    private String recipient;
+    private Account recipientAcc;
+    private String message;
+    private boolean newMsg;
+    private boolean msgSelected;
+    private ObservableList<String> userList;
+
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
 
     //Header Attributes
     @FXML
@@ -71,13 +83,6 @@ public class MessageController {
     @FXML
     Label lblTitle;
 
-    private String loggedUser;
-    private String recipient;
-    private Account recipientAcc;
-    private String message;
-    private boolean newMsg;
-    private boolean msgSelected;
-    private ObservableList<String> userList;
 
     /**
      * Initializes the system with some basic data ready for user to
@@ -159,6 +164,9 @@ public class MessageController {
                 displayMessages(conversation);
             }
         }
+        txtRecipient.setDisable(true);
+        txtRecipient.setEditable(false);
+        newMsg = false;
     }
 
     /**
@@ -178,7 +186,8 @@ public class MessageController {
 
         for (Message m : msgList) {
             chatMessages.add(new Text() {{
-                setText(m.getAuthor() + " >> " + m.getMessage() + '\n');
+                setText(">> " + DATE_FORMAT.format(new Date(m.getDate())) + " " +
+                        m.getAuthor() + " \n>> " + m.getMessage() + '\n' + '\n');
                 if (m.getAuthor().equals(recipient)) {
                     setFill(Color.RED);
                 } else {

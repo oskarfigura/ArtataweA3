@@ -62,6 +62,11 @@
                         <Font name="Calibri" size="18.0" />
                      </font>
                   </Button>
+                  <Button fx:id="btnMessages" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Messages">
+                     <font>
+                        <Font name="Calibri" size="18.0" />
+                     </font>
+                  </Button>
                </children>
             </HBox>
             <Button fx:id="logout" alignment="BOTTOM_RIGHT" mnemonicParsing="false" style="-fx-background-color: transparent;;" text="Logout" StackPane.alignment="BOTTOM_RIGHT">
