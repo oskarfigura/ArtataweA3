@@ -3,7 +3,6 @@ package com.group1.artatawe.messages;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.group1.artatawe.listings.Bid;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -11,6 +10,7 @@ import java.util.List;
 
 /**
  * @author Oskar Figura (915070)
+ * Stores messages sent within a conversation
  */
 public class MessageHistory {
     private final List<Message> msgHistory = new ArrayList<>();
