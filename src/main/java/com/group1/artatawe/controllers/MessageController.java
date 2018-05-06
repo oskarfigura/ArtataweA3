@@ -46,7 +46,8 @@ public class MessageController {
     private boolean msgSelected;
     private ObservableList<String> userList;
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
+    private static final SimpleDateFormat DATE_FORMAT =
+            new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
 
     //Header Attributes
     @FXML
@@ -102,6 +103,59 @@ public class MessageController {
     }
 
     /**
+     * Detects which username has been clicked from inbox
+     */
+    public void inboxClicked() {
+        Conversation conversation;
+        recipient = listUser.getSelectionModel().getSelectedItems().toString();
+        if (recipient != null) {
+            msgSelected = true;
+            recipient = recipient
+                    .replaceAll("\\[", "")
+                    .replaceAll("\\]", "")
+                    .replaceAll("\\*", "");
+            conversation = Main.messageManager.getConversation(loggedUser, recipient);
+            if (conversation != null) {
+                displayMessages(conversation);
+            }
+        }
+        txtRecipient.setDisable(true);
+        txtRecipient.setEditable(false);
+        newMsg = false;
+    }
+
+    /**
+     * Enables user to send message to new recipient
+     */
+    public void newMessage() {
+        txtRecipient.setDisable(false);
+        txtRecipient.setEditable(true);
+        newMsg = true;
+    }
+
+    /**
+     * Processes recipient and message data before it is sent to handleSend()
+     */
+    public void sendMessage() {
+        if (!newMsg && !msgSelected) {
+            AlertUtil.sendAlert(Alert.AlertType.INFORMATION, "Error",
+                    "Select a conversation or create a new message.");
+        } else {
+            message = txtUserMsg.getText();
+
+            if (newMsg) {
+                recipient = txtRecipient.getText();
+                if (validateNewMsg()) {
+                    recipientAcc = Main.accountManager.getAccount(recipient);
+                    handleSend();
+                }
+            } else if (!newMsg && validateMsg() && msgSelected) {
+                handleSend();
+            }
+        }
+    }
+
+    /**
      * Initializes all of the header elements such as linking buttons
      */
     private void initializeHeader() {
@@ -123,7 +177,7 @@ public class MessageController {
     /**
      * Loads all username with who the logged-in user had a conversation
      */
-    public void updateUserList() {
+    private void updateUserList() {
         List<Conversation> conversations = Main.messageManager.getUsersConversations(loggedUser);
         List<Integer> unreadConversations = Main.accountManager.getLoggedIn().getUnreadMessages();
         String user;
@@ -145,28 +199,6 @@ public class MessageController {
         //Sort user list alphabetically
         java.util.Collections.sort(userList);
         listUser.setItems(userList);
-    }
-
-    /**
-     * Detects which username has been clicked from inbox
-     */
-    public void inboxClicked() {
-        Conversation conversation;
-        recipient = listUser.getSelectionModel().getSelectedItems().toString();
-        if (recipient != null) {
-            msgSelected = true;
-            recipient = recipient
-                    .replaceAll("\\[", "")
-                    .replaceAll("\\]", "")
-                    .replaceAll("\\*", "");
-            conversation = Main.messageManager.getConversation(loggedUser, recipient);
-            if (conversation != null) {
-                displayMessages(conversation);
-            }
-        }
-        txtRecipient.setDisable(true);
-        txtRecipient.setEditable(false);
-        newMsg = false;
     }
 
     /**
@@ -224,15 +256,6 @@ public class MessageController {
 
         //Scroll to the bottom of messages
         txtAreaMsgs.heightProperty().addListener(observable -> txtMsgAreaScroll.setVvalue(1D));
-    }
-
-    /**
-     * Enables user to send message to new recipient
-     */
-    public void newMessage() {
-        txtRecipient.setDisable(false);
-        txtRecipient.setEditable(true);
-        newMsg = true;
     }
 
     /**
@@ -303,25 +326,4 @@ public class MessageController {
         }
     }
 
-    /**
-     * Processes recipient and message data before it is sent to handleSend()
-     */
-    public void sendMessage() {
-        if (!newMsg && !msgSelected) {
-            AlertUtil.sendAlert(Alert.AlertType.INFORMATION, "Error",
-                    "Select a conversation or create a new message.");
-        } else {
-            message = txtUserMsg.getText();
-
-            if (newMsg) {
-                recipient = txtRecipient.getText();
-                if (validateNewMsg()) {
-                    recipientAcc = Main.accountManager.getAccount(recipient);
-                    handleSend();
-                }
-            } else if (!newMsg && validateMsg() && msgSelected) {
-                handleSend();
-            }
-        }
-    }
 }

@@ -9,17 +9,11 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * @author Oskar Figura (915070)
  * Stores messages sent within a conversation
+ * @author Oskar Figura (915070)
  */
 public class MessageHistory {
     private final List<Message> msgHistory = new ArrayList<>();
-
-    /**
-     * Construct a new message history
-     */
-    protected MessageHistory() {
-    }
 
     /**
      * Construct a new message history
@@ -49,6 +43,12 @@ public class MessageHistory {
      */
     public List<Message> getAllMessages() {
         return this.msgHistory;
+    }
+
+    /**
+     * Construct a new message history
+     */
+    protected MessageHistory() {
     }
 
     /**

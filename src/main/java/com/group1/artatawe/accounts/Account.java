@@ -18,7 +18,7 @@ import java.util.Map.Entry;
 /**
  * Represent a single account / user in the system
  *
- * @author Kristiyan Vladimirov, Adam Payne, Oscar Figura
+ * @author Kristiyan Vladimirov, Adam Payne, Oskar Figura
  */
 public class Account {
 
@@ -116,6 +116,7 @@ public class Account {
 
     /**
      * Remove conversation that has been read from unread list
+     *
      * @param conversationId The ID of conversation
      */
     public void removeUnreadMessage(int conversationId) {
@@ -303,19 +304,6 @@ public class Account {
     }
 
     /**
-     * Returns a specific gallery by a given name;
-     *
-     * @param galleryName The name of a gallery
-     * @return A specific gallery, given a name
-     */
-    private Gallery getSpecificGallery(String galleryName) {
-        return this.userGalleries.stream()
-                .filter(x -> x.getName().equals(galleryName))
-                .findFirst()
-                .get();
-    }
-
-    /**
      * @return A list of all gallery names
      */
     public List<String> getGalleryNames() {
@@ -472,6 +460,26 @@ public class Account {
     }
 
     /**
+     * Loads all the galleries of a particular user
+     *
+     * @param jo  JsonObject containing the data associated with all galleries
+     * @param acc The account holding a set of particular galleries
+     */
+    public void loadGalleries(JsonObject jo, Account acc) {
+	    /*
+	        From the Json object passed, the array with the galleries is read in
+	        From then on, since it also contains JsonObject, we get all of them
+	        and read in the data they contain making into a gallery.
+	     */
+        JsonArray galleryArray = jo.getAsJsonArray("galleries");
+        for (int i = 0; i < galleryArray.size(); i++) {
+            JsonObject object = galleryArray.get(i).getAsJsonObject();
+            Gallery g = new Gallery(object, acc);
+            this.userGalleries.add(g);
+        }
+    }
+
+    /**
      * Load the account back from a JsonObject
      *
      * @param jo - The Json Object
@@ -513,22 +521,16 @@ public class Account {
     }
 
     /**
-     * Loads all the galleries of a particular user
+     * Returns a specific gallery by a given name;
      *
-     * @param jo  JsonObject containing the data associated with all galleries
-     * @param acc The account holding a set of particular galleries
+     * @param galleryName The name of a gallery
+     * @return A specific gallery, given a name
      */
-    public void loadGalleries(JsonObject jo, Account acc) {
-	    /*
-	        From the Json object passed, the array with the galleries is read in
-	        From then on, since it also contains JsonObject, we get all of them
-	        and read in the data they contain making into a gallery.
-	     */
-        JsonArray galleryArray = jo.getAsJsonArray("galleries");
-        for (int i = 0; i < galleryArray.size(); i++) {
-            JsonObject object = galleryArray.get(i).getAsJsonObject();
-            Gallery g = new Gallery(object, acc);
-            this.userGalleries.add(g);
-        }
+    private Gallery getSpecificGallery(String galleryName) {
+        return this.userGalleries.stream()
+                .filter(x -> x.getName().equals(galleryName))
+                .findFirst()
+                .get();
     }
+
 }

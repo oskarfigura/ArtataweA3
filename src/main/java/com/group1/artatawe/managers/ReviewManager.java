@@ -15,8 +15,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * @author Oskar Figura (915070)
  * Used to process all reviews
+ * @author Oskar Figura (915070)
  */
 public class ReviewManager {
 
