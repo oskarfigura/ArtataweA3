@@ -51,7 +51,7 @@ public class Conversation {
      * @param recipient - The account of recipient
      */
     public void createMessage(String author, String message, Account recipient) {
-        //recipient.getConversationHistory.addNewMessage(this);
+        recipient.addNewUnreadMessage(this.id);
         this.messageHistory.createNewMessage(author, message);
         Main.messageManager.saveMessagesFile();
     }

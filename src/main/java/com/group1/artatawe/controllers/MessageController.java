@@ -31,6 +31,7 @@ import static com.group1.artatawe.controllers.ProfileController.viewProfile;
 
 /**
  * Controller for "MsgWindow.fxml", handles message processing
+ *
  * @author Oskar Figura (915070)
  */
 public class MessageController {
@@ -119,6 +120,7 @@ public class MessageController {
      */
     public void updateUserList() {
         List<Conversation> conversations = Main.messageManager.getUsersConversations(loggedUser);
+        List<Integer> unreadConversations = Main.accountManager.getLoggedIn().getUnreadMessages();
         String user;
 
         userList.removeAll();
@@ -128,7 +130,12 @@ public class MessageController {
         for (Conversation conversation : conversations) {
             user = conversation.getConverser1().equals(loggedUser) ?
                     conversation.getConverser2() : conversation.getConverser1();
-            userList.add(user);
+
+            if (unreadConversations.stream().anyMatch(x -> x == conversation.getID())) {
+                userList.add("***" + user);
+            } else {
+                userList.add(user);
+            }
         }
         listUser.setItems(userList);
     }
@@ -154,11 +161,15 @@ public class MessageController {
 
     /**
      * Displays messages for a particular conversation
+     *
      * @param conversation Conversation for which messages are displayed
      */
     private void displayMessages(Conversation conversation) {
         MessageHistory msgHistory = conversation.getMessageHistory();
         List<Message> msgList = msgHistory.getAllMessages();
+
+        Main.accountManager.getLoggedIn().removeUnreadMessage(conversation.getID());
+        updateUserList();
 
         List<Text> chatMessages = new ArrayList<>();
         txtAreaMsgs.getChildren().clear();
@@ -190,13 +201,13 @@ public class MessageController {
         double y = boundsInScreen.getMinY();
 
         //Fire a mouse click on TextFlow to refresh and return to original position
-        try{
+        try {
             Robot robot = new Robot();
-            robot.mouseMove((int)x, (int)y);
+            robot.mouseMove((int) x, (int) y);
             robot.mousePress(InputEvent.BUTTON1_MASK);
             robot.mouseRelease(InputEvent.BUTTON1_MASK);
-            robot.mouseMove((int)currentX, (int)currentY);
-        }catch (AWTException ex){
+            robot.mouseMove((int) currentX, (int) currentY);
+        } catch (AWTException ex) {
             ex.printStackTrace();
         }
 
@@ -215,6 +226,7 @@ public class MessageController {
 
     /**
      * Validates a message to a new recipient
+     *
      * @return true if data valid else false
      */
     private boolean validateNewMsg() {
@@ -226,7 +238,7 @@ public class MessageController {
             AlertUtil.sendAlert(
                     Alert.AlertType.INFORMATION, "Error", "Incorrect recipient username");
             state = false;
-        } else if (recipient.equals(loggedUser)){
+        } else if (recipient.equals(loggedUser)) {
             AlertUtil.sendAlert(
                     Alert.AlertType.INFORMATION, "Error", "You cannot message yourself");
             state = false;
@@ -241,6 +253,7 @@ public class MessageController {
 
     /**
      * Validates a message
+     *
      * @return true if message valid else false
      */
     private boolean validateMsg() {
@@ -256,6 +269,7 @@ public class MessageController {
      * Adds a new message to the system
      */
     private void handleSend() {
+        recipientAcc = Main.accountManager.getAccount(recipient);
         if (Main.messageManager.getConversation(loggedUser, recipient) != null) {
             Main.messageManager.getConversation(loggedUser, recipient)
                     .createMessage(loggedUser, message, recipientAcc);
@@ -290,7 +304,7 @@ public class MessageController {
 
             if (newMsg) {
                 recipient = txtRecipient.getText();
-                if(validateNewMsg()) {
+                if (validateNewMsg()) {
                     recipientAcc = Main.accountManager.getAccount(recipient);
                     handleSend();
                 }
