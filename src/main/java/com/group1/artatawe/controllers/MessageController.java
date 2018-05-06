@@ -288,10 +288,12 @@ public class MessageController {
         } else {
             message = txtUserMsg.getText();
 
-            if (newMsg && validateNewMsg()) {
+            if (newMsg) {
                 recipient = txtRecipient.getText();
-                recipientAcc = Main.accountManager.getAccount(recipient);
-                handleSend();
+                if(validateNewMsg()) {
+                    recipientAcc = Main.accountManager.getAccount(recipient);
+                    handleSend();
+                }
             } else if (!newMsg && validateMsg() && msgSelected) {
                 handleSend();
             }
