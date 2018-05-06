@@ -3,7 +3,6 @@ package com.group1.artatawe.managers;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.group1.artatawe.Main;
-import com.group1.artatawe.listings.Listing;
 import com.group1.artatawe.messages.Conversation;
 
 import java.io.File;
@@ -65,6 +64,20 @@ public class MessageManager {
                 .orElseThrow(() ->
                         new NoSuchElementException("Conversation id: " + id + " doesn't exist"));
     }
+
+    /**
+     * Get the conversation between two specific users
+     * @param user1 First user in conversation
+     * @param user2 Second user in conversation
+     * @return Conversation between users else null
+     */
+    public Conversation getConversation(String user1, String user2) {
+        return this.conversations.stream()
+                .filter(x -> x.getConverser1().equals(user1) && x.getConverser2().equals(user2) ||
+                        x.getConverser1().equals(user2) && x.getConverser2().equals(user1))
+                .findFirst().orElse(null);
+    }
+
 
     /**
      * Save all the messages back to the file

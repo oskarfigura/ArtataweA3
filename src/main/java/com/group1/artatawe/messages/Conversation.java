@@ -65,6 +65,22 @@ public class Conversation {
     }
 
     /**
+     * Get first user from conversation
+     * @return The first converser
+     */
+    public String getConverser1() {
+        return converser1;
+    }
+
+    /**
+     * Get second user from conversation
+     * @return The second converser
+     */
+    public String getConverser2() {
+        return converser2;
+    }
+
+    /**
      * Get the message history
      * @return The MessageHistory of this conversation
      */
