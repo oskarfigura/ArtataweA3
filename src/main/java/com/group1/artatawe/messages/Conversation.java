@@ -4,10 +4,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.group1.artatawe.Main;
 import com.group1.artatawe.accounts.Account;
-import com.group1.artatawe.artwork.Artwork;
-import com.group1.artatawe.listings.Bid;
-import com.group1.artatawe.listings.BidHistory;
-import com.group1.artatawe.listings.ListingState;
 
 import java.util.Map;
 
@@ -21,200 +17,82 @@ public class Conversation {
     private final String converser2;
     private final MessageHistory messageHistory;
 
-
     /**
-     * Construct a new Listing.
-     * Use this constructor creating a new listing.
-     *
-     * @param id          - The unique ID of this listing
-     * @param artwork     - The artwork this listing is for
-     * @param reserve     - The reserver for this artwork (where the bidding starts)
-     * @param maxBids     - The number of bids before this Listing is over
-     * @param seller      - The username of the person selling
-     * @param dateCreated - The date the listing was made
+     * Construct a new Conversation
+     * @param id
+     * @param converser1
+     * @param converser2
      */
-    public Listing(int id, Artwork artwork, double reserve, int maxBids, String seller, long dateCreated) {
+    public Conversation(int id, String converser1, String converser2) {
         this.id = id;
-        this.artwork = artwork;
-        this.reserve = reserve;
-        this.maxBids = maxBids;
-        this.seller = seller;
-        this.dateCreated = dateCreated;
-        this.listingState = ListingState.ACTIVE;
-        this.bidHistory = new BidHistory();
+        this.converser1 = converser1;
+        this.converser2 = converser2;
+        this.messageHistory = new MessageHistory();
     }
 
     /**
-     * Construct a new Listing from a JsonObject
+     * Construct a new Conversation from a JsonObject
      *
      * @param jo - The JsonObject to load from
      * @throws Exception - If the loading fails
      */
-    public Listing(JsonObject jo) throws Exception {
+    public Conversation(JsonObject jo) throws Exception {
         this.id = jo.get("id").getAsInt();
-        this.artwork = Artwork.loadFromJson(jo);
-        this.reserve = jo.get("reserve").getAsDouble();
-        this.maxBids = jo.get("maxbids").getAsInt();
-        this.bidHistory = new BidHistory(jo);
-        this.dateCreated = jo.get("datecreated").getAsLong();
-        this.seller = jo.get("seller").getAsString();
-        this.listingState = ListingState.valueOf(jo.get("state").getAsString());
+        this.converser1 = jo.get("converser1").getAsString();
+        this.converser2 = jo.get("converser2").getAsString();
+        this.messageHistory = new MessageHistory(jo);
     }
 
     /**
-     * Create a bid for this listing
+     * Create a message for this conversation
      *
-     * @param price  - The amount bid
-     * @param bidder - The Account of the bidder
+     * @param author  - The author of message
+     * @param message - The message
+     * @param recipient - The account of recipient
      */
-    public void createBid(double price, Account bidder) {
-        if(this.listingState != ListingState.ACTIVE) {
-            throw new IllegalStateException("You cannot bid on a Listing that is not active!!");
-        }
-
-        bidder.getHistory().addBiddedOnListing(this);
-
-        this.bidHistory.createNewBid(price, bidder);
-
-        if(this.maxBids <= this.bidHistory.getNumOfBids()) {
-            this.endListing();
-        }
-
-        Main.listingManager.saveListingsFile();
+    public void createMessage(String author, String message, Account recipient) {
+        //recipient.getConversationHistory.addNewMessage(this);
+        this.messageHistory.createNewMessage(author, message);
+        Main.messageManager.saveMessagesFile();
     }
 
     /**
-     * Get the ID of this listing
-     * @return This listing's ID
+     * Get the ID of this conversation
+     * @return This conversation's ID
      */
     public int getID() {
         return this.id;
     }
 
     /**
-     * Get the artwork this listing is for
-     * @return The artwork
+     * Get the message history
+     * @return The MessageHistory of this conversation
      */
-    public Artwork getArtwork() {
-        return this.artwork;
+    public MessageHistory getMessageHistory() {
+        return messageHistory;
     }
 
     /**
-     * Get the reserve (minimum bid) for this artwork
-     * @return The reserve
+     * Get the current message (from the MessageHistory)
+     * @return The current message. Null if no current message
      */
-    public double getReserve() {
-        return this.reserve;
+    public Message getCurrentMessage() {
+        return this.messageHistory.getCurrentMessage();
     }
 
     /**
-     * Get the BidHistory for this Listing
-     * @return The BidHistory
-     */
-    public BidHistory getBidHistory() {
-        return this.bidHistory;
-    }
-
-    /**
-     * Get the current bid (from the BidHistory)
-     * @return The current bid. Null if no current bid
-     */
-    public Bid getCurrentBid() {
-        return this.bidHistory.getCurrentBid();
-    }
-
-    /**
-     * Check if this Listing has a description
-     * @return True if their is a description, else False
-     */
-    public boolean hasDescription() {
-        return ! this.artwork.getDescription().trim().isEmpty();
-    }
-
-    /**
-     * Get the number of bids remaining
-     * @return The number of bids remaining
-     */
-    public int getBidsLeft() {
-        return this.maxBids - this.getNumOfBids();
-    }
-
-    /**
-     * Get the number of bids made on this Listing
-     * @return The number of bids on this Listing
-     */
-    public int getNumOfBids() {
-        return this.bidHistory.getNumOfBids();
-    }
-
-    /**
-     * Get the maximum number of bids, before this Listing is over
-     * @return The maximum number of bids
-     */
-    public int getMaxBids() {
-        return this.maxBids;
-    }
-
-    /**
-     * Get the date this Listing was made
-     * @return The date this Listing was made
-     */
-    public long getDateCreated() {
-        return this.dateCreated;
-    }
-
-    /**
-     * Get the username of the seller
-     * @return The username of seller
-     */
-    public String getSeller() {
-        return this.seller;
-    }
-
-    /**
-     * Get the state of the Listing
-     * @return The ListingState
-     */
-    public ListingState getListingState(){
-        return listingState;
-    }
-
-    /**
-     * Cancel this listing. Will set the state to CANCELLED
-     */
-    public void cancelListing() {
-        this.listingState = ListingState.CANCELLED;
-    }
-    /**
-     * Turn the Listing into a JsonObject
+     * Turn the Conversation into a JsonObject
      * @return The JsonObject
      */
     public JsonObject toJsonObject() {
         JsonObject jo = new JsonObject();
         jo.addProperty("id", this.id);
-        jo.addProperty("reserve", this.reserve);
-        jo.addProperty("maxbids", this.maxBids);
-        jo.addProperty("datecreated", this.dateCreated);
-        jo.addProperty("seller", this.seller);
-        jo.addProperty("state", this.listingState.toString());
+        jo.addProperty("converser1", this.converser1);
+        jo.addProperty("converser2", this.converser2);
 
-        for(Map.Entry<String, JsonElement> entry : this.artwork.toJsonObject(this).entrySet()) {
+        for(Map.Entry<String, JsonElement> entry : this.messageHistory.toJsonObject().entrySet()) {
             jo.add(entry.getKey(), entry.getValue());
         }
-
-        for(Map.Entry<String, JsonElement> entry : this.bidHistory.toJsonObject().entrySet()) {
-            jo.add(entry.getKey(), entry.getValue());
-        }
-
         return jo;
     }
-
-    /**
-     * End this listing. To be called when the max number of bids is reached
-     * Will set the state to FINISHED
-     */
-    private void endListing() {
-        this.listingState = ListingState.FINISHED;
-    }
-
 }
