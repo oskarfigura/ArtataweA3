@@ -5,6 +5,9 @@ import javafx.fxml.FXML;
 
 import java.awt.*;
 
+/**
+ * @author Oskar Figura (915070)
+ */
 public class MessageController {
 
     @FXML

@@ -3,6 +3,7 @@ package com.group1.artatawe.utils;
 import com.google.gson.JsonObject;
 
 /**
+ * @author Oskar Figura (915070)
  * Represent a single Review for an auction.
  */
 public class Review {
