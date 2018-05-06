@@ -1,37 +1,48 @@
 package com.group1.artatawe.controllers;
 
+import com.group1.artatawe.Main;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
-import java.util.ArrayList;
-import java.util.List;
+import static com.group1.artatawe.controllers.ProfileController.viewProfile;
+
 
 /**
  * @author Oskar Figura (915070)
  */
 public class MessageController {
 
-    @FXML
-    TextFlow txtAreaMsgs;
-    @FXML
-    Button btnSend;
-    @FXML
-    TextArea txtUserMsg;
-    @FXML
-    TextField txtRecipient;
-    @FXML
-    ListView listUser;
+    //Header Attributes
+    @FXML StackPane topstack;
+    @FXML ImageView profileimage;
+
+    @FXML Button home;
+    @FXML Button currentlistings;
+    @FXML Button createlisting;
+    @FXML Button logout;
+    @FXML Button buttonMyGalleries;
+
+    //Chat attributes
+    @FXML TextFlow txtAreaMsgs;
+    @FXML Button btnSend;
+    @FXML TextArea txtUserMsg;
+    @FXML TextField txtRecipient;
+    @FXML ListView listUser;
     private ObservableList<String> usersMessages;
     private Text authorMsgs;
     private Text recipientMsgs;
 
+
     public void initialize() {
+        this.initializeHeader();
         txtAreaMsgs.setPrefWidth(600);
 
         authorMsgs = new Text();
@@ -39,6 +50,26 @@ public class MessageController {
 
         recipientMsgs = new Text();
         recipientMsgs.setStyle("-fx-fill: BLUE;-fx-font-weight:normal;");
+
+    }
+
+    /**
+     * Initializes all of the header elements such as linking buttons
+     */
+    private void initializeHeader() {
+        this.currentlistings.setOnMouseClicked(e -> Main.switchScene("CurrentListings"));
+        this.profileimage.setImage(Main.accountManager.getLoggedIn().getAvatar());
+        this.profileimage.setOnMouseClicked(e -> viewProfile(Main.accountManager.getLoggedIn()));
+        this.createlisting.setOnMouseClicked(e -> Main.switchScene("CreateListing"));
+        this.home.setOnMouseClicked(e -> Main.switchScene("Home"));
+        this.logout.setOnMouseClicked(e -> Main.accountManager.logoutCurrentAccount());
+        this.buttonMyGalleries.setOnMouseClicked(e -> Main.switchScene("UserGallery"));
+
+        this.topstack.setOnMouseClicked(e -> {
+            if(this.profileimage.intersects(e.getX(), e.getY(), 0, 0)) {
+                viewProfile(Main.accountManager.getLoggedIn());
+            }
+        });
     }
 
 
