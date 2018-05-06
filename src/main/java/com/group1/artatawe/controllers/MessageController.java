@@ -137,6 +137,8 @@ public class MessageController {
                 userList.add(user);
             }
         }
+        //Sort user list alphabetically
+        java.util.Collections.sort(userList);
         listUser.setItems(userList);
     }
 
