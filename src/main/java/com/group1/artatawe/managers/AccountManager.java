@@ -102,9 +102,6 @@ public class AccountManager {
 
 	/**
 	 * Construct a new account and save it in the system
-	 */
-	/**
-	 *
 	 * @param userName - The username of an account
 	 * @param firstName - The first name of a user
 	 * @param lastName - The last name of a user
